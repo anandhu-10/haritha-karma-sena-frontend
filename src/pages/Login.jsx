@@ -4,7 +4,8 @@ import { RxHamburgerMenu } from "react-icons/rx";
 import axios from "axios";
 import "../styles/login.css";
 
-const API_URL = "https://haritha-karma-sena-backend.onrender.com";
+/* ✅ API URL from CRA environment */
+const API_URL = process.env.REACT_APP_API_URL;
 
 function Login() {
   const navigate = useNavigate();
@@ -19,17 +20,25 @@ function Login() {
     role: "",
   });
 
+  /* ---------- DEBUG (REMOVE LATER) ---------- */
+  useEffect(() => {
+    console.log("API_URL =", API_URL);
+  }, []);
+
+  /* ---------- HANDLE RESIZE ---------- */
   useEffect(() => {
     const handleResize = () => setWidth(window.innerWidth);
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  /* ---------- INPUT HANDLER ---------- */
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  /* ---------- SUBMIT ---------- */
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -44,25 +53,25 @@ function Login() {
       const res = await axios.post(
         `${API_URL}/api/auth/login`,
         {
-          email: formData.email,
+          email: formData.email.trim().toLowerCase(),
           password: formData.password,
           role: formData.role,
-        },
-        {
-          headers: { "Content-Type": "application/json" },
         }
       );
 
+      /* ✅ SAVE AUTH DATA */
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.user));
 
+      /* ✅ REDIRECT BASED ON ROLE */
       if (res.data.user.role === "collector") {
         navigate("/collector", { replace: true });
       } else {
         navigate("/disposer", { replace: true });
       }
     } catch (err) {
-      alert(err.response?.data?.message || "Login failed");
+      console.error("Login error:", err?.response || err);
+      alert(err.response?.data?.message || "Invalid email or password");
     } finally {
       setLoading(false);
     }
@@ -70,14 +79,20 @@ function Login() {
 
   return (
     <div className="body">
+      {/* HEADER */}
       <header className="headerHome">
         <nav>
-          <div className={width > 568 ? "containerHomeNav" : "containerHomeNavMob"}>
+          <div
+            className={width > 568 ? "containerHomeNav" : "containerHomeNavMob"}
+          >
             <h1 onClick={() => navigate("/")}>HARITHA KARMA SENA</h1>
 
             {width <= 568 ? (
               <div className="optionC">
-                <button className="optionBtn" onClick={() => setHide(!hide)}>
+                <button
+                  className="optionBtn"
+                  onClick={() => setHide(!hide)}
+                >
                   <RxHamburgerMenu color="white" size={20} />
                 </button>
 
@@ -100,6 +115,7 @@ function Login() {
         </nav>
       </header>
 
+      {/* LOGIN FORM */}
       <div className="tray">
         <div className="container-login">
           <h1>Log In</h1>
