@@ -1,0 +1,30 @@
+.collectorhome {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f0f0f0;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 260px;
+  margin: 20px;
+  background: white;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+/* Main content */
+.main-content {
+  flex: 1;
+  margin: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  overflow: visible; /* ✅ CRITICAL FIX */
+}
+
+/* Outlet container */
+.collector-page {
+  min-height: 500px;
+  overflow: visible;
+}

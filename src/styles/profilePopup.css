@@ -1,0 +1,79 @@
+/* Background overlay */
+.popupOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+/* Popup card */
+.popupCard {
+  background: #ffffff;
+  width: 420px;              /* 🔥 fixed width */
+  max-width: 90%;
+  max-height: 85vh;          /* 🔥 prevent full screen */
+  overflow-y: auto;          /* 🔥 scroll inside if needed */
+  padding: 24px;
+  border-radius: 14px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  animation: popupFade 0.25s ease;
+}
+
+/* Headings */
+.popupCard h2 {
+  margin-bottom: 10px;
+}
+
+.popupCard h4 {
+  margin-bottom: 6px;
+}
+
+/* Sections */
+.section {
+  margin-top: 16px;
+}
+
+/* Inputs (edit mode) */
+.popupCard input {
+  width: 100%;
+  padding: 8px;
+  margin-top: 6px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+/* Action buttons */
+.popupActions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.popupActions button {
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+  background: #6c8469;
+  color: white;
+  cursor: pointer;
+}
+
+.popupActions .secondary {
+  background: #999;
+}
+
+/* Animation */
+@keyframes popupFade {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

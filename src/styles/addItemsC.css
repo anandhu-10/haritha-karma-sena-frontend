@@ -1,0 +1,75 @@
+.body {
+  width: 100%;
+}
+
+.content {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+}
+
+/* Common tab layout */
+.tab {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Waste type checkboxes */
+.checkbox-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.checkbox-container label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Location tab */
+.get-location-tab {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow: visible; /* IMPORTANT */
+}
+
+/* Buttons section */
+.back-submit-btn-component {
+  display: flex;
+  gap: 12px;
+}
+
+/* Buttons */
+button {
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+
+.next-btn {
+  align-self: flex-start;
+  background-color: #6f846a;
+  color: white;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Error shake animation */
+.error {
+  animation: shake 0.3s;
+}
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-5px); }
+  100% { transform: translateX(0); }
+}
