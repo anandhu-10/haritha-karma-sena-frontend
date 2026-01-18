@@ -5,6 +5,7 @@ import "leaflet/dist/leaflet.css";
 import "../styles/MapComponent.css";
 import customIcon from "../assets/marker_map_icon.png";
 
+/* CUSTOM MARKER */
 const markerIcon = new L.Icon({
   iconUrl: customIcon,
   iconSize: [24, 24],
@@ -13,47 +14,52 @@ const markerIcon = new L.Icon({
 
 function MapComponent({ onLocationSelect }) {
   const [searchQuery, setSearchQuery] = useState("");
-  const [mapCenter, setMapCenter] = useState([9.6258, 76.761]);
+  const [mapCenter, setMapCenter] = useState([9.6258, 76.761]); // Kerala default
   const [markerPosition, setMarkerPosition] = useState(null);
 
   const mapRef = useRef(null);
 
+  /* CLICK TO SELECT LOCATION */
   const MapClickHandler = () => {
     useMapEvents({
       click(e) {
         const { lat, lng } = e.latlng;
         setMarkerPosition([lat, lng]);
-        onLocationSelect?.([lng, lat]);
+        onLocationSelect?.([lng, lat]); // keep your format
       },
     });
     return null;
   };
 
+  /* 🔍 SEARCH LOCATION (FIXED — NO API KEY) */
   const handleSearch = async () => {
     if (!searchQuery.trim()) return;
 
     try {
       const res = await fetch(
-        `https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(
+        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
           searchQuery
-        )}&key=${process.env.REACT_APP_GEOCODE_API_KEY}`
+        )}`
       );
 
       const data = await res.json();
-      if (!data.results?.length) {
+
+      if (!data.length) {
         alert("Location not found");
         return;
       }
 
-      const { lat, lng } = data.results[0].geometry;
+      const lat = parseFloat(data[0].lat);
+      const lng = parseFloat(data[0].lon);
 
       setMapCenter([lat, lng]);
       setMarkerPosition([lat, lng]);
       onLocationSelect?.([lng, lat]);
 
+      // ✅ move map
       mapRef.current?.flyTo([lat, lng], 14);
     } catch (err) {
-      console.error("Geocoding failed", err);
+      console.error("Search failed", err);
       alert("Search failed");
     }
   };
