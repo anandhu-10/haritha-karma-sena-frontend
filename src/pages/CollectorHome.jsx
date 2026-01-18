@@ -1,5 +1,5 @@
 import React from "react";
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, useNavigate } from "react-router-dom";
 
 import Profile from "../components/Profile";
 import Sidebar from "../components/Sidebar";
@@ -12,7 +12,7 @@ import "../styles/dashboard.css";
 const sliderData = [
   {
     label: "Add New Collection Area",
-    path: ".", // ✅ FIX: index route
+    path: ".", // index route
   },
   {
     label: "View Collection Areas",
@@ -25,13 +25,23 @@ const sliderData = [
 ];
 
 function CollectorHome() {
-  // ✅ SAFE localStorage read (no logic change)
+  const navigate = useNavigate();
+
+  // SAFE localStorage read
   const storedUser = localStorage.getItem("user");
   const user = storedUser ? JSON.parse(storedUser) : null;
 
+  /* ---------- LOGOUT (FIXED) ---------- */
+  const reportLogout = () => {
+    localStorage.removeItem("user");
+    localStorage.removeItem("token"); // if you use token
+
+    navigate("/login", { replace: true });
+  };
+
   /* ---------- SAFETY ROLE CHECK ---------- */
   if (!user || user.role !== "collector") {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/login" replace />;
   }
 
   return (
@@ -41,7 +51,12 @@ function CollectorHome() {
 
       {/* RIGHT CONTENT */}
       <div className="main-content">
-        <Profile user={user} userType={user.role} />
+        {/* ✅ PASS reportLogout */}
+        <Profile
+          user={user}
+          userType={user.role}
+          reportLogout={reportLogout}
+        />
 
         {/* SLIDER NAVIGATION */}
         <ServiceSlider
