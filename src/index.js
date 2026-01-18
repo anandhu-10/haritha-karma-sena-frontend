@@ -18,6 +18,7 @@ import CollectorHome from "./pages/CollectorHome";
 import DisposerHome from "./pages/DisposerHome";
 import DisposerDetails from "./pages/DisposerDetails";
 import ProfilePage from "./pages/ProfilePage";
+import CollectorHelp from "./pages/CollectorHelp"; // ✅ ADD THIS
 
 /* ---------- COMPONENTS ---------- */
 import AddItemsC from "./components/AddItemsC";
@@ -52,9 +53,10 @@ const router = createBrowserRouter([
       </ProtectedRoute>
     ),
     children: [
-      { index: true, element: <AddItemsC /> },
+      { index: true, element: <AddItemsC /> }, // Dashboard
       { path: "areas", element: <ViewCollectionAreas /> },
       { path: "requests", element: <NewRqFromD /> },
+      { path: "help", element: <CollectorHelp /> }, // ✅ ADD THIS
     ],
   },
 

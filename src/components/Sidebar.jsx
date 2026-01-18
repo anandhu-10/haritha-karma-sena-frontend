@@ -18,29 +18,40 @@ const Sidebar = ({ user }) => {
 
       <div className="sidebar-menu">
         <ul>
-          {/* COLLECTOR MENU */}
+          {/* ---------------- COLLECTOR MENU ---------------- */}
           {role === "collector" && (
             <>
               <li>
                 <Link to="/collector">Dashboard</Link>
               </li>
+
               <li>
-                <Link to="/collector/requests">Requests from Disposers</Link>
+                <Link to="/collector/requests">
+                  Requests from Disposers
+                </Link>
               </li>
+
               <li>
                 <Link to="/collector/areas">Collection Areas</Link>
+              </li>
+
+              {/* ✅ COLLECTOR HELP */}
+              <li>
+                <Link to="/collector/help">Help</Link>
               </li>
             </>
           )}
 
-          {/* DISPOSER MENU */}
+          {/* ---------------- DISPOSER MENU ---------------- */}
           {role === "disposer" && (
-            <li>
-              <Link to="/disposer">Dashboard</Link>
-            </li>
+            <>
+              <li>
+                <Link to="/disposer">Dashboard</Link>
+              </li>
+            </>
           )}
 
-          {/* COMMON */}
+          {/* ---------------- COMMON (PUBLIC) ---------------- */}
           <li>
             <Link to="/about">About</Link>
           </li>
