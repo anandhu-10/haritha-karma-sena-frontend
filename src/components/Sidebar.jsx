@@ -18,20 +18,29 @@ const Sidebar = ({ user }) => {
 
       <div className="sidebar-menu">
         <ul>
-          {/* ROLE BASED HOME */}
+          {/* COLLECTOR MENU */}
           {role === "collector" && (
-            <li>
-              <Link to="/collector">Dashboard</Link>
-            </li>
+            <>
+              <li>
+                <Link to="/collector">Dashboard</Link>
+              </li>
+              <li>
+                <Link to="/collector/requests">Requests from Disposers</Link>
+              </li>
+              <li>
+                <Link to="/collector/areas">Collection Areas</Link>
+              </li>
+            </>
           )}
 
+          {/* DISPOSER MENU */}
           {role === "disposer" && (
             <li>
               <Link to="/disposer">Dashboard</Link>
             </li>
           )}
 
-          {/* COMMON LINKS */}
+          {/* COMMON */}
           <li>
             <Link to="/about">About</Link>
           </li>
