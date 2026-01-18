@@ -3,25 +3,24 @@ import "../../styles/ShowWRinC.css";
 import Popup from "./Popup";
 
 /**
- * onPickUp  👉 function passed from NewRqFromD
+ * onPickUp 👉 function passed from NewRqFromD
  */
 const ShowWRinC = ({ data, sendDataToParent, onPickUp }) => {
-  const [pickupButtonValue, setPickupButtonValue] = useState([]);
-  const [disabledButtons, setDisabledButtons] = useState([]);
   const [popupID, setPopupID] = useState(null);
   const [currentWasteRQ, setCurrentWasteRQ] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [localData, setLocalData] = useState([]);
 
+  /* keep local copy in sync */
   useEffect(() => {
-    setPickupButtonValue([]);
-    setDisabledButtons([]);
+    setLocalData(data || []);
     setPopupID(null);
     setCurrentWasteRQ(null);
+    setIsOpen(false);
   }, [data]);
 
   /**
-   * 🔥 This function is called FROM Popup
-   * statusOnPickup === true → user confirmed pickup
+   * 🔥 Called FROM Popup
    */
   const handleDataFromChild = async (
     index,
@@ -31,19 +30,17 @@ const ShowWRinC = ({ data, sendDataToParent, onPickUp }) => {
     setIsOpen(statusOnPopup);
 
     if (statusOnPickup && currentWasteRQ) {
-      // 🔔 CALL BACKEND (SEND NOTIFICATION)
       await onPickUp(currentWasteRQ);
 
-      // disable button
-      const updatedDisabled = [...disabledButtons];
-      updatedDisabled[index] = true;
-      setDisabledButtons(updatedDisabled);
+      // ✅ update UI immediately
+      setLocalData((prev) =>
+        prev.map((req) =>
+          req._id === currentWasteRQ
+            ? { ...req, status: "Picked Up" }
+            : req
+        )
+      );
 
-      const updatedPickup = [...pickupButtonValue];
-      updatedPickup[index] = true;
-      setPickupButtonValue(updatedPickup);
-
-      // refresh parent list
       sendDataToParent();
     }
   };
@@ -54,7 +51,7 @@ const ShowWRinC = ({ data, sendDataToParent, onPickUp }) => {
     setCurrentWasteRQ(WRQid);
   };
 
-  if (!data || data.length === 0) {
+  if (!localData || localData.length === 0) {
     return <p style={{ padding: 20 }}>No Waste Requests</p>;
   }
 
@@ -73,14 +70,14 @@ const ShowWRinC = ({ data, sendDataToParent, onPickUp }) => {
       <div className="table-container">
         <table className="WRQ-table">
           <tbody>
-            {data.map((req, index) => (
+            {localData.map((req, index) => (
               <tr key={req._id}>
                 <td style={{ width: "50px" }}>{index + 1}</td>
 
                 <td style={{ width: "600px" }}>
                   <b>Name:</b> {req.disposerName}
                   <br />
-                  <b>Date:</b> {req.date}
+                  <b>Date:</b> {new Date(req.date).toLocaleString()}
                   <br />
                   <b>Waste Types:</b> {req.wasteTypes.join(", ")}
                   <br />
@@ -101,10 +98,17 @@ const ShowWRinC = ({ data, sendDataToParent, onPickUp }) => {
                 <td style={{ width: "200px" }}>
                   <button
                     onClick={() => handlePickupBClick(index, req._id)}
-                    disabled={disabledButtons[index]}
+                    disabled={req.status === "Picked Up"}
                     className="pickupButton"
+                    style={{
+                      cursor:
+                        req.status === "Picked Up"
+                          ? "not-allowed"
+                          : "pointer",
+                      opacity: req.status === "Picked Up" ? 0.6 : 1,
+                    }}
                   >
-                    {pickupButtonValue[index] ? "Picked Up" : "Pick Up"}
+                    {req.status === "Picked Up" ? "Picked" : "Pick Up"}
                   </button>
                 </td>
               </tr>
