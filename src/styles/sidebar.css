@@ -1,48 +1,61 @@
 .sidebar {
-    width: 15%;
-    height: 90%;
-    background-color: #ffffff;
-    color: #000000;
-    border-radius: 10px; /* Curve the bottom-right corner */
-    padding: 20px;
-    margin-left: 2%;
-    margin-top: 2%;
-  }
-  
-  .sidebar-header {
-    padding: 20px;
-  }
-  
-  .sidebar-menu {
-    padding: 10px;
-  }
-  
-  .sidebar-menu ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  .sidebar-menu ul li {
-    padding: 10px 0;
-    cursor: pointer;
-  }
-  
-  .sidebar-menu ul li:hover {
-    background-color: #555;
-  }
-  .submenu > span {
-  cursor: default;
+  width: 15%;
+  height: 90%;
+  background-color: #ffffff;
+  color: #000000;
+  border-radius: 10px;
+  padding: 20px;
+  margin-left: 2%;
+  margin-top: 2%;
+}
+
+.sidebar-header {
+  padding: 20px;
+}
+
+.sidebar-menu {
+  padding: 10px;
+}
+
+.sidebar-menu ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* ---------- MAIN MENU ITEMS ---------- */
+.sidebar-menu ul li {
+  padding: 8px 10px;
+}
+
+/* Make LINKS clickable (not li) */
+.sidebar-menu ul li a {
+  display: block;
+  text-decoration: none;
   color: #2f6f4e;
-  font-weight: 600;
+  font-weight: 500;
 }
 
-.submenu ul {
-  list-style: none;
-  padding-left: 15px;
-  margin-top: 5px;
+/* Hover only affects link */
+.sidebar-menu ul li a:hover {
+  background-color: #555;
+  color: #ffffff;
+  border-radius: 4px;
 }
 
-.submenu ul li a {
+/* ---------- SUB MENU (Help under About) ---------- */
+.submenu-item {
+  padding-left: 25px;
+}
+
+.submenu-item a {
   font-size: 14px;
+  font-weight: 400;
+  color: #2f6f4e;
+}
+
+/* Submenu hover */
+.submenu-item a:hover {
+  background-color: #e6f2ec;
   color: #2f6f4e;
 }
