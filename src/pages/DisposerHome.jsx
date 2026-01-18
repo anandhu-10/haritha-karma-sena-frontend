@@ -33,19 +33,12 @@ function DisposerHome() {
   const user = JSON.parse(localStorage.getItem("user"));
   const token = localStorage.getItem("token");
 
-  /* ---------- ROLE PROTECTION ---------- */
-  if (!user || user.role !== "disposer") {
-    return <Navigate to="/" replace />;
-  }
-
-  /* ---------- CHECK PAYMENT STATUS ---------- */
+  /* ---------- PAYMENT CHECK (ALWAYS RUNS) ---------- */
   useEffect(() => {
     const checkPayment = async () => {
       try {
         const res = await axios.get(`${API}/api/payment/status`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         });
         setPaid(res.data.paid);
       } catch (err) {
@@ -55,27 +48,8 @@ function DisposerHome() {
       }
     };
 
-    checkPayment();
-  }, []);
-
-  /* ---------- PAY ₹50 ---------- */
-  const handlePayment = async () => {
-    try {
-      await axios.post(
-        `${API}/api/payment/pay`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      alert("Payment successful ✅");
-      setPaid(true);
-    } catch (err) {
-      alert(err.response?.data?.message || "Payment failed");
-    }
-  };
+    if (token) checkPayment();
+  }, [token]);
 
   /* ---------- LOGOUT ---------- */
   const reportLogout = () => {
@@ -83,20 +57,23 @@ function DisposerHome() {
     navigate("/login", { replace: true });
   };
 
+  /* ---------- ROLE PROTECTION (AFTER HOOKS ✅) ---------- */
+  if (!user || user.role !== "disposer") {
+    return <Navigate to="/" replace />;
+  }
+
   /* ---------- LOADING ---------- */
   if (loadingPayment) {
     return <h2 style={{ textAlign: "center" }}>Checking payment...</h2>;
   }
 
-  /* ---------- BLOCK PAGE IF UNPAID ---------- */
+  /* ---------- BLOCK IF UNPAID ---------- */
   if (!paid) {
     return (
       <div style={styles.blocked}>
         <h2>Monthly Disposal Fee Required</h2>
-        <p>Pay ₹50 to continue disposal services this month.</p>
-        <button onClick={handlePayment} style={styles.payBtn}>
-          Pay ₹50
-        </button>
+        <p>Pay ₹50 to continue disposal services.</p>
+        <button style={styles.payBtn}>Pay ₹50</button>
         <button onClick={reportLogout} style={styles.logoutBtn}>
           Logout
         </button>
@@ -108,14 +85,12 @@ function DisposerHome() {
   return (
     <div className="main">
       <WasteContext.Provider value={{ wasteDetails, setWasteDetails, user }}>
-        {/* TOP BAR */}
         <Profile
           user={user}
           userType={user.role}
           reportLogout={reportLogout}
         />
 
-        {/* DASHBOARD */}
         <WasteCard />
 
         <ServiceSlider
@@ -134,7 +109,6 @@ function DisposerHome() {
   );
 }
 
-/* ---------- STYLES ---------- */
 const styles = {
   blocked: {
     height: "100vh",
@@ -149,7 +123,6 @@ const styles = {
     color: "#fff",
     border: "none",
     borderRadius: "6px",
-    cursor: "pointer",
     marginTop: "10px",
   },
   logoutBtn: {
@@ -159,7 +132,6 @@ const styles = {
     color: "#fff",
     border: "none",
     borderRadius: "6px",
-    cursor: "pointer",
   },
 };
 
