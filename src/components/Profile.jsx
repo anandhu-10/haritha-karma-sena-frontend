@@ -4,11 +4,12 @@ import { FaLocationDot, FaUser, FaBell } from "react-icons/fa6";
 import avatar from "../assets/noun-user-avatar-5787297.png";
 import ProfilePopup from "./ProfilePopup";
 
-function Profile({ user, userType, reportLogout, notifications = [] }) {
+function Profile({ user, userType, reportLogout }) {
   const [expand, setExpand] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
   const [showNotify, setShowNotify] = useState(false);
   const [locationName, setLocationName] = useState("");
+  const [notifications, setNotifications] = useState([]);
 
   const dropdownRef = useRef(null);
 
@@ -29,8 +30,31 @@ function Profile({ user, userType, reportLogout, notifications = [] }) {
             data.address?.city ||
             ""
         );
-      } catch {}
+      } catch (err) {
+        console.error("Location fetch error:", err);
+      }
     });
+  }, [user]);
+
+  /* ---------- FETCH NOTIFICATIONS ---------- */
+  useEffect(() => {
+    if (!user?._id) return;
+
+    fetch(
+      `${process.env.REACT_APP_API_URL}/api/notifications/${user._id}`
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data)) {
+          setNotifications(data);
+        } else {
+          setNotifications([]);
+        }
+      })
+      .catch((err) => {
+        console.error("Notification fetch error:", err);
+        setNotifications([]);
+      });
   }, [user]);
 
   /* ---------- CLOSE DROPDOWNS ON OUTSIDE CLICK ---------- */
@@ -43,7 +67,8 @@ function Profile({ user, userType, reportLogout, notifications = [] }) {
     };
 
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    return () =>
+      document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   if (!user) return null;
@@ -76,7 +101,7 @@ function Profile({ user, userType, reportLogout, notifications = [] }) {
               }}
             />
 
-            {/* 🔴 COUNT */}
+            {/* 🔴 NOTIFICATION COUNT */}
             {notifications.length > 0 && (
               <span
                 style={{
