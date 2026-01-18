@@ -5,7 +5,8 @@ import "../styles/NewRqFromD.css";
 function NewRqFromD({ user }) {
   const [newRqFromD, setNewRqFromD] = useState([]);
   const [showRQ, setShowRQ] = useState(null);
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage] = useState(0);
+
 
   const ROWS_PER_PAGE = 10;
 
