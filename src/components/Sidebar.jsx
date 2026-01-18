@@ -35,9 +35,14 @@ const Sidebar = ({ user }) => {
                 <Link to="/collector/areas">Collection Areas</Link>
               </li>
 
-              {/* ✅ COLLECTOR HELP */}
-              <li>
-                <Link to="/collector/help">Help</Link>
+              {/* ABOUT (COLLECTOR CONTEXT) */}
+              <li className="submenu">
+                <span>About</span>
+                <ul>
+                  <li>
+                    <Link to="/collector/help">Help</Link>
+                  </li>
+                </ul>
               </li>
             </>
           )}
@@ -48,13 +53,11 @@ const Sidebar = ({ user }) => {
               <li>
                 <Link to="/disposer">Dashboard</Link>
               </li>
+              <li>
+                <Link to="/about">About</Link>
+              </li>
             </>
           )}
-
-          {/* ---------------- COMMON (PUBLIC) ---------------- */}
-          <li>
-            <Link to="/about">About</Link>
-          </li>
         </ul>
       </div>
     </div>

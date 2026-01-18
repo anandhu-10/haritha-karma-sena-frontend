@@ -30,4 +30,19 @@
   .sidebar-menu ul li:hover {
     background-color: #555;
   }
-  
+  .submenu > span {
+  cursor: default;
+  color: #2f6f4e;
+  font-weight: 600;
+}
+
+.submenu ul {
+  list-style: none;
+  padding-left: 15px;
+  margin-top: 5px;
+}
+
+.submenu ul li a {
+  font-size: 14px;
+  color: #2f6f4e;
+}
