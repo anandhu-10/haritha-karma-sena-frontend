@@ -33,7 +33,7 @@ function DisposerHome() {
   const user = JSON.parse(localStorage.getItem("user"));
   const token = localStorage.getItem("token");
 
-  /* ---------- PAYMENT CHECK (ALWAYS RUNS) ---------- */
+  /* ---------- PAYMENT CHECK ---------- */
   useEffect(() => {
     const checkPayment = async () => {
       try {
@@ -51,13 +51,30 @@ function DisposerHome() {
     if (token) checkPayment();
   }, [token]);
 
+  /* ---------- PAY ₹50 (TEMP / RAZORPAY LATER) ---------- */
+  const handlePayment = async () => {
+    try {
+      await axios.post(
+        `${API}/api/payment/pay`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      alert("Payment successful ✅");
+      setPaid(true);
+    } catch (err) {
+      alert(err.response?.data?.message || "Payment failed");
+    }
+  };
+
   /* ---------- LOGOUT ---------- */
   const reportLogout = () => {
     localStorage.clear();
     navigate("/login", { replace: true });
   };
 
-  /* ---------- ROLE PROTECTION (AFTER HOOKS ✅) ---------- */
+  /* ---------- ROLE PROTECTION ---------- */
   if (!user || user.role !== "disposer") {
     return <Navigate to="/" replace />;
   }
@@ -67,31 +84,32 @@ function DisposerHome() {
     return <h2 style={{ textAlign: "center" }}>Checking payment...</h2>;
   }
 
-  /* ---------- BLOCK IF UNPAID ---------- */
-  if (!paid) {
-    return (
-      <div style={styles.blocked}>
-        <h2>Monthly Disposal Fee Required</h2>
-        <p>Pay ₹50 to continue disposal services.</p>
-        <button style={styles.payBtn}>Pay ₹50</button>
-        <button onClick={reportLogout} style={styles.logoutBtn}>
-          Logout
-        </button>
-      </div>
-    );
-  }
-
-  /* ---------- NORMAL DASHBOARD ---------- */
+  /* ---------- DASHBOARD (NOT BLOCKED) ---------- */
   return (
     <div className="main">
       <WasteContext.Provider value={{ wasteDetails, setWasteDetails, user }}>
+        {/* TOP BAR */}
         <Profile
           user={user}
           userType={user.role}
           reportLogout={reportLogout}
         />
 
-        <WasteCard />
+        {/* 🔔 PAYMENT BANNER */}
+        {!paid && (
+          <div style={styles.paymentBanner}>
+            <span>
+              <strong>Monthly Disposal Fee:</strong> ₹50 required to dispose
+              waste
+            </span>
+            <button onClick={handlePayment} style={styles.payBtnSmall}>
+              Pay ₹50
+            </button>
+          </div>
+        )}
+
+        {/* DASHBOARD CARD */}
+        <WasteCard paid={paid} />
 
         <ServiceSlider
           sliderData={sliderData}
@@ -100,7 +118,11 @@ function DisposerHome() {
         />
 
         {changeSlider === 0 && (
-          <ListWaste setShowItemBox={setIsOn} isOn={isOn} />
+          <ListWaste
+            setShowItemBox={setIsOn}
+            isOn={isOn}
+            paid={paid}
+          />
         )}
 
         <Outlet />
@@ -109,29 +131,25 @@ function DisposerHome() {
   );
 }
 
+/* ---------- STYLES ---------- */
 const styles = {
-  blocked: {
-    height: "100vh",
+  paymentBanner: {
+    background: "#fff3cd",
+    padding: "10px 16px",
+    margin: "10px",
+    borderRadius: "6px",
     display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
+    justifyContent: "space-between",
     alignItems: "center",
+    fontSize: "14px",
   },
-  payBtn: {
-    padding: "10px 20px",
+  payBtnSmall: {
+    padding: "6px 14px",
     backgroundColor: "green",
     color: "#fff",
     border: "none",
-    borderRadius: "6px",
-    marginTop: "10px",
-  },
-  logoutBtn: {
-    padding: "8px 16px",
-    marginTop: "15px",
-    backgroundColor: "#444",
-    color: "#fff",
-    border: "none",
-    borderRadius: "6px",
+    borderRadius: "4px",
+    cursor: "pointer",
   },
 };
 

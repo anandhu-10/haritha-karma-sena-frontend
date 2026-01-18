@@ -4,7 +4,7 @@ import { GrFormNext } from "react-icons/gr";
 import wastePreview from "../assets/noun-gallery-3783249.png";
 import { WasteContext } from "../pages/DisposerHome";
 
-function ListWaste() {
+function ListWaste({ paid }) {
   const typeWaste = [
     "Plastics",
     "Metal",
@@ -74,7 +74,13 @@ function ListWaste() {
 
   /* ---------- SUBMIT ---------- */
   const handleSubmit = async () => {
-    // ✅ SAFETY CHECK (IMPORTANT)
+    // 🔒 PAYMENT CHECK
+    if (!paid) {
+      alert("Please pay ₹50 monthly disposal fee to submit request");
+      return;
+    }
+
+    // 🔐 USER CHECK
     if (!user?._id && !user?.id) {
       alert("User not authenticated");
       return;
@@ -84,7 +90,6 @@ function ListWaste() {
       setLoading(true);
 
       const payload = {
-        disposerId: user._id || user.id, // ✅ FIXED
         disposerName: user.name || user.username,
         wasteTypes: selectedTypes,
         image: selectedImage,
@@ -98,6 +103,7 @@ function ListWaste() {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
           body: JSON.stringify(payload),
         }
@@ -153,7 +159,10 @@ function ListWaste() {
             ))}
           </div>
 
-          <GrFormNext className="nextIcon" onClick={verifySelectedTypes} />
+          <GrFormNext
+            className="nextIcon"
+            onClick={verifySelectedTypes}
+          />
         </div>
 
         {/* STEP 2 */}
@@ -196,10 +205,22 @@ function ListWaste() {
           <h3>Confirm Request</h3>
           <p>Waste Types: {selectedTypes.join(", ")}</p>
 
+          {/* 🔔 PAYMENT WARNING */}
+          {!paid && (
+            <p style={{ color: "red", fontSize: "13px" }}>
+              ₹50 monthly disposal fee required to submit request
+            </p>
+          )}
+
           <button
             className="submitC"
             onClick={handleSubmit}
-            disabled={loading}
+            disabled={loading || !paid}
+            title={!paid ? "Pay ₹50 to enable submission" : ""}
+            style={{
+              opacity: !paid ? 0.6 : 1,
+              cursor: !paid ? "not-allowed" : "pointer",
+            }}
           >
             {loading ? "Submitting..." : "Submit"}
           </button>
