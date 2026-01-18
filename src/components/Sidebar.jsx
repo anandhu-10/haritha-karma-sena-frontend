@@ -35,14 +35,14 @@ const Sidebar = ({ user }) => {
                 <Link to="/collector/areas">Collection Areas</Link>
               </li>
 
-              {/* ABOUT (COLLECTOR CONTEXT) */}
-              <li className="submenu">
-                <span>About</span>
-                <ul>
-                  <li>
-                    <Link to="/collector/help">Help</Link>
-                  </li>
-                </ul>
+              {/* ABOUT (collector context) */}
+              <li>
+                <Link to="/collector/help">About</Link>
+              </li>
+
+              {/* HELP (visually inside About) */}
+              <li className="submenu-item">
+                <Link to="/collector/help">Help</Link>
               </li>
             </>
           )}
