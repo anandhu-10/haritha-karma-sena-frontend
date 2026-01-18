@@ -36,20 +36,24 @@ function Profile({ user, userType, reportLogout }) {
     });
   }, [user]);
 
-  /* ---------- FETCH NOTIFICATIONS ---------- */
+  /* ---------- FETCH NOTIFICATIONS (FIXED) ---------- */
   useEffect(() => {
-    if (!user?._id) return;
+    if (!user) return;
+
+    const disposerId = user._id || user.id; // ✅ IMPORTANT FIX
+
+    if (!disposerId) {
+      console.error("No disposerId found in user object", user);
+      return;
+    }
 
     fetch(
-      `${process.env.REACT_APP_API_URL}/api/notifications/${user._id}`
+      `${process.env.REACT_APP_API_URL}/api/notifications/${disposerId}`
     )
       .then((res) => res.json())
       .then((data) => {
-        if (Array.isArray(data)) {
-          setNotifications(data);
-        } else {
-          setNotifications([]);
-        }
+        console.log("Fetched notifications:", data); // 🔍 debug
+        setNotifications(Array.isArray(data) ? data : []);
       })
       .catch((err) => {
         console.error("Notification fetch error:", err);
