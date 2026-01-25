@@ -129,11 +129,12 @@ function DisposerHome() {
         <Outlet />
 
         {/* 💬 CHAT BOX (FLOATING) */}
-        <ChatBox
-          disposerId={user._id}
-          collectorId={user.assignedCollectorId || "default-collector"}
-          userRole="disposer"
-        />
+       <ChatBox
+  disposerId={user._id}
+  collectorId="TEST_COLLECTOR_ID"
+  userRole="disposer"
+/>
+
       </WasteContext.Provider>
     </div>
   );
