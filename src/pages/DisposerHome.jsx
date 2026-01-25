@@ -6,7 +6,7 @@ import Profile from "../components/Profile";
 import WasteCard from "../components/WasteCard";
 import ServiceSlider from "../components/ServiceSlider";
 import ListWaste from "../components/ListWaste";
-import ChatBox from "../components/ChatBox"; // ✅ ADD THIS
+import ChatBox from "../components/ChatBox";
 
 import { FaTrashCanArrowUp } from "react-icons/fa6";
 
@@ -21,14 +21,17 @@ const API = process.env.REACT_APP_API_URL;
 function DisposerHome() {
   const navigate = useNavigate();
 
-  /* ---------- STATE HOOKS ---------- */
+  /* ---------- STATE ---------- */
   const [wasteDetails, setWasteDetails] = useState([]);
   const [isOn, setIsOn] = useState(false);
   const [changeSlider, setChangeSlider] = useState(0);
 
-  /* ---------- PAYMENT STATES ---------- */
+  /* ---------- PAYMENT ---------- */
   const [paid, setPaid] = useState(false);
   const [loadingPayment, setLoadingPayment] = useState(true);
+
+  /* ---------- REQUESTS ---------- */
+  const [myRequests, setMyRequests] = useState([]);
 
   /* ---------- USER ---------- */
   const user = JSON.parse(localStorage.getItem("user"));
@@ -50,6 +53,27 @@ function DisposerHome() {
     };
 
     if (token) checkPayment();
+  }, [token]);
+
+  /* ---------- FETCH MY REQUESTS (🔥 IMPORTANT) ---------- */
+  useEffect(() => {
+    const fetchMyRequests = async () => {
+      try {
+        const res = await axios.get(
+          `${API}/api/disposer-requests/my`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setMyRequests(res.data || []);
+      } catch (err) {
+        console.error("Failed to fetch my requests", err);
+      }
+    };
+
+    if (token) fetchMyRequests();
   }, [token]);
 
   /* ---------- PAY ₹50 ---------- */
@@ -75,17 +99,20 @@ function DisposerHome() {
     navigate("/login", { replace: true });
   };
 
-  /* ---------- ROLE PROTECTION ---------- */
+  /* ---------- ROLE CHECK ---------- */
   if (!user || user.role !== "disposer") {
     return <Navigate to="/" replace />;
   }
 
-  /* ---------- LOADING ---------- */
   if (loadingPayment) {
     return <h2 style={{ textAlign: "center" }}>Checking payment...</h2>;
   }
 
-  /* ---------- DASHBOARD ---------- */
+  /* ---------- GET ASSIGNED COLLECTOR ---------- */
+  const assignedCollector =
+    myRequests.find((r) => r.assignedCollector)?.assignedCollector || null;
+
+  /* ---------- UI ---------- */
   return (
     <div className="main">
       <WasteContext.Provider value={{ wasteDetails, setWasteDetails, user }}>
@@ -96,12 +123,11 @@ function DisposerHome() {
           reportLogout={reportLogout}
         />
 
-        {/* 🔔 PAYMENT BANNER */}
+        {/* PAYMENT BANNER */}
         {!paid && (
           <div style={styles.paymentBanner}>
             <span>
-              <strong>Monthly Disposal Fee:</strong> ₹50 required to dispose
-              waste
+              <strong>Monthly Disposal Fee:</strong> ₹50 required
             </span>
             <button onClick={handlePayment} style={styles.payBtnSmall}>
               Pay ₹50
@@ -109,7 +135,6 @@ function DisposerHome() {
           </div>
         )}
 
-        {/* DASHBOARD CARD */}
         <WasteCard paid={paid} />
 
         <ServiceSlider
@@ -128,13 +153,12 @@ function DisposerHome() {
 
         <Outlet />
 
-        {/* 💬 CHAT BOX (FLOATING) */}
-       <ChatBox
-  disposerId={user._id}
-  collectorId="TEST_COLLECTOR_ID"
-  userRole="disposer"
-/>
-
+        {/* 💬 CHAT (REAL LOGIC) */}
+        <ChatBox
+          disposerId={user._id}
+          collectorId={assignedCollector}
+          userRole="disposer"
+        />
       </WasteContext.Provider>
     </div>
   );
