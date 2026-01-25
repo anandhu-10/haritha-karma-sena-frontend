@@ -5,6 +5,7 @@ const SOCKET_URL = "https://haritha-karma-sena-backend.onrender.com";
 
 function ChatBox({ disposerId, collectorId, userRole }) {
   const socketRef = useRef(null);
+  const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
 
@@ -12,26 +13,22 @@ function ChatBox({ disposerId, collectorId, userRole }) {
     disposerId && collectorId ? `${disposerId}_${collectorId}` : null;
 
   useEffect(() => {
-    if (!roomId) return;
+    if (!open || !roomId) return;
 
-    // 🔌 Create socket connection
     socketRef.current = io(SOCKET_URL, {
       transports: ["websocket"],
     });
 
-    // 🟢 Join room
     socketRef.current.emit("join_room", roomId);
 
-    // 📩 Receive message
     socketRef.current.on("receive_message", (data) => {
       setMessages((prev) => [...prev, data]);
     });
 
-    // 🔴 Cleanup on unmount
     return () => {
       socketRef.current.disconnect();
     };
-  }, [roomId]);
+  }, [open, roomId]);
 
   const sendMessage = () => {
     if (!message.trim() || !roomId) return;
@@ -48,50 +45,59 @@ function ChatBox({ disposerId, collectorId, userRole }) {
     setMessage("");
   };
 
-  // 🚫 Hide chat if no collector assigned
-  if (!roomId) return null;
-
   return (
     <div style={styles.wrapper}>
-      <div style={styles.chatBox}>
-        <div style={styles.header}>Chat</div>
+      {/* 💬 CHAT BUTTON (ALWAYS VISIBLE) */}
+      <button style={styles.chatButton} onClick={() => setOpen(!open)}>
+        💬
+      </button>
 
-        <div style={styles.messages}>
-          {messages.map((msg, index) => (
-            <div
-              key={index}
-              style={{
-                ...styles.message,
-                alignSelf:
-                  msg.sender === userRole ? "flex-end" : "flex-start",
-                background:
-                  msg.sender === userRole ? "#d1f7c4" : "#eee",
-              }}
-            >
-              <b>{msg.sender}</b>
-              <div>{msg.message}</div>
-              <small>{msg.time}</small>
-            </div>
-          ))}
+      {/* ❌ No collector assigned */}
+      {open && !roomId && (
+        <div style={styles.disabledBox}>
+          Collector not assigned yet
         </div>
+      )}
 
-        <div style={styles.inputArea}>
-          <input
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            placeholder="Type a message..."
-            style={styles.input}
-          />
-          <button onClick={sendMessage} style={styles.button}>
-            Send
-          </button>
+      {/* ✅ CHAT BOX */}
+      {open && roomId && (
+        <div style={styles.chatBox}>
+          <div style={styles.header}>Chat</div>
+
+          <div style={styles.messages}>
+            {messages.map((msg, index) => (
+              <div
+                key={index}
+                style={{
+                  ...styles.message,
+                  alignSelf:
+                    msg.sender === userRole ? "flex-end" : "flex-start",
+                }}
+              >
+                <b>{msg.sender}</b>
+                <div>{msg.message}</div>
+                <small>{msg.time}</small>
+              </div>
+            ))}
+          </div>
+
+          <div style={styles.inputArea}>
+            <input
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              placeholder="Type a message..."
+              style={styles.input}
+            />
+            <button onClick={sendMessage} style={styles.sendBtn}>
+              Send
+            </button>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
 
-/* ---------- STYLES ---------- */
 const styles = {
   wrapper: {
     position: "fixed",
@@ -99,55 +105,69 @@ const styles = {
     right: "20px",
     zIndex: 9999,
   },
+  chatButton: {
+    width: "52px",
+    height: "52px",
+    borderRadius: "50%",
+    fontSize: "22px",
+    border: "none",
+    background: "#2e7d32",
+    color: "#fff",
+    cursor: "pointer",
+  },
+  disabledBox: {
+    marginTop: "10px",
+    padding: "10px",
+    background: "#fff3cd",
+    borderRadius: "6px",
+    fontSize: "14px",
+  },
   chatBox: {
     width: "300px",
-    height: "400px",
-    border: "1px solid #ccc",
+    height: "380px",
+    background: "#fff",
+    borderRadius: "10px",
+    marginTop: "10px",
     display: "flex",
     flexDirection: "column",
-    borderRadius: "10px",
-    background: "#fff",
+    border: "1px solid #ccc",
   },
   header: {
     padding: "10px",
     background: "#2e7d32",
     color: "#fff",
     textAlign: "center",
-    borderTopLeftRadius: "10px",
-    borderTopRightRadius: "10px",
   },
   messages: {
     flex: 1,
     padding: "10px",
     display: "flex",
     flexDirection: "column",
-    gap: "8px",
+    gap: "6px",
     overflowY: "auto",
   },
   message: {
-    padding: "8px",
-    borderRadius: "8px",
+    padding: "6px",
+    background: "#eee",
+    borderRadius: "6px",
     maxWidth: "75%",
-    fontSize: "14px",
+    fontSize: "13px",
   },
   inputArea: {
     display: "flex",
     padding: "6px",
-    borderTop: "1px solid #ddd",
   },
   input: {
     flex: 1,
     padding: "6px",
-    fontSize: "14px",
   },
-  button: {
+  sendBtn: {
     marginLeft: "5px",
-    padding: "6px 12px",
+    padding: "6px 10px",
     background: "#2e7d32",
     color: "#fff",
     border: "none",
     borderRadius: "4px",
-    cursor: "pointer",
   },
 };
 
