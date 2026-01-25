@@ -6,6 +6,7 @@ import Profile from "../components/Profile";
 import WasteCard from "../components/WasteCard";
 import ServiceSlider from "../components/ServiceSlider";
 import ListWaste from "../components/ListWaste";
+import ChatBox from "../components/ChatBox"; // ✅ ADD THIS
 
 import { FaTrashCanArrowUp } from "react-icons/fa6";
 
@@ -51,7 +52,7 @@ function DisposerHome() {
     if (token) checkPayment();
   }, [token]);
 
-  /* ---------- PAY ₹50 (TEMP / RAZORPAY LATER) ---------- */
+  /* ---------- PAY ₹50 ---------- */
   const handlePayment = async () => {
     try {
       await axios.post(
@@ -84,7 +85,7 @@ function DisposerHome() {
     return <h2 style={{ textAlign: "center" }}>Checking payment...</h2>;
   }
 
-  /* ---------- DASHBOARD (NOT BLOCKED) ---------- */
+  /* ---------- DASHBOARD ---------- */
   return (
     <div className="main">
       <WasteContext.Provider value={{ wasteDetails, setWasteDetails, user }}>
@@ -126,6 +127,13 @@ function DisposerHome() {
         )}
 
         <Outlet />
+
+        {/* 💬 CHAT BOX (FLOATING) */}
+        <ChatBox
+          disposerId={user._id}
+          collectorId={user.assignedCollectorId || "default-collector"}
+          userRole="disposer"
+        />
       </WasteContext.Provider>
     </div>
   );
