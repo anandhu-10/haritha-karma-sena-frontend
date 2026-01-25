@@ -7,7 +7,6 @@ function NewRqFromD({ user }) {
   const [showRQ, setShowRQ] = useState(null);
   const [currentPage] = useState(0);
 
-
   const ROWS_PER_PAGE = 10;
 
   /* ---------- FETCH DISPOSER REQUESTS ---------- */
@@ -38,29 +37,34 @@ function NewRqFromD({ user }) {
     fetchNewRqFromD();
   }, []);
 
-  /* ---------- PICK UP HANDLER ---------- */
+  /* ---------- PICK UP HANDLER (FIXED) ---------- */
   const handlePickUp = async (requestId) => {
     try {
       const res = await fetch(
-        `${process.env.REACT_APP_API_URL}/api/disposer-requests/${requestId}/status`,
+        `${process.env.REACT_APP_API_URL}/api/collector/pickup/${requestId}`,
         {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ status: "Picked Up" }), // ✅ FIXED
+          body: JSON.stringify({
+            collectorId: user._id, // 🔥 ASSIGN COLLECTOR
+          }),
         }
       );
 
-      if (!res.ok) throw new Error("Pickup failed");
+      if (!res.ok) {
+        const errData = await res.json();
+        throw new Error(errData.message || "Pickup failed");
+      }
 
-      alert("Pickup confirmed. Disposer notified.");
+      alert("Pickup confirmed. Chat enabled.");
 
       fetchNewRqFromD();
       setShowRQ(null);
     } catch (err) {
       console.error(err);
-      alert("Failed to pick up request");
+      alert(err.message || "Failed to pick up request");
     }
   };
 
@@ -107,7 +111,7 @@ function NewRqFromD({ user }) {
           user={user}
           data={showRQ}
           sendDataToParent={fetchNewRqFromD}
-          onPickUp={handlePickUp}
+          onPickUp={handlePickUp} // ✅ FIXED
         />
       )}
     </>
