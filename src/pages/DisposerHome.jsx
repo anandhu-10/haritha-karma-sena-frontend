@@ -110,7 +110,7 @@ function DisposerHome() {
 
   /* ---------- GET ASSIGNED COLLECTOR ---------- */
   const assignedCollector =
-    myRequests.find((r) => r.assignedCollector)?.assignedCollector || null;
+  myRequests.find((r) => r.collectorId)?.collectorId || null;
 
   /* ---------- UI ---------- */
   return (
