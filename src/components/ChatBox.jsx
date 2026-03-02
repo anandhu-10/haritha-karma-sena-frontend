@@ -9,8 +9,21 @@ function ChatBox({ disposerId, collectorId, userRole }) {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
 
+  // 🔥 Ensure IDs are always strings
+  const safeDisposerId =
+    typeof disposerId === "object"
+      ? disposerId?._id || disposerId?.$oid
+      : disposerId;
+
+  const safeCollectorId =
+    typeof collectorId === "object"
+      ? collectorId?._id || collectorId?.$oid
+      : collectorId;
+
   const roomId =
-    disposerId && collectorId ? `${disposerId}_${collectorId}` : null;
+    safeDisposerId && safeCollectorId
+      ? `${safeDisposerId}_${safeCollectorId}`
+      : null;
 
   useEffect(() => {
     if (!open || !roomId) return;
