@@ -109,10 +109,16 @@ function DisposerHome() {
     return <h2 style={{ textAlign: "center" }}>Checking payment...</h2>;
   }
 
-  /* ---------- GET ASSIGNED COLLECTOR ---------- */
-  const assignedCollector =
-  myRequests.find((r) => r.collectorId)?.collectorId || null;
+/* ---------- GET ASSIGNED COLLECTOR ---------- */
+const assignedRequest = myRequests
+  .filter((r) => r.collectorId) // must have collector
+  .sort((a, b) => {
+    const dateA = a.createdAt ? new Date(a.createdAt) : 0;
+    const dateB = b.createdAt ? new Date(b.createdAt) : 0;
+    return dateB - dateA;
+  })[0];
 
+const assignedCollector = assignedRequest?.collectorId || null;
   /* ---------- UI ---------- */
   return (
     <div className="main">
