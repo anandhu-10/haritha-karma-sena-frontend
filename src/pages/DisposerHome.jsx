@@ -67,6 +67,7 @@ function DisposerHome() {
             },
           }
         );
+        console.log("API RESPONSE:", res.data); 
         setMyRequests(res.data || []);
       } catch (err) {
         console.error("Failed to fetch my requests", err);
