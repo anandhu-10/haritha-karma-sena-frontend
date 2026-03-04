@@ -141,7 +141,4 @@ function ChatBox({ disposerId, collectorId, userRole }) {
   );
 }
 
-// Clean up old styles object
-const styles = {};
-
 export default ChatBox;
