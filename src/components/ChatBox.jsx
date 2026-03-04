@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import io from "socket.io-client";
+import { FaMessage, FaPaperPlane, FaXmark, FaUser } from "react-icons/fa6";
+import "../styles/ChatBox.css";
 
 const SOCKET_URL = "https://haritha-karma-sena-backend.onrender.com";
 
@@ -8,6 +10,15 @@ function ChatBox({ disposerId, collectorId, userRole }) {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
+  const messagesEndRef = useRef(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
   // 🔥 Ensure IDs are always strings
   const safeDisposerId =
@@ -59,52 +70,69 @@ function ChatBox({ disposerId, collectorId, userRole }) {
   };
 
   return (
-    <div style={styles.wrapper}>
-      {/* 💬 CHAT BUTTON (ALWAYS VISIBLE) */}
-      <button style={styles.chatButton} onClick={() => setOpen(!open)}>
-        💬
+    <div className="chat-wrapper">
+      {/* 💬 CHAT TOGGLE BUTTON */}
+      <button className="chat-toggle-btn" onClick={() => setOpen(!open)}>
+        {open ? <FaXmark size={22} /> : <FaMessage size={22} />}
       </button>
 
       {/* ❌ No collector assigned or no disposer active */}
       {open && !roomId && (
-        <div style={styles.disabledBox}>
+        <div className="chat-disabled-notice">
           {userRole === "collector"
-            ? "No active chat with disposer"
-            : "Collector not assigned yet"}
+            ? "No active chat instance. Once a request is accepted, chat will move here."
+            : "Collector not assigned. You'll be able to chat once a collector accepts your request."}
         </div>
       )}
 
-      {/* ✅ CHAT BOX */}
+      {/* ✅ CHAT WINDOW */}
       {open && roomId && (
-        <div style={styles.chatBox}>
-          <div style={styles.header}>Chat</div>
-
-          <div style={styles.messages}>
-            {messages.map((msg, index) => (
-              <div
-                key={index}
-                style={{
-                  ...styles.message,
-                  alignSelf:
-                    msg.sender === userRole ? "flex-end" : "flex-start",
-                }}
-              >
-                <b>{msg.sender}</b>
-                <div>{msg.message}</div>
-                <small>{msg.time}</small>
+        <div className="chat-window">
+          <div className="chat-header">
+            <div className="chat-header-info">
+              <div className="header-avatar">
+                <FaUser size={14} />
               </div>
-            ))}
+              <div className="header-text">
+                <h3>{userRole === "collector" ? "Disposer Connection" : "Collector Support"}</h3>
+                <small style={{ color: "rgba(255,255,255,0.7)" }}>Online</small>
+              </div>
+            </div>
+            <button className="close-chat" onClick={() => setOpen(false)}>
+              <FaXmark size={20} />
+            </button>
           </div>
 
-          <div style={styles.inputArea}>
+          <div className="chat-messages">
+            {messages.length === 0 ? (
+              <div style={{ textAlign: "center", marginTop: "40%", color: "#94a3b8" }}>
+                <FaMessage size={40} style={{ opacity: 0.1, marginBottom: "10px" }} />
+                <p style={{ fontSize: "14px" }}>Start the conversation!</p>
+              </div>
+            ) : (
+              messages.map((msg, index) => (
+                <div
+                  key={index}
+                  className={`message-bubble ${msg.sender === userRole ? "mine" : "other"}`}
+                >
+                  <div className="msg-text">{msg.message}</div>
+                  <span className="message-time">{msg.time}</span>
+                </div>
+              ))
+            )}
+            <div ref={messagesEndRef} />
+          </div>
+
+          <div className="chat-input-area">
             <input
+              className="chat-input"
               value={message}
               onChange={(e) => setMessage(e.target.value)}
-              placeholder="Type a message..."
-              style={styles.input}
+              onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+              placeholder="Type your message..."
             />
-            <button onClick={sendMessage} style={styles.sendBtn}>
-              Send
+            <button className="send-message-btn" onClick={sendMessage}>
+              <FaPaperPlane size={16} />
             </button>
           </div>
         </div>
@@ -113,77 +141,7 @@ function ChatBox({ disposerId, collectorId, userRole }) {
   );
 }
 
-const styles = {
-  wrapper: {
-    position: "fixed",
-    bottom: "20px",
-    right: "20px",
-    zIndex: 9999,
-  },
-  chatButton: {
-    width: "52px",
-    height: "52px",
-    borderRadius: "50%",
-    fontSize: "22px",
-    border: "none",
-    background: "#2e7d32",
-    color: "#fff",
-    cursor: "pointer",
-  },
-  disabledBox: {
-    marginTop: "10px",
-    padding: "10px",
-    background: "#fff3cd",
-    borderRadius: "6px",
-    fontSize: "14px",
-  },
-  chatBox: {
-    width: "300px",
-    height: "380px",
-    background: "#fff",
-    borderRadius: "10px",
-    marginTop: "10px",
-    display: "flex",
-    flexDirection: "column",
-    border: "1px solid #ccc",
-  },
-  header: {
-    padding: "10px",
-    background: "#2e7d32",
-    color: "#fff",
-    textAlign: "center",
-  },
-  messages: {
-    flex: 1,
-    padding: "10px",
-    display: "flex",
-    flexDirection: "column",
-    gap: "6px",
-    overflowY: "auto",
-  },
-  message: {
-    padding: "6px",
-    background: "#eee",
-    borderRadius: "6px",
-    maxWidth: "75%",
-    fontSize: "13px",
-  },
-  inputArea: {
-    display: "flex",
-    padding: "6px",
-  },
-  input: {
-    flex: 1,
-    padding: "6px",
-  },
-  sendBtn: {
-    marginLeft: "5px",
-    padding: "6px 10px",
-    background: "#2e7d32",
-    color: "#fff",
-    border: "none",
-    borderRadius: "4px",
-  },
-};
+// Clean up old styles object
+const styles = {};
 
 export default ChatBox;
