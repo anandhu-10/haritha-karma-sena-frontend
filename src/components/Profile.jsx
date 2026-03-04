@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { MdLogout } from "react-icons/md";
-import { FaLocationDot, FaUser, FaBell } from "react-icons/fa6";
+import { FaLocationDot, FaUser, FaBell, FaTrash } from "react-icons/fa6";
 import avatar from "../assets/noun-user-avatar-5787297.png";
 import ProfilePopup from "./ProfilePopup";
 
@@ -26,9 +26,9 @@ function Profile({ user, userType, reportLogout }) {
 
         setLocationName(
           data.address?.village ||
-            data.address?.town ||
-            data.address?.city ||
-            ""
+          data.address?.town ||
+          data.address?.city ||
+          ""
         );
       } catch (err) {
         console.error("Location fetch error:", err);
@@ -37,29 +37,73 @@ function Profile({ user, userType, reportLogout }) {
   }, [user]);
 
   /* ---------- FETCH NOTIFICATIONS (FIXED) ---------- */
-  useEffect(() => {
+  const fetchNotifications = useCallback(async () => {
     if (!user) return;
+    const disposerId = user._id || user.id;
+    if (!disposerId) return;
 
-    const disposerId = user._id || user.id; // ✅ IMPORTANT FIX
-
-    if (!disposerId) {
-      console.error("No disposerId found in user object", user);
-      return;
+    try {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/notifications/${disposerId}`);
+      const data = await res.json();
+      setNotifications(Array.isArray(data) ? data : []);
+    } catch (err) {
+      console.error("Notification fetch error:", err);
+      setNotifications([]);
     }
-
-    fetch(
-      `${process.env.REACT_APP_API_URL}/api/notifications/${disposerId}`
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("Fetched notifications:", data); // 🔍 debug
-        setNotifications(Array.isArray(data) ? data : []);
-      })
-      .catch((err) => {
-        console.error("Notification fetch error:", err);
-        setNotifications([]);
-      });
   }, [user]);
+
+  useEffect(() => {
+    fetchNotifications();
+    const intervalId = setInterval(fetchNotifications, 30000); // 🔃 poll every 30s
+    return () => clearInterval(intervalId);
+  }, [fetchNotifications]);
+
+  const unreadCount = notifications.filter((n) => !n.read).length;
+
+  /* ---------- NOTIFICATION ACTIONS ---------- */
+  const handleToggleNotify = async () => {
+    const nextState = !showNotify;
+    setShowNotify(nextState);
+    if (nextState) setExpand(false);
+
+    // ✅ MARK AS READ WHEN OPENED
+    if (nextState && unreadCount > 0 && user) {
+      try {
+        const disposerId = user._id || user.id;
+        await fetch(`${process.env.REACT_APP_API_URL}/api/notifications/mark-read/${disposerId}`, {
+          method: "PATCH",
+        });
+        // local update to clear badge immediately
+        setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
+      } catch (err) {
+        console.error("Mark read error:", err);
+      }
+    }
+  };
+
+  const handleDeleteAll = async () => {
+    if (!user || !window.confirm("Clear all notifications?")) return;
+    try {
+      const disposerId = user._id || user.id;
+      await fetch(`${process.env.REACT_APP_API_URL}/api/notifications/${disposerId}`, {
+        method: "DELETE",
+      });
+      setNotifications([]);
+    } catch (err) {
+      console.error("Delete all error:", err);
+    }
+  };
+
+  const handleDeleteOne = async (id) => {
+    try {
+      await fetch(`${process.env.REACT_APP_API_URL}/api/notifications/single/${id}`, {
+        method: "DELETE",
+      });
+      setNotifications((prev) => prev.filter((n) => n._id !== id));
+    } catch (err) {
+      console.error("Delete one error:", err);
+    }
+  };
 
   /* ---------- CLOSE DROPDOWNS ON OUTSIDE CLICK ---------- */
   useEffect(() => {
@@ -99,14 +143,11 @@ function Profile({ user, userType, reportLogout }) {
             <FaBell
               size={18}
               style={{ cursor: "pointer" }}
-              onClick={() => {
-                setShowNotify(!showNotify);
-                setExpand(false);
-              }}
+              onClick={handleToggleNotify}
             />
 
             {/* 🔴 NOTIFICATION COUNT */}
-            {notifications.length > 0 && (
+            {unreadCount > 0 && (
               <span
                 style={{
                   position: "absolute",
@@ -119,7 +160,7 @@ function Profile({ user, userType, reportLogout }) {
                   padding: "2px 6px",
                 }}
               >
-                {notifications.length}
+                {unreadCount}
               </span>
             )}
           </div>
@@ -157,22 +198,42 @@ function Profile({ user, userType, reportLogout }) {
 
           {/* 🔔 NOTIFICATION DROPDOWN */}
           {showNotify && (
-            <div className="profileContainerMenu" ref={dropdownRef}>
-              <h4 style={{ marginBottom: "8px" }}>Notifications</h4>
+            <div className="profileContainerMenu" ref={dropdownRef} style={{ width: "250px", maxHeight: "300px", overflowY: "auto" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" }}>
+                <h4 style={{ margin: 0 }}>Notifications</h4>
+                {notifications.length > 0 && (
+                  <button
+                    onClick={handleDeleteAll}
+                    style={{ fontSize: "10px", padding: "2px 6px", color: "red", border: "1px solid red", background: "none", cursor: "pointer", borderRadius: "4px" }}
+                  >
+                    Clear All
+                  </button>
+                )}
+              </div>
 
               {notifications.length === 0 ? (
-                <p>No notifications</p>
+                <p style={{ fontSize: "12px", color: "#666" }}>No notifications</p>
               ) : (
                 notifications.map((n) => (
                   <div
                     key={n._id}
                     style={{
-                      padding: "6px 0",
-                      borderBottom: "1px solid #ddd",
-                      fontSize: "14px",
+                      padding: "10px 0",
+                      borderBottom: "1px solid #eee",
+                      fontSize: "13px",
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "flex-start",
+                      gap: "10px"
                     }}
                   >
-                    {n.message}
+                    <span>{n.message}</span>
+                    <FaTrash
+                      size={12}
+                      color="#999"
+                      style={{ cursor: "pointer", flexShrink: 0, marginTop: "4px" }}
+                      onClick={() => handleDeleteOne(n._id)}
+                    />
                   </div>
                 ))
               )}
