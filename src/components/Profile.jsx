@@ -183,20 +183,23 @@ function Profile({ user, userType, reportLogout }) {
 
           {/* PROFILE DROPDOWN */}
           {expand && (
-            <div className="profileContainerMenu" ref={dropdownRef}>
-              <p>{user.email}</p>
+            <div className="profile-menu-dropdown" ref={dropdownRef}>
+              <div className="user-email-header">
+                {user.email}
+              </div>
 
               <button
+                className="profile-menu-item"
                 onClick={() => {
                   setExpand(false);
                   setShowProfile(true);
                 }}
               >
-                <FaUser /> View Profile
+                <span><FaUser size={14} /></span> View Profile
               </button>
 
-              <button onClick={reportLogout}>
-                <MdLogout /> Logout
+              <button className="profile-menu-item logout" onClick={reportLogout}>
+                <span><MdLogout size={16} /></span> Logout
               </button>
             </div>
           )}

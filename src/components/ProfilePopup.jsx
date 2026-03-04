@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { FaPhone, FaMapPin, FaLocationDot, FaBuilding, FaLayerGroup, FaUser, FaEnvelope, FaIdCard, FaPen, FaCheck, FaXmark } from "react-icons/fa6";
 import "./../styles/profilePopup.css";
 
 function ProfilePopup({ onClose }) {
@@ -32,73 +33,93 @@ function ProfilePopup({ onClose }) {
   return (
     <div className="popupOverlay">
       <div className="popupCard">
-        <h2>My Profile</h2>
-
-        {/* USER INFO */}
-        <div className="section">
-          <h4>User Info</h4>
-          <p><b>Name:</b> {user.name || "Disposer"}</p>
-          <p><b>Email:</b> {user.email}</p>
-          <p><b>Role:</b> {user.role}</p>
+        <div className="popupHeader">
+          <h2>My Profile</h2>
+          <button className="closeX" onClick={onClose}><FaXmark size={18} /></button>
         </div>
 
-        {/* CONTACT & LOCATION */}
-        <div className="section">
-          <h4>Contact & Location</h4>
+        <div className="popupScroll">
+          {/* USER INFO */}
+          <div className="profile-section">
+            <h4 className="section-title"><FaUser /> User Information</h4>
+            <div className="info-grid">
+              <div className="info-item">
+                <label><FaIdCard /> Name</label>
+                <p>{user.name || "Disposer"}</p>
+              </div>
+              <div className="info-item">
+                <label><FaEnvelope /> Email</label>
+                <p>{user.email}</p>
+              </div>
+              <div className="info-item">
+                <label><FaLayerGroup /> Role</label>
+                <p>{user.role}</p>
+              </div>
+            </div>
+          </div>
 
-          {editMode ? (
-            <>
-              <input
-                name="phone"
-                placeholder="Phone"
-                value={formData.phone}
-                onChange={handleChange}
-              />
-              <input
-                name="pincode"
-                placeholder="Pin Code"
-                value={formData.pincode}
-                onChange={handleChange}
-              />
-              <input
-                name="location"
-                placeholder="Location"
-                value={formData.location}
-                onChange={handleChange}
-              />
-              <input
-                name="panchayath"
-                placeholder="Panchayath"
-                value={formData.panchayath}
-                onChange={handleChange}
-              />
-              <input
-                name="ward"
-                placeholder="Ward"
-                value={formData.ward}
-                onChange={handleChange}
-              />
-            </>
-          ) : (
-            <>
-              <p><b>Phone:</b> {formData.phone || "-"}</p>
-              <p><b>Pin Code:</b> {formData.pincode || "-"}</p>
-              <p><b>Location:</b> {formData.location || "-"}</p>
-              <p><b>Panchayath:</b> {formData.panchayath || "-"}</p>
-              <p><b>Ward:</b> {formData.ward || "-"}</p>
-            </>
-          )}
+          {/* CONTACT & LOCATION */}
+          <div className="profile-section">
+            <h4 className="section-title"><FaLocationDot /> Contact & Location Details</h4>
+
+            <div className="info-grid">
+              <div className="info-item">
+                <label><FaPhone /> Phone Number</label>
+                {editMode ? (
+                  <input name="phone" placeholder="Enter phone" value={formData.phone} onChange={handleChange} />
+                ) : (
+                  <p>{formData.phone || "Not set"}</p>
+                )}
+              </div>
+
+              <div className="info-item">
+                <label><FaMapPin /> Pin Code</label>
+                {editMode ? (
+                  <input name="pincode" placeholder="Enter pincode" value={formData.pincode} onChange={handleChange} />
+                ) : (
+                  <p>{formData.pincode || "Not set"}</p>
+                )}
+              </div>
+
+              <div className="info-item">
+                <label><FaLocationDot /> Detailed Location</label>
+                {editMode ? (
+                  <input name="location" placeholder="Enter location" value={formData.location} onChange={handleChange} />
+                ) : (
+                  <p>{formData.location || "Not set"}</p>
+                )}
+              </div>
+
+              <div className="info-item">
+                <label><FaBuilding /> Panchayath / Municipality</label>
+                {editMode ? (
+                  <input name="panchayath" placeholder="Enter panchayath" value={formData.panchayath} onChange={handleChange} />
+                ) : (
+                  <p>{formData.panchayath || "Not set"}</p>
+                )}
+              </div>
+
+              <div className="info-item">
+                <label><FaLayerGroup /> Ward Number / Name</label>
+                {editMode ? (
+                  <input name="ward" placeholder="Enter ward" value={formData.ward} onChange={handleChange} />
+                ) : (
+                  <p>{formData.ward || "Not set"}</p>
+                )}
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* ACTIONS */}
         <div className="popupActions">
           {editMode ? (
-            <button onClick={handleSave}>Save</button>
+            <button className="save-btn" onClick={handleSave}><FaCheck /> Save Changes</button>
           ) : (
-            <button onClick={() => setEditMode(true)}>Edit</button>
+            <button className="edit-btn" onClick={() => setEditMode(true)}><FaPen /> Edit Profile</button>
           )}
 
-          <button className="secondary" onClick={onClose}>
+          <button className="close-btn" onClick={onClose}>
             Close
           </button>
         </div>
