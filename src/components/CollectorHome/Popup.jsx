@@ -11,32 +11,7 @@ const Popup = ({ num, isOpen, sendDataToParent, wrqid }) => {
   };
 
   const updateStatus = async () => {
-    try {
-      if (!wrqid) {
-        throw new Error("Invalid request ID");
-      }
-
-      const res = await fetch(
-        `${process.env.REACT_APP_API_URL}/api/disposer-requests/${wrqid}/status`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ status: "Picked Up" }),
-        }
-      );
-
-      if (!res.ok) {
-        throw new Error("Failed to update status");
-      }
-
-      closePopup(true);
-    } catch (err) {
-      console.error("UPDATE STATUS ERROR:", err);
-      alert("Failed to update pickup status");
-      closePopup(false);
-    }
+    closePopup(true);
   };
 
   const onYes = () => {
