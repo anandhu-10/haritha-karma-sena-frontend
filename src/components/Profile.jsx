@@ -249,7 +249,7 @@ function Profile({ user, userType, reportLogout }) {
 
       {/* 👤 PROFILE POPUP */}
       {showProfile && (
-        <ProfilePopup onClose={() => setShowProfile(false)} />
+        <ProfilePopup onClose={() => setShowProfile(false)} userType={userType} />
       )}
     </>
   );

@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import { FaPhone, FaMapPin, FaLocationDot, FaBuilding, FaLayerGroup, FaUser, FaEnvelope, FaIdCard, FaPen, FaCheck, FaXmark } from "react-icons/fa6";
 import "./../styles/profilePopup.css";
 
-function ProfilePopup({ onClose }) {
+function ProfilePopup({ onClose, userType }) {
   const user = JSON.parse(localStorage.getItem("user"));
+  const roleKey = user?.role === "collector" ? "collectorProfile" : "disposerProfile";
 
   const storedProfile =
-    JSON.parse(localStorage.getItem("disposerProfile")) || {};
+    JSON.parse(localStorage.getItem(roleKey)) || {};
 
   const [editMode, setEditMode] = useState(false);
 
@@ -26,7 +27,7 @@ function ProfilePopup({ onClose }) {
   };
 
   const handleSave = () => {
-    localStorage.setItem("disposerProfile", JSON.stringify(formData));
+    localStorage.setItem(roleKey, JSON.stringify(formData));
     setEditMode(false);
   };
 
@@ -91,18 +92,18 @@ function ProfilePopup({ onClose }) {
               </div>
 
               <div className="info-item">
-                <label><FaBuilding /> Panchayath / Municipality</label>
+                <label><FaBuilding /> {user?.role === "collector" ? "Primary Service Area" : "Panchayath / Municipality"}</label>
                 {editMode ? (
-                  <input name="panchayath" placeholder="Enter panchayath" value={formData.panchayath} onChange={handleChange} />
+                  <input name="panchayath" placeholder={user?.role === "collector" ? "Enter area" : "Enter panchayath"} value={formData.panchayath} onChange={handleChange} />
                 ) : (
                   <p>{formData.panchayath || "Not set"}</p>
                 )}
               </div>
 
               <div className="info-item">
-                <label><FaLayerGroup /> Ward Number / Name</label>
+                <label><FaLayerGroup /> {user?.role === "collector" ? "Experience / Notes" : "Ward Number / Name"}</label>
                 {editMode ? (
-                  <input name="ward" placeholder="Enter ward" value={formData.ward} onChange={handleChange} />
+                  <input name="ward" placeholder={user?.role === "collector" ? "e.g. 5 years" : "Enter ward"} value={formData.ward} onChange={handleChange} />
                 ) : (
                   <p>{formData.ward || "Not set"}</p>
                 )}
