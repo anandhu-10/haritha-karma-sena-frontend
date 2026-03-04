@@ -42,6 +42,8 @@ function NewRqFromD() {
   /* ---------- PICK UP HANDLER (FIXED) ---------- */
   const handlePickUp = async (requestId) => {
     try {
+      const userId = user?.id || user?._id;
+
       const res = await fetch(
         `${process.env.REACT_APP_API_URL}/api/collector/pickup/${requestId}`,
         {
@@ -50,7 +52,7 @@ function NewRqFromD() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            collectorId: user._id, // 🔥 ASSIGN COLLECTOR
+            collectorId: userId, // 🔥 ASSIGN COLLECTOR
           }),
         }
       );

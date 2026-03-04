@@ -35,6 +35,7 @@ function DisposerHome() {
 
   /* ---------- USER ---------- */
   const user = JSON.parse(localStorage.getItem("user"));
+  const userId = user?.id || user?._id;
   const token = localStorage.getItem("token");
 
   /* ---------- PAYMENT CHECK ---------- */
@@ -160,7 +161,7 @@ function DisposerHome() {
 
         {/* 💬 CHAT (REAL LOGIC) */}
         <ChatBox
-          disposerId={user._id}
+          disposerId={userId}
           collectorId={assignedCollector}
           userRole="disposer"
         />

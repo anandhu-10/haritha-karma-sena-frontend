@@ -35,6 +35,7 @@ function CollectorHome() {
   // SAFE localStorage read
   const storedUser = localStorage.getItem("user");
   const user = storedUser ? JSON.parse(storedUser) : null;
+  const userId = user?.id || user?._id;
 
   /* ---------- LOGOUT (FIXED) ---------- */
   const reportLogout = () => {
@@ -58,7 +59,7 @@ function CollectorHome() {
             typeof r.collectorId === "object"
               ? r.collectorId?._id || r.collectorId?.$oid
               : r.collectorId;
-          return rCollectorId === user?._id && r.status === "Picked Up";
+          return rCollectorId === userId && r.status === "Picked Up";
         });
         if (activeReq) {
           setActiveDisposerId(activeReq.disposerId);
@@ -70,7 +71,7 @@ function CollectorHome() {
       }
     };
 
-    if (user && user._id) {
+    if (user && userId) {
       fetchActiveDisposer();
 
       // Optional: Poll every 10 seconds to keep ChatBox synced if new requests are picked up
@@ -112,7 +113,7 @@ function CollectorHome() {
         {/* 💬 CHAT (REAL LOGIC) */}
         <ChatBox
           disposerId={activeDisposerId}
-          collectorId={user._id}
+          collectorId={userId}
           userRole="collector"
         />
       </div>
