@@ -3,6 +3,7 @@ import { MdLogout } from "react-icons/md";
 import { FaLocationDot, FaUser, FaBell, FaTrash } from "react-icons/fa6";
 import avatar from "../assets/noun-user-avatar-5787297.png";
 import ProfilePopup from "./ProfilePopup";
+import "../styles/Profile.css";
 
 function Profile({ user, userType, reportLogout }) {
   const [expand, setExpand] = useState(false);
@@ -10,6 +11,21 @@ function Profile({ user, userType, reportLogout }) {
   const [showNotify, setShowNotify] = useState(false);
   const [locationName, setLocationName] = useState("");
   const [notifications, setNotifications] = useState([]);
+
+  const timeAgo = (date) => {
+    const seconds = Math.floor((new Date() - new Date(date)) / 1000);
+    let interval = Math.floor(seconds / 31536000);
+    if (interval > 1) return interval + " years ago";
+    interval = Math.floor(seconds / 2592000);
+    if (interval > 1) return interval + " months ago";
+    interval = Math.floor(seconds / 86400);
+    if (interval > 1) return interval + " days ago";
+    interval = Math.floor(seconds / 3600);
+    if (interval > 1) return interval + " hours ago";
+    interval = Math.floor(seconds / 60);
+    if (interval > 1) return interval + " mins ago";
+    return "Just now";
+  };
 
   const dropdownRef = useRef(null);
 
@@ -148,18 +164,7 @@ function Profile({ user, userType, reportLogout }) {
 
             {/* 🔴 NOTIFICATION COUNT */}
             {unreadCount > 0 && (
-              <span
-                style={{
-                  position: "absolute",
-                  top: "-6px",
-                  right: "-6px",
-                  background: "red",
-                  color: "white",
-                  borderRadius: "50%",
-                  fontSize: "10px",
-                  padding: "2px 6px",
-                }}
-              >
+              <span className="notification-badge">
                 {unreadCount}
               </span>
             )}
@@ -198,45 +203,42 @@ function Profile({ user, userType, reportLogout }) {
 
           {/* 🔔 NOTIFICATION DROPDOWN */}
           {showNotify && (
-            <div className="profileContainerMenu" ref={dropdownRef} style={{ width: "250px", maxHeight: "300px", overflowY: "auto" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" }}>
-                <h4 style={{ margin: 0 }}>Notifications</h4>
+            <div className="notification-dropdown" ref={dropdownRef}>
+              <div className="notification-header">
+                <h4>Notifications</h4>
                 {notifications.length > 0 && (
-                  <button
-                    onClick={handleDeleteAll}
-                    style={{ fontSize: "10px", padding: "2px 6px", color: "red", border: "1px solid red", background: "none", cursor: "pointer", borderRadius: "4px" }}
-                  >
+                  <button className="clear-all-btn" onClick={handleDeleteAll}>
                     Clear All
                   </button>
                 )}
               </div>
 
-              {notifications.length === 0 ? (
-                <p style={{ fontSize: "12px", color: "#666" }}>No notifications</p>
-              ) : (
-                notifications.map((n) => (
-                  <div
-                    key={n._id}
-                    style={{
-                      padding: "10px 0",
-                      borderBottom: "1px solid #eee",
-                      fontSize: "13px",
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "flex-start",
-                      gap: "10px"
-                    }}
-                  >
-                    <span>{n.message}</span>
-                    <FaTrash
-                      size={12}
-                      color="#999"
-                      style={{ cursor: "pointer", flexShrink: 0, marginTop: "4px" }}
-                      onClick={() => handleDeleteOne(n._id)}
-                    />
+              <div className="notification-list">
+                {notifications.length === 0 ? (
+                  <div className="empty-notifications">
+                    <FaBell size={24} color="#e2e8f0" />
+                    <p>No notifications yet</p>
                   </div>
-                ))
-              )}
+                ) : (
+                  notifications.map((n) => (
+                    <div key={n._id} className="notification-item">
+                      {!n.read && <div className="unread-indicator" />}
+                      <div className="notification-content">
+                        {n.message}
+                        <div style={{ fontSize: "10px", color: "#94a3b8", marginTop: "4px", fontWeight: "400" }}>
+                          {timeAgo(n.createdAt)}
+                        </div>
+                      </div>
+                      <div className="delete-one-btn" onClick={(e) => {
+                        e.stopPropagation();
+                        handleDeleteOne(n._id);
+                      }}>
+                        <FaTrash size={12} />
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
             </div>
           )}
         </div>
