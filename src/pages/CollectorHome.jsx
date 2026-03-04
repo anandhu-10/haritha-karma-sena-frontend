@@ -7,6 +7,8 @@ import ServiceSlider from "../components/ServiceSlider";
 
 import { FaPlus, FaSearch } from "react-icons/fa";
 import "../styles/dashboard.css";
+import axios from "axios";
+import ChatBox from "../components/ChatBox";
 
 /* ---------- SLIDER DATA ---------- */
 const sliderData = [
@@ -27,6 +29,9 @@ const sliderData = [
 function CollectorHome() {
   const navigate = useNavigate();
 
+  /* ---------- CONTEXT & STATE ---------- */
+  const [activeDisposerId, setActiveDisposerId] = React.useState(null);
+
   // SAFE localStorage read
   const storedUser = localStorage.getItem("user");
   const user = storedUser ? JSON.parse(storedUser) : null;
@@ -43,6 +48,37 @@ function CollectorHome() {
   if (!user || user.role !== "collector") {
     return <Navigate to="/login" replace />;
   }
+
+  /* ---------- FETCH ACTIVE DISPOSER (🔥 IMPORTANT) ---------- */
+  React.useEffect(() => {
+    const fetchActiveDisposer = async () => {
+      try {
+        const res = await axios.get(
+          `${process.env.REACT_APP_API_URL}/api/disposer-requests`,
+        );
+        const data = res.data || [];
+        // Find a request picked up by this collector
+        const activeReq = data.find(
+          (r) => r.collectorId === user._id && r.status === "Picked Up"
+        );
+        if (activeReq) {
+          setActiveDisposerId(activeReq.disposerId);
+        } else {
+          setActiveDisposerId(null);
+        }
+      } catch (err) {
+        console.error("Failed to fetch active disposer requests", err);
+      }
+    };
+
+    if (user && user._id) {
+      fetchActiveDisposer();
+
+      // Optional: Poll every 10 seconds to keep ChatBox synced if new requests are picked up
+      const intervalId = setInterval(fetchActiveDisposer, 10000);
+      return () => clearInterval(intervalId);
+    }
+  }, [user]);
 
   return (
     <div className="collectorhome">
@@ -68,6 +104,13 @@ function CollectorHome() {
         <div className="collector-page">
           <Outlet context={{ user }} />
         </div>
+
+        {/* 💬 CHAT (REAL LOGIC) */}
+        <ChatBox
+          disposerId={activeDisposerId}
+          collectorId={user._id}
+          userRole="collector"
+        />
       </div>
     </div>
   );

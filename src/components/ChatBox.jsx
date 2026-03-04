@@ -65,10 +65,12 @@ function ChatBox({ disposerId, collectorId, userRole }) {
         💬
       </button>
 
-      {/* ❌ No collector assigned */}
+      {/* ❌ No collector assigned or no disposer active */}
       {open && !roomId && (
         <div style={styles.disabledBox}>
-          Collector not assigned yet
+          {userRole === "collector"
+            ? "No active chat with disposer"
+            : "Collector not assigned yet"}
         </div>
       )}
 
