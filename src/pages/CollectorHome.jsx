@@ -44,11 +44,6 @@ function CollectorHome() {
     navigate("/login", { replace: true });
   };
 
-  /* ---------- SAFETY ROLE CHECK ---------- */
-  if (!user || user.role !== "collector") {
-    return <Navigate to="/login" replace />;
-  }
-
   /* ---------- FETCH ACTIVE DISPOSER (🔥 IMPORTANT) ---------- */
   React.useEffect(() => {
     const fetchActiveDisposer = async () => {
@@ -59,7 +54,7 @@ function CollectorHome() {
         const data = res.data || [];
         // Find a request picked up by this collector
         const activeReq = data.find(
-          (r) => r.collectorId === user._id && r.status === "Picked Up"
+          (r) => r.collectorId === user?._id && r.status === "Picked Up"
         );
         if (activeReq) {
           setActiveDisposerId(activeReq.disposerId);
@@ -79,6 +74,11 @@ function CollectorHome() {
       return () => clearInterval(intervalId);
     }
   }, [user]);
+
+  /* ---------- SAFETY ROLE CHECK ---------- */
+  if (!user || user.role !== "collector") {
+    return <Navigate to="/login" replace />;
+  }
 
   return (
     <div className="collectorhome">
