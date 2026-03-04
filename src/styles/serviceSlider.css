@@ -1,81 +1,71 @@
-/* ---------- MOBILE VIEW ---------- */
-@media only screen and (max-width: 600px) {
+/* ---------- MODERN SERVICE SLIDER ---------- */
 
-  .sliderContainer {
-    display: flex;
-    background-color: #6A816A;
-    justify-content: space-around;
-    align-items: center;
-    height: 40px;
-    font-size: 0.8rem;
-    border-radius: 6px;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-    padding: 0 6px;
-  }
-
-  .slider {
-    background-color: #6A816A;
-    color: aliceblue;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    cursor: pointer;
-  }
-
-  .slider .progressBar {
-    position: relative;
-    width: 0%;
-    margin-top: 3px;
-    height: 4px;
-    border-radius: 10px;
-    background-color: black;
-    transition: width 0.4s ease-in-out;
-  }
-
-  .slider .progressBar.show {
-    width: 100%;
-  }
+.sliderContainer {
+  display: flex;
+  background-color: #f1f5f9;
+  justify-content: center;
+  align-items: center;
+  height: 60px;
+  gap: 12px;
+  padding: 6px;
+  border-radius: 30px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+  margin: 10px 20px;
+  width: fit-content;
+  align-self: center;
 }
 
-/* ---------- DESKTOP / TABLET VIEW ---------- */
-@media only screen and (min-width: 601px) {
+.slider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  border-radius: 24px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  color: #64748b;
+  font-weight: 600;
+  white-space: nowrap;
+}
 
+.slider.active {
+  background-color: #6a816a;
+  color: white;
+  box-shadow: 0 10px 15px -3px rgba(106, 129, 106, 0.3);
+  transform: translateY(-1px);
+}
+
+.slider:not(.active):hover {
+  background-color: #e2e8f0;
+  color: #1e293b;
+}
+
+.slider .icon {
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+}
+
+.slider .progressBar {
+  display: none;
+  /* Removed old progress bar style */
+}
+
+/* ---------- MOBILE RESPONSIVENESS ---------- */
+@media only screen and (max-width: 768px) {
   .sliderContainer {
-    display: flex;
-    background-color: #6A816A;
-    justify-content: space-around;
-    align-items: center;
-    height: 45px;
-    font-size: 1rem;
-    border-radius: 6px;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-    padding: 0 10px;
+    height: auto;
+    flex-wrap: wrap;
+    border-radius: 16px;
+    padding: 10px;
+    width: 100%;
+    margin: 10px 0;
   }
 
   .slider {
-    background-color: #6A816A;
-    color: #ffffff;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    cursor: pointer;
-    transition: transform 0.2s ease;
-  }
-
-  .slider:hover {
-    transform: translateY(-1px);
-  }
-
-  .slider .progressBar {
-    position: relative;
-    width: 0%;
-    height: 5px;
-    border-radius: 10px;
-    background-color: black;
-    transition: width 0.3s ease-in-out;
-  }
-
-  .slider .progressBar.show {
-    width: 100%;
+    padding: 8px 16px;
+    font-size: 13px;
+    flex: 1;
+    justify-content: center;
   }
 }
