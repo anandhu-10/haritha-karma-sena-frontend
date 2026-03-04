@@ -78,7 +78,7 @@ function CollectorHome() {
       const intervalId = setInterval(fetchActiveDisposer, 10000);
       return () => clearInterval(intervalId);
     }
-  }, [user]);
+  }, [user, userId]);
 
   /* ---------- SAFETY ROLE CHECK ---------- */
   if (!user || user.role !== "collector") {
