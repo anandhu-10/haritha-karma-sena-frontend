@@ -53,9 +53,13 @@ function CollectorHome() {
         );
         const data = res.data || [];
         // Find a request picked up by this collector
-        const activeReq = data.find(
-          (r) => r.collectorId === user?._id && r.status === "Picked Up"
-        );
+        const activeReq = data.find((r) => {
+          const rCollectorId =
+            typeof r.collectorId === "object"
+              ? r.collectorId?._id || r.collectorId?.$oid
+              : r.collectorId;
+          return rCollectorId === user?._id && r.status === "Picked Up";
+        });
         if (activeReq) {
           setActiveDisposerId(activeReq.disposerId);
         } else {

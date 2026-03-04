@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { useOutletContext } from "react-router-dom";
 import ShowWRinC from "./CollectorHome/ShowWRinC";
 import "../styles/NewRqFromD.css";
 
-function NewRqFromD({ user }) {
+function NewRqFromD() {
+  const { user } = useOutletContext();
   const [newRqFromD, setNewRqFromD] = useState([]);
   const [showRQ, setShowRQ] = useState(null);
   const [currentPage] = useState(0);

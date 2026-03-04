@@ -67,7 +67,7 @@ function DisposerHome() {
             },
           }
         );
-        console.log("API RESPONSE:", res.data); 
+        console.log("API RESPONSE:", res.data);
         setMyRequests(res.data || []);
       } catch (err) {
         console.error("Failed to fetch my requests", err);
@@ -109,12 +109,14 @@ function DisposerHome() {
     return <h2 style={{ textAlign: "center" }}>Checking payment...</h2>;
   }
 
-/* ---------- GET ASSIGNED COLLECTOR ---------- */
-const assignedRequest = myRequests.find((r) => r.collectorId);
+  /* ---------- GET ASSIGNED COLLECTOR ---------- */
+  const assignedRequest = myRequests.find(
+    (r) => r.collectorId && r.status === "Picked Up"
+  );
 
-const assignedCollector = assignedRequest
-  ? assignedRequest.collectorId
-  : null;
+  const assignedCollector = assignedRequest
+    ? assignedRequest.collectorId
+    : null;
   /* ---------- UI ---------- */
   return (
     <div className="main">
