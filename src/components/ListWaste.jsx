@@ -3,6 +3,7 @@ import "../styles/listWaste.css";
 import { GrFormNext } from "react-icons/gr";
 import wastePreview from "../assets/noun-gallery-3783249.png";
 import { WasteContext } from "../pages/DisposerHome";
+import MapComponent from "./MapComponent.jsx";
 
 function ListWaste({ paid }) {
   const typeWaste = [
@@ -20,6 +21,7 @@ function ListWaste({ paid }) {
   const [activeTab, setActiveTab] = useState("wasteType");
   const [selectedTypes, setSelectedTypes] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedLocation, setSelectedLocation] = useState(null);
   const [checked, setChecked] = useState(
     new Array(typeWaste.length).fill(false)
   );
@@ -48,6 +50,15 @@ function ListWaste({ paid }) {
   const verifySelectedTypes = () => {
     if (selectedTypes.length === 0) {
       shake();
+      return;
+    }
+    setActiveTab("location");
+  };
+
+  /* ---------- LOCATION ---------- */
+  const validateLocation = () => {
+    if (!selectedLocation) {
+      alert("Please pin your location on the map");
       return;
     }
     setActiveTab("image");
@@ -92,6 +103,7 @@ function ListWaste({ paid }) {
       const payload = {
         disposerName: user.name || user.username,
         wasteTypes: selectedTypes,
+        location: selectedLocation,
         image: selectedImage,
         status: "Pending",
         date: new Date().toLocaleString(),
@@ -165,11 +177,32 @@ function ListWaste({ paid }) {
           />
         </div>
 
+        {/* STEP 1.5: LOCATION */}
+        <div
+          className={`wasteLocationContainer ${activeTab === "location" ? "active" : ""
+            }`}
+        >
+          <h3>Pin Location</h3>
+
+          <MapComponent onLocationSelect={setSelectedLocation} />
+
+          <GrFormNext
+            className="backIconL"
+            onClick={() => setActiveTab("wasteType")}
+            style={{ transform: "rotate(180deg)", position: "absolute", left: "20px", bottom: "20px", cursor: "pointer", fontSize: "30px" }}
+          />
+
+          <GrFormNext
+            className="nextIconL"
+            onClick={validateLocation}
+            style={{ position: "absolute", right: "20px", bottom: "20px", cursor: "pointer", fontSize: "30px" }}
+          />
+        </div>
+
         {/* STEP 2 */}
         <div
-          className={`wasteImageContainer ${
-            activeTab === "image" ? "active" : ""
-          }`}
+          className={`wasteImageContainer ${activeTab === "image" ? "active" : ""
+            }`}
         >
           <h3>Add Image</h3>
 
@@ -188,7 +221,7 @@ function ListWaste({ paid }) {
 
           <GrFormNext
             className="backIcon"
-            onClick={() => setActiveTab("wasteType")}
+            onClick={() => setActiveTab("location")}
           />
           <GrFormNext
             className="nextIconImage"
@@ -198,9 +231,8 @@ function ListWaste({ paid }) {
 
         {/* STEP 3 */}
         <div
-          className={`findCollectors ${
-            activeTab === "confirm" ? "active" : ""
-          }`}
+          className={`findCollectors ${activeTab === "confirm" ? "active" : ""
+            }`}
         >
           <h3>Confirm Request</h3>
           <p>Waste Types: {selectedTypes.join(", ")}</p>
