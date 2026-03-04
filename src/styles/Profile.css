@@ -11,6 +11,28 @@
     box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
 }
 
+.locationContainer {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-right: 25px;
+    background: rgba(255, 255, 255, 0.4);
+    padding: 6px 14px;
+    border-radius: 20px;
+    color: #2e3a2e;
+}
+
+.locationContainer h4 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.locationContainer svg {
+    color: #4a634a;
+    font-size: 16px;
+}
+
 .notification-dropdown {
     position: absolute;
     width: 320px;
