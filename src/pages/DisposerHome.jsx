@@ -122,6 +122,9 @@ function DisposerHome() {
   const assignedCollector = assignedRequest
     ? assignedRequest.collectorId
     : null;
+  /* ---------- DISPOSER PROFILE ---------- */
+  const disposerProfile = JSON.parse(localStorage.getItem("disposerProfile")) || {};
+
   /* ---------- UI ---------- */
   return (
     <div className="main">
@@ -169,7 +172,7 @@ function DisposerHome() {
         )}
 
         {changeSlider === 1 && (
-          <Monitoring myRequests={myRequests} />
+          <Monitoring myRequests={myRequests} disposerProfile={disposerProfile} />
         )}
 
         <Outlet />

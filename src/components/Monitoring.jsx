@@ -11,11 +11,12 @@ import {
     Pie,
     Cell,
 } from "recharts";
+import { FaRobot, FaLeaf, FaLocationDot, FaChartLine } from "react-icons/fa6";
 import "../styles/Monitoring.css";
 
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#8884d8", "#82ca9d", "#ffc658"];
 
-const Monitoring = ({ myRequests }) => {
+const Monitoring = ({ myRequests, disposerProfile }) => {
     /* ---------- DATA PROCESSING ---------- */
 
     // 1. Total Waste
@@ -49,7 +50,72 @@ const Monitoring = ({ myRequests }) => {
         value: parseFloat(typeDataMap[type].toFixed(2)),
     }));
 
-    /* ---------- AWARENESS MESSAGES ---------- */
+    /* ---------- AI ECO-ADVISOR LOGIC ---------- */
+    const generateAIInsights = () => {
+        const insights = [];
+        const { panchayath, ward, location } = disposerProfile;
+
+        // 1. Location-based Awareness
+        if (panchayath || ward) {
+            insights.push({
+                icon: <FaLocationDot />,
+                title: `Local Impact (${panchayath || "Your Area"})`,
+                text: `Residents in Ward ${ward || "X"} are currently focusing on composting. Your contribution of ${totalWaste}kg helps reduce the load on the ${panchayath || "local"} processing plant.`
+            });
+        }
+
+        // 2. Trend Analysis
+        if (monthlyData.length >= 2) {
+            const lastMonth = monthlyData[monthlyData.length - 2].quantity;
+            const currentMonth = monthlyData[monthlyData.length - 1].quantity;
+            const diff = currentMonth - lastMonth;
+
+            if (diff > 0) {
+                insights.push({
+                    icon: <FaChartLine />,
+                    title: "Waste Trend Alert",
+                    text: `Your waste generation increased by ${diff.toFixed(1)}kg compared to last month. Consider reviewing your consumption habits.`
+                });
+            } else if (diff < 0) {
+                insights.push({
+                    icon: <FaLeaf />,
+                    title: "Eco-Hero Progress",
+                    text: `Fantastic! You reduced your waste by ${Math.abs(diff).toFixed(1)}kg. Keep up the sustainable lifestyle!`
+                });
+            }
+        }
+
+        // 3. Waste Type Specifics
+        if (typeDataMap["Plastics"] > 5) {
+            insights.push({
+                icon: <FaRobot />,
+                title: "Plastic Reduction Strategy",
+                text: "My analysis shows high plastic output. Tip: Buying in bulk can reduce single-use plastic packaging by up to 30%."
+            });
+        }
+
+        if (typeDataMap["Organic"] > 10) {
+            insights.push({
+                icon: <FaLeaf />,
+                title: "Organic Gold",
+                text: "Your organic waste volume is significant. Have you considered a kitchen-top composter? It turns waste into fertilizer for your garden!"
+            });
+        }
+
+        if (insights.length === 0) {
+            insights.push({
+                icon: <FaRobot />,
+                title: "System Ready",
+                text: "Submit more disposal requests to unlock personalized AI-driven eco-tips based on your habits."
+            });
+        }
+
+        return insights;
+    };
+
+    const aiInsights = generateAIInsights();
+
+    /* ---------- AWARENESS MESSAGES (TRADITIONAL) ---------- */
     const awarenessMessages = [];
     if (typeDataMap["Plastics"] > 5) {
         awarenessMessages.push("Your plastic waste generation is high this month. Try using reusable products.");
@@ -66,13 +132,31 @@ const Monitoring = ({ myRequests }) => {
 
     return (
         <div className="monitoring-container">
+            <div className="ai-advisor-section">
+                <div className="ai-header">
+                    <FaRobot className="ai-logo" />
+                    <h2>AI Eco-Advisor Insights</h2>
+                </div>
+                <div className="ai-insights-grid">
+                    {aiInsights.map((insight, i) => (
+                        <div key={i} className="ai-insight-card">
+                            <div className="insight-icon">{insight.icon}</div>
+                            <div className="insight-content">
+                                <h4>{insight.title}</h4>
+                                <p>{insight.text}</p>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
             <div className="stats-grid">
                 <div className="stat-card">
                     <h3>Total Waste Generated</h3>
                     <p className="stat-value">{totalWaste} kg</p>
                 </div>
                 <div className="stat-card awareness-card">
-                    <h3>Awareness & Tips</h3>
+                    <h3>Quick Tips</h3>
                     <ul>
                         {awarenessMessages.map((msg, i) => (
                             <li key={i}>{msg}</li>
