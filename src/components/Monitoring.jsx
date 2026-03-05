@@ -53,7 +53,7 @@ const Monitoring = ({ myRequests, disposerProfile }) => {
     /* ---------- AI ECO-ADVISOR LOGIC ---------- */
     const generateAIInsights = () => {
         const insights = [];
-        const { panchayath, ward, location } = disposerProfile;
+        const { panchayath, ward } = disposerProfile;
 
         // 1. Location-based Awareness
         if (panchayath || ward) {
