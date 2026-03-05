@@ -20,13 +20,14 @@ function CollectorDashboard() {
         const total = data.length;
         const pending = data.filter(r => r.status !== "Picked Up").length;
         const picked = data.filter(r => r.status === "Picked Up").length;
+        const totalWaste = data.reduce((sum, r) => sum + (Number(r.wasteQuantity) || 0), 0);
 
         const todayDate = new Date().toLocaleDateString();
         const today = data.filter(r =>
           r.date?.includes(todayDate)
         ).length;
 
-        setStats({ total, pending, picked, today });
+        setStats({ total, pending, picked, today, totalWaste });
       } catch (err) {
         console.error("Dashboard fetch error:", err);
       }
@@ -58,6 +59,11 @@ function CollectorDashboard() {
         <div className="dashboard-card info">
           <h3>Today</h3>
           <p>{stats.today}</p>
+        </div>
+
+        <div className="dashboard-card primary">
+          <h3>Total Waste Gathered</h3>
+          <p>{stats.totalWaste} kg</p>
         </div>
       </div>
     </div>

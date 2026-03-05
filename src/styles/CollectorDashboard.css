@@ -14,7 +14,7 @@
   border-radius: 10px;
   padding: 20px;
   text-align: center;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
 }
 
 .dashboard-card h3 {
@@ -37,4 +37,8 @@
 
 .dashboard-card.info {
   border-left: 5px solid #3b82f6;
+}
+
+.dashboard-card.primary {
+  border-left: 5px solid #10b981;
 }

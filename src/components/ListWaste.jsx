@@ -22,6 +22,7 @@ function ListWaste({ paid }) {
   const [selectedTypes, setSelectedTypes] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedLocation, setSelectedLocation] = useState(null);
+  const [wasteQuantity, setWasteQuantity] = useState("");
   const [checked, setChecked] = useState(
     new Array(typeWaste.length).fill(false)
   );
@@ -50,6 +51,12 @@ function ListWaste({ paid }) {
   const verifySelectedTypes = () => {
     if (selectedTypes.length === 0) {
       shake();
+      alert("Please select at least one waste type");
+      return;
+    }
+    if (!wasteQuantity || wasteQuantity <= 0) {
+      shake();
+      alert("Please enter a valid waste quantity");
       return;
     }
     setActiveTab("location");
@@ -103,6 +110,7 @@ function ListWaste({ paid }) {
       const payload = {
         disposerName: user.name || user.username,
         wasteTypes: selectedTypes,
+        wasteQuantity: Number(wasteQuantity),
         location: selectedLocation,
         image: selectedImage,
         status: "Pending",
@@ -133,6 +141,7 @@ function ListWaste({ paid }) {
 
       setSelectedTypes([]);
       setSelectedImage(null);
+      setWasteQuantity("");
       setChecked(new Array(typeWaste.length).fill(false));
       setActiveTab("wasteType");
     } catch (err) {
@@ -169,6 +178,27 @@ function ListWaste({ paid }) {
                 {value}
               </button>
             ))}
+          </div>
+
+          <div style={{ margin: "20px 0", textAlign: "left", width: "100%" }}>
+            <label style={{ display: "block", marginBottom: "10px", fontWeight: "bold", color: "#333" }}>
+              Waste Quantity (kg or bags)
+            </label>
+            <input
+              type="number"
+              value={wasteQuantity}
+              onChange={(e) => setWasteQuantity(e.target.value)}
+              placeholder="e.g. 5"
+              style={{
+                width: "94%",
+                padding: "12px",
+                borderRadius: "8px",
+                border: "1px solid #ddd",
+                fontSize: "16px",
+                outline: "none",
+                transition: "border 0.3s"
+              }}
+            />
           </div>
 
           <GrFormNext

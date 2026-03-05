@@ -37,7 +37,8 @@ function Activity({ reportRender }) {
               <div className="left-content">
                 <ul>
                   <li>{item.date}</li>
-                  <li id="main">{item.wasteTypes}</li>
+                  <li id="main">{item.wasteTypes.join(", ")}</li>
+                  <li>Quantity: {item.wasteQuantity || 0} kg/bags</li>
                   <li>
                     Collector:{" "}
                     {item.collectorDetails?.[0]?.firstName || "Not assigned"}

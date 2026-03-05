@@ -81,6 +81,8 @@ const ShowWRinC = ({ data, sendDataToParent, onPickUp }) => {
                   <br />
                   <b>Waste Types:</b> {req.wasteTypes.join(", ")}
                   <br />
+                  <b>Quantity:</b> {req.wasteQuantity || 0} kg/bags
+                  <br />
                   {req.image && (
                     <>
                       <b>Image:</b>

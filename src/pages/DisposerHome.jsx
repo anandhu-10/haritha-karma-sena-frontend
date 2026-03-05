@@ -7,14 +7,18 @@ import WasteCard from "../components/WasteCard";
 import ServiceSlider from "../components/ServiceSlider";
 import ListWaste from "../components/ListWaste";
 import ChatBox from "../components/ChatBox";
+import Monitoring from "../components/Monitoring";
 
-import { FaTrashCanArrowUp } from "react-icons/fa6";
+import { FaTrashCanArrowUp, FaChartLine } from "react-icons/fa6";
 
 /* ---------- CONTEXT ---------- */
 export const WasteContext = React.createContext();
 
 /* ---------- SLIDER DATA ---------- */
-const sliderData = [{ label: "Dispose Waste", path: "" }];
+const sliderData = [
+  { label: "Dispose Waste", path: "" },
+  { label: "Monitoring & Awareness", path: "" }
+];
 
 const API = process.env.REACT_APP_API_URL;
 
@@ -143,9 +147,16 @@ function DisposerHome() {
 
         <WasteCard paid={paid} />
 
+        {/* 🔔 REMINDERS */}
+        {myRequests.length > 0 && myRequests[0].status === "Pending" && (
+          <div style={styles.reminderBanner}>
+            <strong>Reminder:</strong> Please keep your waste ready before collector arrival. Segregate plastic and organic waste before disposal.
+          </div>
+        )}
+
         <ServiceSlider
           sliderData={sliderData}
-          icons={[FaTrashCanArrowUp]}
+          icons={[FaTrashCanArrowUp, FaChartLine]}
           changeServicePage={setChangeSlider}
         />
 
@@ -155,6 +166,10 @@ function DisposerHome() {
             isOn={isOn}
             paid={paid}
           />
+        )}
+
+        {changeSlider === 1 && (
+          <Monitoring myRequests={myRequests} />
         )}
 
         <Outlet />
@@ -189,6 +204,15 @@ const styles = {
     border: "none",
     borderRadius: "4px",
     cursor: "pointer",
+  },
+  reminderBanner: {
+    background: "#d1ecf1",
+    color: "#0c5460",
+    padding: "12px 16px",
+    margin: "10px",
+    borderRadius: "6px",
+    fontSize: "14px",
+    borderLeft: "5px solid #0c5460",
   },
 };
 
