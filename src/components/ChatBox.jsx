@@ -3,7 +3,7 @@ import io from "socket.io-client";
 import { FaMessage, FaPaperPlane, FaXmark, FaUser } from "react-icons/fa6";
 import "../styles/ChatBox.css";
 
-const SOCKET_URL = "https://haritha-karma-sena-backend.onrender.com";
+const SOCKET_URL = process.env.REACT_APP_API_URL;
 
 function ChatBox({ disposerId, collectorId, userRole }) {
   const socketRef = useRef(null);
@@ -13,12 +13,12 @@ function ChatBox({ disposerId, collectorId, userRole }) {
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    messagesEndRef.current?.scrollIntoView({ behavior: "auto" });
   };
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages]);
+  }, [messages, open]);
 
   // 🔥 Ensure IDs are always strings
   const safeDisposerId =
@@ -35,6 +35,22 @@ function ChatBox({ disposerId, collectorId, userRole }) {
     safeDisposerId && safeCollectorId
       ? `${safeDisposerId}_${safeCollectorId}`
       : null;
+
+  /* ---------- FETCH HISTORY ---------- */
+  useEffect(() => {
+    const fetchHistory = async () => {
+      if (!roomId || !open) return;
+      try {
+        const res = await fetch(`${SOCKET_URL}/api/messages/${roomId}`);
+        const data = await res.json();
+        setMessages(data || []);
+      } catch (err) {
+        console.error("Failed to fetch chat history:", err);
+      }
+    };
+
+    fetchHistory();
+  }, [roomId, open]);
 
   useEffect(() => {
     if (!open || !roomId) return;
