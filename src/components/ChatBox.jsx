@@ -61,6 +61,7 @@ function ChatBox({ disposerId, collectorId, userRole }) {
 
   useEffect(() => {
     if (!roomId) return;
+    console.log("🔌 CONNECTING TO ROOM:", roomId);
 
     socketRef.current = io(SOCKET_URL, {
       transports: ["websocket"],
@@ -69,8 +70,10 @@ function ChatBox({ disposerId, collectorId, userRole }) {
     socketRef.current.emit("join_room", roomId);
 
     socketRef.current.on("receive_message", (data) => {
+      console.log("📩 NEW MESSAGE ARRIVED:", data);
       setMessages((prev) => [...prev, data]);
       if (!openRef.current) {
+        console.log("🟠 INCREMENTING UNREAD COUNT");
         setUnreadCount((prev) => prev + 1);
       }
     });

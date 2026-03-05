@@ -21,6 +21,8 @@
     cursor: pointer;
     box-shadow: 0 8px 24px rgba(46, 125, 50, 0.3);
     transition: all 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+    position: relative;
+    overflow: visible;
 }
 
 .chat-toggle-btn:hover {
@@ -230,6 +232,8 @@
     border: 2px solid white;
     box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4);
     animation: badgePop 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+    z-index: 100;
+    pointer-events: none;
 }
 
 @keyframes badgePop {
