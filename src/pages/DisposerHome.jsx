@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Navigate, useNavigate, Outlet } from "react-router-dom";
 import axios from "axios";
 
@@ -51,7 +51,7 @@ function DisposerHome() {
   /* ---------- USER PROFILE & POINTS ---------- */
   const [userProfile, setUserProfile] = useState({});
 
-  const fetchUserProfile = async () => {
+  const fetchUserProfile = useCallback(async () => {
     try {
       const res = await axios.get(`${API}/api/auth/profile`, {
         headers: { Authorization: `Bearer ${token}` }
@@ -65,11 +65,11 @@ function DisposerHome() {
     } catch (err) {
       console.error("Failed to fetch profile", err);
     }
-  };
+  }, [token]);
 
   useEffect(() => {
     if (token) fetchUserProfile();
-  }, [token]);
+  }, [token, fetchUserProfile]);
 
   /* ---------- PAYMENT CHECK ---------- */
   useEffect(() => {
