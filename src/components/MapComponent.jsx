@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
@@ -8,16 +8,15 @@ import customIcon from "../assets/marker_map_icon.png";
 /* CUSTOM MARKER */
 const markerIcon = new L.Icon({
   iconUrl: customIcon,
-  iconSize: [24, 24],
-  iconAnchor: [12, 24],
+  iconSize: [30, 30],
+  iconAnchor: [15, 30],
 });
 
 function MapComponent({ onLocationSelect }) {
   const [searchQuery, setSearchQuery] = useState("");
   const [mapCenter, setMapCenter] = useState([9.6258, 76.761]); // Kerala default
   const [markerPosition, setMarkerPosition] = useState(null);
-
-  const mapRef = useRef(null);
+  const [map, setMap] = useState(null);
 
   /* CLICK TO SELECT LOCATION */
   const MapClickHandler = () => {
@@ -31,7 +30,7 @@ function MapComponent({ onLocationSelect }) {
     return null;
   };
 
-  /* 🔍 SEARCH LOCATION (FIXED — NO API KEY) */
+  /* 📏 SEARCH LOCATION */
   const handleSearch = async () => {
     if (!searchQuery.trim()) return;
 
@@ -44,7 +43,7 @@ function MapComponent({ onLocationSelect }) {
 
       const data = await res.json();
 
-      if (!data.length) {
+      if (!data || data.length === 0) {
         alert("Location not found");
         return;
       }
@@ -52,17 +51,26 @@ function MapComponent({ onLocationSelect }) {
       const lat = parseFloat(data[0].lat);
       const lng = parseFloat(data[0].lon);
 
-      setMapCenter([lat, lng]);
       setMarkerPosition([lat, lng]);
       onLocationSelect?.([lng, lat]);
 
-      // ✅ move map
-      mapRef.current?.flyTo([lat, lng], 14);
+      if (map) {
+        map.flyTo([lat, lng], 14);
+      }
     } catch (err) {
       console.error("Search failed", err);
-      alert("Search failed");
+      alert("Search failed or service unavailable. Try a simpler name.");
     }
   };
+
+  /* 🔥 FIX FOR MAP NOT LOADING TILES CORRECTLY (GRAY AREAS) */
+  useEffect(() => {
+    if (map) {
+      setTimeout(() => {
+        map.invalidateSize();
+      }, 500);
+    }
+  }, [map]);
 
   return (
     <div className="map-wrapper">
@@ -71,7 +79,7 @@ function MapComponent({ onLocationSelect }) {
         <input
           className="search-box"
           type="text"
-          placeholder="Enter location..."
+          placeholder="Enter location (e.g. Kottayam)..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && handleSearch()}
@@ -86,11 +94,11 @@ function MapComponent({ onLocationSelect }) {
         center={mapCenter}
         zoom={10}
         className="map-container"
-        style={{ height: "420px", width: "100%" }}
-        whenCreated={(map) => (mapRef.current = map)}
+        style={{ height: "420px", width: "100%", zIndex: 1 }}
+        ref={setMap}
       >
         <TileLayer
-          attribution="&copy; OpenStreetMap contributors"
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
 

@@ -83,6 +83,17 @@ const ShowWRinC = ({ data, sendDataToParent, onPickUp }) => {
                   <br />
                   <b>Quantity:</b> {req.wasteQuantity || 0} kg/bags
                   <br />
+                  <b>Location:</b> {req.location ? (
+                    <a
+                      href={`https://www.google.com/maps?q=${req.location[1]},${req.location[0]}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      style={{ color: "#4a634a", fontWeight: "bold", textDecoration: "underline" }}
+                    >
+                      View on Google Maps ({req.location[1].toFixed(4)}, {req.location[0].toFixed(4)})
+                    </a>
+                  ) : "No location provided"}
+                  <br />
                   {req.image && (
                     <>
                       <b>Image:</b>
