@@ -8,9 +8,16 @@ const SOCKET_URL = process.env.REACT_APP_API_URL;
 function ChatBox({ disposerId, collectorId, userRole }) {
   const socketRef = useRef(null);
   const [open, setOpen] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const messagesEndRef = useRef(null);
+
+  const openRef = useRef(open);
+  useEffect(() => {
+    openRef.current = open;
+    if (open) setUnreadCount(0);
+  }, [open]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "auto" });
@@ -53,7 +60,7 @@ function ChatBox({ disposerId, collectorId, userRole }) {
   }, [roomId, open]);
 
   useEffect(() => {
-    if (!open || !roomId) return;
+    if (!roomId) return;
 
     socketRef.current = io(SOCKET_URL, {
       transports: ["websocket"],
@@ -63,12 +70,15 @@ function ChatBox({ disposerId, collectorId, userRole }) {
 
     socketRef.current.on("receive_message", (data) => {
       setMessages((prev) => [...prev, data]);
+      if (!openRef.current) {
+        setUnreadCount((prev) => prev + 1);
+      }
     });
 
     return () => {
       socketRef.current.disconnect();
     };
-  }, [open, roomId]);
+  }, [roomId]);
 
   const sendMessage = () => {
     if (!message.trim() || !roomId) return;
@@ -90,6 +100,9 @@ function ChatBox({ disposerId, collectorId, userRole }) {
       {/* 💬 CHAT TOGGLE BUTTON */}
       <button className="chat-toggle-btn" onClick={() => setOpen(!open)}>
         {open ? <FaXmark size={22} /> : <FaMessage size={22} />}
+        {!open && unreadCount > 0 && (
+          <span className="chat-notification-badge">{unreadCount}</span>
+        )}
       </button>
 
       {/* ❌ No collector assigned or no disposer active */}
