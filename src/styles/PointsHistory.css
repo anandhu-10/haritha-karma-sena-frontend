@@ -1,0 +1,93 @@
+.history-container {
+    padding: 20px;
+    background: #fdfdfd;
+    border-radius: 16px;
+    margin: 20px;
+    font-family: 'Outfit', 'Poppins', sans-serif;
+    animation: fadeIn 0.5s ease-out;
+}
+
+.history-header {
+    text-align: center;
+    margin-bottom: 30px;
+    background: linear-gradient(135deg, #1976d2, #1565c0);
+    color: white;
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.history-header .header-icon {
+    font-size: 40px;
+    margin-bottom: 10px;
+    color: #fff;
+}
+
+.history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.history-card {
+    display: flex;
+    align-items: center;
+    background: white;
+    padding: 15px 20px;
+    border-radius: 12px;
+    border: 1px solid #eee;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+    transition: transform 0.2s ease;
+}
+
+.history-card:hover {
+    transform: translateX(5px);
+}
+
+.history-card.positive {
+    border-left: 5px solid #4caf50;
+}
+
+.history-card.negative {
+    border-left: 5px solid #f44336;
+}
+
+.history-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #f5f5f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    margin-right: 15px;
+}
+
+.history-details {
+    flex: 1;
+}
+
+.history-details h4 {
+    margin: 0 0 5px 0;
+    color: #333;
+    font-size: 16px;
+}
+
+.history-date {
+    color: #888;
+    font-size: 13px;
+}
+
+.history-points {
+    font-weight: 700;
+    font-size: 18px;
+}
+
+.points.plus {
+    color: #4caf50;
+}
+
+.points.minus {
+    color: #f44336;
+}

@@ -1,0 +1,110 @@
+.leaderboard-container {
+    padding: 20px;
+    background: #fdfdfd;
+    border-radius: 16px;
+    margin: 20px;
+    font-family: 'Outfit', 'Poppins', sans-serif;
+    animation: fadeIn 0.5s ease-out;
+}
+
+.leaderboard-header {
+    text-align: center;
+    margin-bottom: 30px;
+    background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+    color: white;
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.leaderboard-header .header-icon {
+    font-size: 40px;
+    margin-bottom: 10px;
+    color: #ffd700;
+}
+
+.leaderboard-header h2 {
+    margin: 0;
+    font-size: 26px;
+    font-weight: 700;
+}
+
+.leaderboard-header p {
+    margin: 5px 0 0 0;
+    opacity: 0.9;
+}
+
+.leaderboard-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.leaderboard-card {
+    display: flex;
+    align-items: center;
+    background: white;
+    padding: 15px 20px;
+    border-radius: 12px;
+    border: 1px solid #eee;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.leaderboard-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+.leaderboard-card.top-rank {
+    background: linear-gradient(to right, #ffffff, #fffdf0);
+    border: 1px solid #ffeba1;
+}
+
+.rank-col {
+    width: 50px;
+    font-size: 20px;
+    font-weight: 700;
+    color: #666;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.name-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.name-col h4 {
+    margin: 0;
+    font-size: 18px;
+    color: #333;
+}
+
+.champion-badge {
+    font-size: 12px;
+    color: #b21f1f;
+    font-weight: 600;
+    margin-top: 4px;
+}
+
+.points-col {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    font-size: 18px;
+    color: #2e7d32;
+    background: #e8f5e9;
+    padding: 8px 15px;
+    border-radius: 30px;
+}
+
+.empty-message {
+    text-align: center;
+    padding: 30px;
+    color: #666;
+    font-size: 16px;
+}

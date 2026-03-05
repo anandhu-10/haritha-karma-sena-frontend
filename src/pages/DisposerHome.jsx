@@ -8,8 +8,11 @@ import ServiceSlider from "../components/ServiceSlider";
 import ListWaste from "../components/ListWaste";
 import ChatBox from "../components/ChatBox";
 import Monitoring from "../components/Monitoring";
+import Leaderboard from "../components/Leaderboard";
+import Rewards from "../components/Rewards";
+import PointsHistory from "../components/PointsHistory";
 
-import { FaTrashCanArrowUp, FaChartLine } from "react-icons/fa6";
+import { FaTrashCanArrowUp, FaChartLine, FaTrophy, FaGift, FaClockRotateLeft } from "react-icons/fa6";
 
 /* ---------- CONTEXT ---------- */
 export const WasteContext = React.createContext();
@@ -17,7 +20,10 @@ export const WasteContext = React.createContext();
 /* ---------- SLIDER DATA ---------- */
 const sliderData = [
   { label: "Dispose Waste", path: "" },
-  { label: "Monitoring & Awareness", path: "" }
+  { label: "Monitoring & Awareness", path: "" },
+  { label: "Leaderboard", path: "" },
+  { label: "Rewards", path: "" },
+  { label: "Points History", path: "" }
 ];
 
 const API = process.env.REACT_APP_API_URL;
@@ -41,6 +47,29 @@ function DisposerHome() {
   const user = JSON.parse(localStorage.getItem("user"));
   const userId = user?.id || user?._id;
   const token = localStorage.getItem("token");
+
+  /* ---------- USER PROFILE & POINTS ---------- */
+  const [userProfile, setUserProfile] = useState({});
+
+  const fetchUserProfile = async () => {
+    try {
+      const res = await axios.get(`${API}/api/auth/profile`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setUserProfile(res.data);
+      // Update local storage user if points changed
+      if (res.data && res.data.communityPoints !== undefined) {
+        const currentUser = JSON.parse(localStorage.getItem("user"));
+        localStorage.setItem("user", JSON.stringify({ ...currentUser, communityPoints: res.data.communityPoints }));
+      }
+    } catch (err) {
+      console.error("Failed to fetch profile", err);
+    }
+  };
+
+  useEffect(() => {
+    if (token) fetchUserProfile();
+  }, [token]);
 
   /* ---------- PAYMENT CHECK ---------- */
   useEffect(() => {
@@ -159,7 +188,7 @@ function DisposerHome() {
 
         <ServiceSlider
           sliderData={sliderData}
-          icons={[FaTrashCanArrowUp, FaChartLine]}
+          icons={[FaTrashCanArrowUp, FaChartLine, FaTrophy, FaGift, FaClockRotateLeft]}
           changeServicePage={setChangeSlider}
         />
 
@@ -173,6 +202,18 @@ function DisposerHome() {
 
         {changeSlider === 1 && (
           <Monitoring myRequests={myRequests} disposerProfile={disposerProfile} />
+        )}
+
+        {changeSlider === 2 && (
+          <Leaderboard />
+        )}
+
+        {changeSlider === 3 && (
+          <Rewards currentPoints={userProfile.communityPoints || 0} fetchUserProfile={fetchUserProfile} />
+        )}
+
+        {changeSlider === 4 && (
+          <PointsHistory />
         )}
 
         <Outlet />

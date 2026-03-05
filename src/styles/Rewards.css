@@ -1,0 +1,160 @@
+.rewards-container {
+    padding: 20px;
+    background: #fdfdfd;
+    border-radius: 16px;
+    margin: 20px;
+    font-family: 'Outfit', 'Poppins', sans-serif;
+    animation: fadeIn 0.5s ease-out;
+}
+
+.rewards-header {
+    text-align: center;
+    margin-bottom: 30px;
+    background: linear-gradient(135deg, #43a047, #1b5e20);
+    color: white;
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    position: relative;
+}
+
+.rewards-header .header-icon {
+    font-size: 40px;
+    margin-bottom: 10px;
+    color: #fffb00;
+}
+
+.current-points-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 10px 20px;
+    border-radius: 30px;
+    font-size: 18px;
+    font-weight: 700;
+    margin-top: 15px;
+    backdrop-filter: blur(5px);
+}
+
+.rewards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.reward-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid #eee;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.reward-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.reward-card.locked {
+    filter: grayscale(0.5);
+    opacity: 0.9;
+}
+
+.reward-card.affordable {
+    border-color: #43a047;
+}
+
+.reward-visual {
+    background: #f5f5f5;
+    height: 120px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.reward-icon {
+    font-size: 50px;
+    color: #666;
+}
+
+.badge-icon {
+    color: #fdbb2d;
+}
+
+.cert-icon {
+    color: #1a2a6c;
+}
+
+.item-icon {
+    color: #43a047;
+}
+
+.reward-info {
+    padding: 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.reward-info h3 {
+    margin: 0 0 10px 0;
+    font-size: 18px;
+    color: #333;
+}
+
+.reward-info p {
+    margin: 0 0 15px 0;
+    font-size: 14px;
+    color: #666;
+    flex: 1;
+}
+
+.points-req {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.progress-container {
+    height: 8px;
+    background: #eee;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 5px;
+}
+
+.progress-bar {
+    height: 100%;
+    background: #4caf50;
+    border-radius: 4px;
+}
+
+.claim-btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background: #43a047;
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    margin-top: auto;
+}
+
+.claim-btn:hover:not(:disabled) {
+    background: #2e7d32;
+}
+
+.claim-btn.disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    color: #666;
+}
