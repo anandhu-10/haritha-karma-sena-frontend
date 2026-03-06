@@ -97,7 +97,7 @@ const AdminRewards = () => {
                     {rewards.map(r => (
                         <li key={r._id} style={{ display: 'flex', justifyContent: 'space-between', padding: '15px', background: '#f4f7fe', marginBottom: '10px', borderRadius: '8px' }}>
                             <div>
-                                <strong>{r.title}</strong> <span className="status-badge" style={{ background: '#4318FF', color: 'white', marginLeft: '10px' }}>{r.pointsRequired} pts</span>
+                                <strong>{r.title}</strong> <span className="status-badge" style={{ background: '#4CAF50', color: 'white', marginLeft: '10px' }}>{r.pointsRequired} pts</span>
                                 <p style={{ margin: '5px 0 0', fontSize: '12px', color: '#707eae' }}>{r.description}</p>
                             </div>
                             <button onClick={() => handleDeleteReward(r._id)} className="btn-delete" style={{ alignSelf: 'center' }}>Delete</button>
