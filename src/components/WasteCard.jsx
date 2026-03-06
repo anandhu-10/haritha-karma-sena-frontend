@@ -8,7 +8,7 @@ import { WasteContext } from "../pages/DisposerHome";
 export const CancelWasteContext = React.createContext();
 
 function WasteCard() {
-  const { wasteDetails, setWasteDetails, user } = useContext(WasteContext);
+  const { wasteDetails, setWasteDetails } = useContext(WasteContext);
 
   const [showActivity, setShowActivity] = useState(false);
   const [deleteWasteTab, setDeleteWasteTab] = useState(false);
