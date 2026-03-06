@@ -21,3 +21,22 @@
   min-height: 500px;
   overflow: visible;
 }
+
+/* --- Responsive Media Queries --- */
+@media screen and (max-width: 900px) {
+  .collectorhome {
+    flex-direction: column;
+  }
+
+  .main-content {
+    margin: 10px;
+    padding-top: 10px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .main-content {
+    margin: 5px;
+    padding-top: 5px;
+  }
+}

@@ -114,3 +114,57 @@
   font-size: 13px !important;
   opacity: 0.8;
 }
+
+/* --- Responsive Media Queries --- */
+@media screen and (max-width: 900px) {
+  .sidebar {
+    width: 60px;
+    padding: 20px 10px;
+    align-items: center;
+    border-radius: 10px;
+    margin: 10px;
+    height: auto;
+    position: relative;
+    top: 0;
+  }
+
+  .sidebar-header {
+    border-bottom: none;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+  }
+
+  .avatar-circle {
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+  }
+
+  .header-text {
+    display: none;
+  }
+
+  .sidebar-menu li a {
+    justify-content: center;
+    padding: 12px;
+  }
+
+  .sidebar-menu li a span {
+    display: none;
+  }
+
+  .menu-divider {
+    display: none;
+  }
+
+  .sidebar-menu li:not(.active) a:hover {
+    padding-left: 12px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .sidebar {
+    display: none;
+    /* Alternatively, implement a fixed bottom nav or hamburger menu here */
+  }
+}
