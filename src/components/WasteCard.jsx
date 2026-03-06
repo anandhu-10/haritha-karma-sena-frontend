@@ -12,7 +12,6 @@ function WasteCard() {
 
   const [showActivity, setShowActivity] = useState(false);
   const [deleteWasteTab, setDeleteWasteTab] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   const cardRef = useRef(null);
   const currentWaste = wasteDetails?.[0] || null;
@@ -41,45 +40,6 @@ function WasteCard() {
     setWasteDetails((prev) => prev.filter((_, i) => i !== index));
     setDeleteWasteTab(false);
     setShowActivity(false);
-  };
-
-  /* ---------- SEND TO COLLECTOR (NEW) ---------- */
-  const submitToCollector = async () => {
-    if (!currentWaste) {
-      alert("No waste to submit");
-      return;
-    }
-
-    try {
-      setLoading(true);
-
-      const payload = {
-        disposerId: user._id,
-        disposerName: user.name || user.username,
-        wasteTypes: currentWaste.wasteTypes,
-        location: currentWaste.location,
-        date: new Date().toLocaleString(),
-        status: "Pending",
-      };
-
-      const res = await fetch(
-        `${process.env.REACT_APP_API_URL}/disposer-requests`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        }
-      );
-
-      if (!res.ok) throw new Error("Failed");
-
-      alert("Request sent to collector");
-    } catch (err) {
-      console.error(err);
-      alert("Failed to send request");
-    } finally {
-      setLoading(false);
-    }
   };
 
   return (
