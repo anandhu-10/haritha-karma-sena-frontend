@@ -90,26 +90,25 @@ function DisposerHome() {
   }, [token]);
 
   /* ---------- FETCH MY REQUESTS (🔥 IMPORTANT) ---------- */
-  useEffect(() => {
-    const fetchMyRequests = async () => {
-      try {
-        const res = await axios.get(
-          `${API}/api/disposer-requests/my`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        console.log("API RESPONSE:", res.data);
-        setMyRequests(res.data || []);
-      } catch (err) {
-        console.error("Failed to fetch my requests", err);
-      }
-    };
-
-    if (token) fetchMyRequests();
+  const fetchMyRequests = useCallback(async () => {
+    try {
+      const res = await axios.get(`${API}/api/disposer-requests/my`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setMyRequests(res.data || []);
+      setWasteDetails(res.data || []);
+    } catch (err) {
+      console.error("Failed to fetch my requests", err);
+    }
   }, [token]);
+
+  useEffect(() => {
+    if (token) {
+      fetchMyRequests();
+      const intervalId = setInterval(fetchMyRequests, 10000);
+      return () => clearInterval(intervalId);
+    }
+  }, [token, fetchMyRequests]);
 
   /* ---------- PAY ₹50 ---------- */
   const handlePayment = async () => {

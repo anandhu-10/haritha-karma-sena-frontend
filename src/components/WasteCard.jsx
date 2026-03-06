@@ -85,27 +85,21 @@ function WasteCard() {
   return (
     <div className="waste-card" ref={cardRef}>
       <div
-        className={`contentWaste ${
-          showActivity ? "hide" : ""
-        } ${!currentWaste ? "makeBackground" : ""}`}
+        className={`contentWaste ${showActivity ? "hide" : ""
+          } ${!currentWaste ? "makeBackground" : ""}`}
       >
         {currentWaste ? (
           <div className="contentWasteInner">
             <div className="left-content">
               <ul>
                 <li>{currentWaste.date || "—"}</li>
-                <li id="main">{currentWaste.wasteTypes || "Waste"}</li>
+                <li id="main">
+                  {Array.isArray(currentWaste.wasteTypes)
+                    ? currentWaste.wasteTypes.join(", ")
+                    : currentWaste.wasteTypes || "Waste"}
+                </li>
                 <li>Status: {currentWaste.status || "Pending"}</li>
               </ul>
-
-              {/* ✅ SEND BUTTON */}
-              <button
-                className="submit-btn"
-                onClick={submitToCollector}
-                disabled={loading}
-              >
-                {loading ? "Sending..." : "Send to Collector"}
-              </button>
             </div>
 
             <div className="right-content">
