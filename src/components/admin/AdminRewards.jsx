@@ -19,7 +19,7 @@ const AdminRewards = () => {
 
     const fetchLeaderboard = async () => {
         try {
-            const { data } = await axios.get("http://localhost:5000/api/leaderboard");
+            const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/api/leaderboard`);
             setLeaderboard(data);
         } catch (error) {
             console.error("Error fetching leaderboard:", error);
@@ -28,7 +28,7 @@ const AdminRewards = () => {
 
     const fetchRewards = async () => {
         try {
-            const { data } = await axios.get("http://localhost:5000/api/rewards");
+            const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/api/rewards`);
             setRewards(data);
         } catch (error) {
             console.error("Error fetching rewards:", error);
@@ -39,7 +39,7 @@ const AdminRewards = () => {
         e.preventDefault();
         try {
             const token = localStorage.getItem("token");
-            await axios.post("http://localhost:5000/api/rewards", {
+            await axios.post(`${process.env.REACT_APP_API_URL}/api/rewards`, {
                 title, description, pointsRequired: Number(pointsRequired), rewardType, iconType
             }, {
                 headers: { Authorization: `Bearer ${token}` },
@@ -56,7 +56,7 @@ const AdminRewards = () => {
     const handleDeleteReward = async (id) => {
         try {
             const token = localStorage.getItem("token");
-            await axios.delete(`http://localhost:5000/api/rewards/${id}`, {
+            await axios.delete(`${process.env.REACT_APP_API_URL}/api/rewards/${id}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             fetchRewards();

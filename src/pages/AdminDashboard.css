@@ -60,6 +60,9 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
+  position: static !important;
+  right: auto !important;
+  left: auto !important;
 }
 
 .sidebar-nav li {

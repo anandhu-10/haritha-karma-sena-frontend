@@ -11,7 +11,7 @@ const AdminRequests = () => {
     const fetchRequests = async () => {
         try {
             const token = localStorage.getItem("token");
-            const { data } = await axios.get("http://localhost:5000/api/admin/requests", {
+            const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/api/admin/requests`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setRequests(data);
