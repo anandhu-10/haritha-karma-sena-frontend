@@ -144,38 +144,40 @@ function Login() {
             <div className="usertype">
               <p>Login as</p>
 
-              <label>
-                <input
-                  type="radio"
-                  name="role"
-                  value="disposer"
-                  checked={formData.role === "disposer"}
-                  onChange={handleChange}
-                />
-                Disposer
-              </label>
+              <div className="usertype-options">
+                <label>
+                  <input
+                    type="radio"
+                    name="role"
+                    value="disposer"
+                    checked={formData.role === "disposer"}
+                    onChange={handleChange}
+                  />
+                  Disposer
+                </label>
 
-              <label>
-                <input
-                  type="radio"
-                  name="role"
-                  value="collector"
-                  checked={formData.role === "collector"}
-                  onChange={handleChange}
-                />
-                Collector
-              </label>
+                <label>
+                  <input
+                    type="radio"
+                    name="role"
+                    value="collector"
+                    checked={formData.role === "collector"}
+                    onChange={handleChange}
+                  />
+                  Collector
+                </label>
 
-              <label>
-                <input
-                  type="radio"
-                  name="role"
-                  value="admin"
-                  checked={formData.role === "admin"}
-                  onChange={handleChange}
-                />
-                Admin
-              </label>
+                <label>
+                  <input
+                    type="radio"
+                    name="role"
+                    value="admin"
+                    checked={formData.role === "admin"}
+                    onChange={handleChange}
+                  />
+                  Admin
+                </label>
+              </div>
             </div>
 
             <input

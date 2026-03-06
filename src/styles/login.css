@@ -25,7 +25,7 @@
     padding: 20px;
     background-color: #fff;
     border-radius: 15px;
-    box-shadow: 0 0 30px rgba(0,0,0,0.1);
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
 }
 
 /* TITLE */
@@ -53,21 +53,38 @@ input[type="password"]:hover {
 /* USER TYPE FIX */
 .usertype {
     padding: 10px 0;
-    width: 100%;            /* 🔑 FIX */
+    width: 100%;
+}
+
+.usertype p {
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #333;
+    font-weight: 500;
+}
+
+.usertype-options {
+    display: flex;
+    gap: 20px;
+    align-items: center;
 }
 
 /* Align radio + text */
 .usertype label {
-    display: flex;          /* 🔑 FIX */
+    display: flex;
     align-items: center;
-    gap: 8px;
-    margin-bottom: 6px;
+    gap: 6px;
     cursor: pointer;
+    font-size: 14px;
+    color: #555;
+    margin: 0;
 }
 
 /* Remove default radio spacing */
 .usertype input[type="radio"] {
     margin: 0;
+    width: 16px;
+    height: 16px;
 }
 
 /* BUTTON */
