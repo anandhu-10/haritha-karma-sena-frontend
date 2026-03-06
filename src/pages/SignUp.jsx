@@ -129,6 +129,17 @@ function SignUp() {
                 />
                 Collector
               </label>
+
+              <label>
+                <input
+                  type="radio"
+                  name="role"
+                  value="admin"
+                  checked={formData.role === "admin"}
+                  onChange={handleChange}
+                />
+                Admin
+              </label>
             </div>
 
             <input type="submit" value="Sign Up" />

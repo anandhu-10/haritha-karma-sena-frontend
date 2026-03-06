@@ -64,7 +64,9 @@ function Login() {
       localStorage.setItem("user", JSON.stringify(res.data.user));
 
       /* ✅ REDIRECT BASED ON ROLE */
-      if (res.data.user.role === "collector") {
+      if (res.data.user.role === "admin") {
+        navigate("/admin", { replace: true });
+      } else if (res.data.user.role === "collector") {
         navigate("/collector", { replace: true });
       } else {
         navigate("/disposer", { replace: true });
@@ -162,6 +164,17 @@ function Login() {
                   onChange={handleChange}
                 />
                 Collector
+              </label>
+
+              <label>
+                <input
+                  type="radio"
+                  name="role"
+                  value="admin"
+                  checked={formData.role === "admin"}
+                  onChange={handleChange}
+                />
+                Admin
               </label>
             </div>
 
