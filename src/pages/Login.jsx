@@ -13,11 +13,9 @@ function Login() {
   const [width, setWidth] = useState(window.innerWidth);
   const [hide, setHide] = useState(true);
   const [loading, setLoading] = useState(false);
-
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    role: "",
   });
 
   /* ---------- DEBUG (REMOVE LATER) ---------- */
@@ -42,11 +40,6 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.role) {
-      alert("Please select Disposer or Collector");
-      return;
-    }
-
     setLoading(true);
 
     try {
@@ -55,7 +48,6 @@ function Login() {
         {
           email: formData.email.trim().toLowerCase(),
           password: formData.password,
-          role: formData.role,
         }
       );
 
@@ -141,44 +133,6 @@ function Login() {
               required
             />
 
-            <div className="usertype">
-              <p>Login as</p>
-
-              <div className="usertype-options">
-                <label>
-                  <input
-                    type="radio"
-                    name="role"
-                    value="disposer"
-                    checked={formData.role === "disposer"}
-                    onChange={handleChange}
-                  />
-                  Disposer
-                </label>
-
-                <label>
-                  <input
-                    type="radio"
-                    name="role"
-                    value="collector"
-                    checked={formData.role === "collector"}
-                    onChange={handleChange}
-                  />
-                  Collector
-                </label>
-
-                <label>
-                  <input
-                    type="radio"
-                    name="role"
-                    value="admin"
-                    checked={formData.role === "admin"}
-                    onChange={handleChange}
-                  />
-                  Admin
-                </label>
-              </div>
-            </div>
 
             <input
               type="submit"
