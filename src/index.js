@@ -18,7 +18,8 @@ import CollectorHome from "./pages/CollectorHome";
 import DisposerHome from "./pages/DisposerHome";
 import DisposerDetails from "./pages/DisposerDetails";
 import ProfilePage from "./pages/ProfilePage";
-import CollectorHelp from "./pages/CollectorHelp"; // ✅ ADD THIS
+import CollectorHelp from "./pages/CollectorHelp";
+import AdminDashboard from "./pages/AdminDashboard";
 
 /* ---------- COMPONENTS ---------- */
 import AddItemsC from "./components/AddItemsC";
@@ -79,6 +80,15 @@ const router = createBrowserRouter([
     children: [
       { path: "profile", element: <ProfilePage /> },
     ],
+  },
+
+  {
+    path: "/admin",
+    element: (
+      <ProtectedRoute role="admin">
+        <AdminDashboard />
+      </ProtectedRoute>
+    ),
   },
 
   { path: "*", element: <Navigate to="/" replace /> },
