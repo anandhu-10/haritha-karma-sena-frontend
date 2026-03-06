@@ -129,14 +129,12 @@ function SignUp() {
                 />
                 Collector
               </label>
+            </div>
 
-            </label>
+            <input type="submit" value="Sign Up" />
+          </form>
         </div>
-
-        <input type="submit" value="Sign Up" />
-      </form>
-    </div >
-      </div >
+      </div>
     </>
   );
 }
