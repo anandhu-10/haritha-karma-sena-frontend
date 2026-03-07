@@ -35,6 +35,16 @@ function WasteCard() {
     return () => document.removeEventListener("mousedown", handleClick);
   }, []);
 
+  /* ---------- STATUS HELPER ---------- */
+  const getStatusClass = (status) => {
+    switch (status?.toLowerCase()) {
+      case "picked up": return "status-picked-up";
+      case "completed": return "status-completed";
+      case "cancelled": return "status-cancelled";
+      default: return "status-pending";
+    }
+  };
+
   /* ---------- DELETE WASTE ---------- */
   const handleWasteDelete = (index) => {
     setWasteDetails((prev) => prev.filter((_, i) => i !== index));
@@ -43,13 +53,13 @@ function WasteCard() {
   };
 
   return (
-    <div className="waste-card" ref={cardRef}>
+    <div className={`waste-card ${getStatusClass(currentWaste?.status)}`} ref={cardRef}>
       <div
         className={`contentWaste ${showActivity ? "hide" : ""
           } ${!currentWaste ? "makeBackground" : ""}`}
       >
         {currentWaste ? (
-          <div className="contentWasteInner">
+          <div className="contentWasteInner" style={{ display: 'flex', width: '100%', justifyContent: 'space-between', alignItems: 'center' }}>
             <div className="left-content">
               <ul>
                 <li>{currentWaste.date || "—"}</li>
@@ -65,13 +75,16 @@ function WasteCard() {
             <div className="right-content">
               {!deleteWasteTab ? (
                 <div className="statusDetails">
-                  <h4>Status : {currentWaste.status || "Pending"}</h4>
+                  <h4>{currentWaste.status || "Pending"}</h4>
 
-                  {currentWaste.status !== "Completed" && (
+                  {currentWaste.status === "Pending" && (
                     <div className="icons">
                       <GiCancel
                         className="ico"
-                        onClick={() => setDeleteWasteTab(true)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setDeleteWasteTab(true);
+                        }}
                       />
                     </div>
                   )}
@@ -81,16 +94,22 @@ function WasteCard() {
                   <h4>Are you sure?</h4>
                   <section>
                     <button
-                      onClick={() => setDeleteWasteTab(false)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setDeleteWasteTab(false);
+                      }}
                       id="cancel-bT"
                     >
-                      Cancel
+                      No
                     </button>
                     <button
                       id="delete-bT"
-                      onClick={() => handleWasteDelete(0)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleWasteDelete(0);
+                      }}
                     >
-                      Delete
+                      Yes, Cancel
                     </button>
                   </section>
                 </div>
