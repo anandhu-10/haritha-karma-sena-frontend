@@ -140,8 +140,11 @@ function Login() {
               disabled={loading}
             />
 
-            <div style={{ fontSize: "15px", fontStyle: "italic" }}>
-              Don't have an account? <Link to="/signup">Create one</Link>
+            <div style={{ display: "flex", justifyContent: "space-between", marginTop: "10px", fontSize: "14px", width: "100%", padding: "0 5px" }}>
+              <Link to="/forgot-password" style={{ color: "#4CAF50", textDecoration: "none", fontWeight: "600" }}>Forgot password?</Link>
+              <div style={{ fontStyle: "italic", color: "#666" }}>
+                Not registered? <Link to="/signup" style={{ color: "#4CAF50", textDecoration: "none", fontWeight: "600" }}>Create account</Link>
+              </div>
             </div>
           </form>
         </div>

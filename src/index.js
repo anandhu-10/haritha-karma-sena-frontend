@@ -12,6 +12,7 @@ import "leaflet/dist/leaflet.css";
 /* ---------- PAGES ---------- */
 import Home from "./Home";
 import Login from "./pages/Login";
+import ForgotPassword from "./pages/ForgotPassword";
 import SignUp from "./pages/SignUp";
 import About from "./pages/About";
 import CollectorHome from "./pages/CollectorHome";
@@ -43,6 +44,7 @@ const ProtectedRoute = ({ children, role }) => {
 const router = createBrowserRouter([
   { path: "/", element: <Home /> },
   { path: "/login", element: <Login /> },
+  { path: "/forgot-password", element: <ForgotPassword /> },
   { path: "/signup", element: <SignUp /> },
   { path: "/about", element: <About /> },
 

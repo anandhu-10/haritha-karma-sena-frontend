@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../../styles/ShowWRinC.css";
 import Popup from "./Popup";
+import ReactPaginate from 'react-paginate';
 
 /**
  * onPickUp 👉 function passed from NewRqFromD
@@ -55,6 +56,20 @@ const ShowWRinC = ({ data, sendDataToParent, onPickUp }) => {
     return <p style={{ padding: 20 }}>No Waste Requests</p>;
   }
 
+  // Pagination logic
+  const itemsPerPage = 5;
+  const itemOffset = isOpen ? 0 : window.cPaginationOffset || 0; // Store in window object or local state
+
+  const [currentPage, setCurrentPage] = useState(0);
+
+  const endOffset = currentPage * itemsPerPage + itemsPerPage;
+  const currentItems = localData.slice(currentPage * itemsPerPage, endOffset);
+  const pageCount = Math.ceil(localData.length / itemsPerPage);
+
+  const handlePageClick = (event) => {
+    setCurrentPage(event.selected);
+  };
+
   return (
     <div className="WasteRQSection">
       {/* 🔔 CONFIRM POPUP */}
@@ -70,9 +85,9 @@ const ShowWRinC = ({ data, sendDataToParent, onPickUp }) => {
       <div className="table-container">
         <table className="WRQ-table">
           <tbody>
-            {localData.map((req, index) => (
+            {currentItems.map((req, index) => (
               <tr key={req._id}>
-                <td style={{ width: "50px" }}>{index + 1}</td>
+                <td style={{ width: "50px" }}>{currentPage * itemsPerPage + index + 1}</td>
 
                 <td style={{ width: "600px" }}>
                   <b>Name:</b> {req.disposerName}
@@ -129,6 +144,22 @@ const ShowWRinC = ({ data, sendDataToParent, onPickUp }) => {
           </tbody>
         </table>
       </div>
+
+      {localData.length > itemsPerPage && (
+        <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '20px' }}>
+          <ReactPaginate
+            breakLabel="..."
+            nextLabel="Next >"
+            onPageChange={handlePageClick}
+            pageRangeDisplayed={3}
+            pageCount={pageCount}
+            previousLabel="< Prev"
+            renderOnZeroPageCount={null}
+            className="react-paginate"
+            activeClassName="active-page"
+          />
+        </div>
+      )}
     </div>
   );
 };
