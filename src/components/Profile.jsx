@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { MdLogout } from "react-icons/md";
 import { FaLocationDot, FaUser, FaBell, FaTrash } from "react-icons/fa6";
-import avatar from "../assets/noun-user-avatar-5787297.png";
 import ProfilePopup from "./ProfilePopup";
 import "../styles/Profile.css";
 
@@ -167,15 +166,15 @@ function Profile({ user, userType, reportLogout }) {
           </div>
 
           {/* AVATAR */}
-          <img
-            src={avatar}
-            alt="profile"
+          <div
             className="beforeExp"
             onClick={() => {
               setExpand(!expand);
               setShowNotify(false);
             }}
-          />
+          >
+            {(user.name || user.email || "U").charAt(0).toUpperCase()}
+          </div>
 
           {/* PROFILE DROPDOWN */}
           {expand && (
