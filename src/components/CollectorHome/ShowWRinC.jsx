@@ -60,7 +60,6 @@ const ShowWRinC = ({ data, sendDataToParent, onPickUp }) => {
 
   // Pagination logic
   const itemsPerPage = 5;
-  const itemOffset = isOpen ? 0 : window.cPaginationOffset || 0; // Store in window object or local state
 
   const endOffset = currentPage * itemsPerPage + itemsPerPage;
   const currentItems = localData.slice(currentPage * itemsPerPage, endOffset);
