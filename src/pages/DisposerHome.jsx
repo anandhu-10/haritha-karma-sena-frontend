@@ -11,8 +11,9 @@ import Monitoring from "../components/Monitoring";
 import Leaderboard from "../components/Leaderboard";
 import Rewards from "../components/Rewards";
 import PointsHistory from "../components/PointsHistory";
+import HelpCenter from "../components/HelpCenter";
 
-import { FaTrashCanArrowUp, FaChartLine, FaTrophy, FaGift, FaClockRotateLeft } from "react-icons/fa6";
+import { FaTrashCanArrowUp, FaChartLine, FaTrophy, FaGift, FaClockRotateLeft, FaCircleQuestion } from "react-icons/fa6";
 
 /* ---------- CONTEXT ---------- */
 export const WasteContext = React.createContext();
@@ -23,7 +24,8 @@ const sliderData = [
   { label: "Monitoring & Awareness", path: "" },
   { label: "Leaderboard", path: "" },
   { label: "Rewards", path: "" },
-  { label: "Points History", path: "" }
+  { label: "Points History", path: "" },
+  { label: "Help & Support", path: "" }
 ];
 
 const API = process.env.REACT_APP_API_URL;
@@ -187,7 +189,7 @@ function DisposerHome() {
 
         <ServiceSlider
           sliderData={sliderData}
-          icons={[FaTrashCanArrowUp, FaChartLine, FaTrophy, FaGift, FaClockRotateLeft]}
+          icons={[FaTrashCanArrowUp, FaChartLine, FaTrophy, FaGift, FaClockRotateLeft, FaCircleQuestion]}
           changeServicePage={setChangeSlider}
         />
 
@@ -213,6 +215,10 @@ function DisposerHome() {
 
         {changeSlider === 4 && (
           <PointsHistory />
+        )}
+
+        {changeSlider === 5 && (
+          <HelpCenter />
         )}
 
         <Outlet />

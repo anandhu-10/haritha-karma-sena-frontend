@@ -18,7 +18,7 @@ import CollectorHome from "./pages/CollectorHome";
 import DisposerHome from "./pages/DisposerHome";
 import DisposerDetails from "./pages/DisposerDetails";
 import ProfilePage from "./pages/ProfilePage";
-import CollectorHelp from "./pages/CollectorHelp";
+import HelpCenter from "./components/HelpCenter"; // Replaced CollectorHelp
 import AdminDashboard from "./pages/AdminDashboard";
 
 /* ---------- COMPONENTS ---------- */
@@ -57,7 +57,7 @@ const router = createBrowserRouter([
       { index: true, element: <AddItemsC /> }, // Dashboard
       { path: "areas", element: <ViewCollectionAreas /> },
       { path: "requests", element: <NewRqFromD /> },
-      { path: "help", element: <CollectorHelp /> }, // ✅ ADD THIS
+      { path: "help", element: <HelpCenter /> }, // ✅ USING NEW HELPCENTER
     ],
   },
 
