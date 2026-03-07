@@ -74,6 +74,29 @@ export default function About() {
           </div>
         ))}
       </div>
+
+      {/* ABOUT THE APP SECTION */}
+      <div className="about-app-section">
+        <h2>What is Haritha Karma Sena?</h2>
+        <p>
+          Haritha Karma Sena is an innovative, community-driven platform designed to revolutionize waste management.
+          Our application bridges the gap between citizens (Disposers) and dedicated waste management professionals (Collectors).
+        </p>
+        <div className="about-features">
+          <div className="about-feature">
+            <h3>🌱 For Disposers</h3>
+            <p>Easily log requests for waste pickup, track collection times, maintain clean environments, and earn community rewards for responsible segregation.</p>
+          </div>
+          <div className="about-feature">
+            <h3>🚛 For Collectors</h3>
+            <p>Access an organized dashboard of pending requests with map locations, streamline your collection routes, and communicate directly with citizens.</p>
+          </div>
+          <div className="about-feature">
+            <h3>🌍 Our Mission</h3>
+            <p>We aim to create a sustainable, zero-waste ecosystem by making proper waste disposal accessible, rewarding, and completely transparent for everyone involved.</p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
