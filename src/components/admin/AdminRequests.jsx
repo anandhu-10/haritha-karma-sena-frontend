@@ -56,9 +56,14 @@ const AdminRequests = () => {
                     Loading requests...
                 </div>
             ) : error ? (
-                <div style={{ textAlign: "center", padding: "40px", color: "#d32f2f", background: "#ffebee", borderRadius: "8px" }}>
-                    <p><strong>Error:</strong> {error}</p>
-                    <p style={{ marginTop: "10px", fontSize: "0.9rem" }}>Hitting API: {process.env.REACT_APP_API_URL || "https://haritha-karma-sena-backend.onrender.com"}</p>
+                <div style={{ textAlign: "center", padding: "40px", color: "#d32f2f", background: "#ffebee", borderRadius: "8px", margin: "20px" }}>
+                    <div style={{ fontSize: "2rem", marginBottom: "10px" }}>⚠️</div>
+                    <p><strong>Connection Error:</strong> {error}</p>
+                    <div style={{ marginTop: "15px", textAlign: "left", display: "inline-block", fontSize: "0.8rem", color: "#666", background: "#fff", padding: "10px", borderRadius: "4px", border: "1px solid #ddd" }}>
+                        <strong>Debug Info:</strong><br />
+                        Target: {process.env.REACT_APP_API_URL || "https://haritha-karma-sena-backend.onrender.com"}/api/admin/requests<br />
+                        Time: {new Date().toLocaleTimeString()}
+                    </div>
                 </div>
             ) : (
                 <>
