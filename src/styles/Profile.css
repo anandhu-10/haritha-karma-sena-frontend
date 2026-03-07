@@ -187,6 +187,8 @@
     border: 2px solid #D3DACF;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     animation: pulse 2s infinite;
+    pointer-events: none;
+    user-select: none;
 }
 
 @keyframes pulse {

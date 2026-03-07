@@ -155,17 +155,13 @@ function Profile({ user, userType, reportLogout }) {
           )}
 
           {/* 🔔 NOTIFICATION ICON */}
-          <div style={{ position: "relative", marginRight: "15px" }}>
-            <FaBell
-              size={18}
-              style={{ cursor: "pointer" }}
-              onClick={handleToggleNotify}
-            />
+          <div style={{ position: "relative", marginRight: "15px", cursor: "pointer", display: "flex", alignItems: "center" }} onClick={handleToggleNotify}>
+            <FaBell size={18} />
 
             {/* 🔴 NOTIFICATION COUNT */}
             {unreadCount > 0 && (
               <span className="notification-badge">
-                {unreadCount}
+                {unreadCount > 99 ? "99+" : unreadCount}
               </span>
             )}
           </div>
