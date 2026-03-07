@@ -286,6 +286,58 @@
   background: #fafbff;
 }
 
+/* Pagination */
+.pagination-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 25px;
+}
+
+.react-paginate {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  gap: 8px;
+  align-items: center;
+}
+
+.react-paginate li {
+  display: flex;
+}
+
+.react-paginate li a {
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  background: white;
+  color: #4a5568;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  user-select: none;
+}
+
+.react-paginate li a:hover {
+  background: #f4f7fe;
+  color: #4CAF50;
+  border-color: #4CAF50;
+}
+
+.react-paginate li.active-page a {
+  background: #4CAF50;
+  color: white;
+  border-color: #4CAF50;
+  pointer-events: none;
+}
+
+.react-paginate li.disabled a {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
 /* Badges */
 .status-badge {
   padding: 6px 12px;

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import ReactPaginate from 'react-paginate';
 
 const AdminRequests = () => {
     const [requests, setRequests] = useState([]);
@@ -20,6 +21,19 @@ const AdminRequests = () => {
         }
     };
 
+    // Pagination logic
+    const [itemOffset, setItemOffset] = useState(0);
+    const itemsPerPage = 8;
+
+    const endOffset = itemOffset + itemsPerPage;
+    const currentItems = requests.slice(itemOffset, endOffset);
+    const pageCount = Math.ceil(requests.length / itemsPerPage);
+
+    const handlePageClick = (event) => {
+        const newOffset = (event.selected * itemsPerPage) % requests.length;
+        setItemOffset(newOffset);
+    };
+
     return (
         <div className="admin-section">
             <h2>Waste Request Monitoring</h2>
@@ -37,7 +51,7 @@ const AdminRequests = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {requests.map(r => (
+                        {currentItems.map(r => (
                             <tr key={r._id}>
                                 <td>{new Date(r.createdAt).toLocaleDateString()}</td>
                                 <td>
@@ -73,6 +87,22 @@ const AdminRequests = () => {
                     </tbody>
                 </table>
             </div>
+
+            {requests.length > itemsPerPage && (
+                <div className="pagination-container">
+                    <ReactPaginate
+                        breakLabel="..."
+                        nextLabel="Next >"
+                        onPageChange={handlePageClick}
+                        pageRangeDisplayed={3}
+                        pageCount={pageCount}
+                        previousLabel="< Prev"
+                        renderOnZeroPageCount={null}
+                        className="react-paginate"
+                        activeClassName="active-page"
+                    />
+                </div>
+            )}
         </div>
     );
 };

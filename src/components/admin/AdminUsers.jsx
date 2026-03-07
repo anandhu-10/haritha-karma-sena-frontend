@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import ReactPaginate from 'react-paginate';
 
 const AdminUsers = () => {
     const [users, setUsers] = useState([]);
@@ -45,6 +46,19 @@ const AdminUsers = () => {
         }
     };
 
+    // Pagination logic
+    const [itemOffset, setItemOffset] = useState(0);
+    const itemsPerPage = 8;
+
+    const endOffset = itemOffset + itemsPerPage;
+    const currentItems = users.slice(itemOffset, endOffset);
+    const pageCount = Math.ceil(users.length / itemsPerPage);
+
+    const handlePageClick = (event) => {
+        const newOffset = (event.selected * itemsPerPage) % users.length;
+        setItemOffset(newOffset);
+    };
+
     return (
         <div className="admin-section">
             <h2>Manage Disposers</h2>
@@ -60,7 +74,7 @@ const AdminUsers = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {users.map(u => (
+                    {currentItems.map(u => (
                         <tr key={u._id}>
                             <td>{u.name}</td>
                             <td>{u.email}</td>
@@ -82,6 +96,22 @@ const AdminUsers = () => {
                     ))}
                 </tbody>
             </table>
+
+            {users.length > itemsPerPage && (
+                <div className="pagination-container">
+                    <ReactPaginate
+                        breakLabel="..."
+                        nextLabel="Next >"
+                        onPageChange={handlePageClick}
+                        pageRangeDisplayed={3}
+                        pageCount={pageCount}
+                        previousLabel="< Prev"
+                        renderOnZeroPageCount={null}
+                        className="react-paginate"
+                        activeClassName="active-page"
+                    />
+                </div>
+            )}
         </div>
     );
 };
