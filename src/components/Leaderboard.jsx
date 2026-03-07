@@ -3,7 +3,7 @@ import axios from "axios";
 import { FaMedal, FaTrophy, FaStar } from "react-icons/fa6";
 import "../styles/Leaderboard.css";
 
-const API = process.env.REACT_APP_API_URL;
+const API = (process.env.REACT_APP_API_URL || "https://haritha-karma-sena-backend.onrender.com");
 
 const Leaderboard = () => {
     const [topUsers, setTopUsers] = useState([]);

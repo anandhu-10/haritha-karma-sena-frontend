@@ -15,7 +15,7 @@ function NewRqFromD() {
   async function fetchNewRqFromD() {
     try {
       const res = await fetch(
-        `${process.env.REACT_APP_API_URL}/api/disposer-requests`
+        `${(process.env.REACT_APP_API_URL || "https://haritha-karma-sena-backend.onrender.com")}/api/disposer-requests`
       );
 
       const data = await res.json();
@@ -45,7 +45,7 @@ function NewRqFromD() {
       const userId = user?.id || user?._id;
 
       const res = await fetch(
-        `${process.env.REACT_APP_API_URL}/api/collector/pickup/${requestId}`,
+        `${(process.env.REACT_APP_API_URL || "https://haritha-karma-sena-backend.onrender.com")}/api/collector/pickup/${requestId}`,
         {
           method: "PATCH",
           headers: {

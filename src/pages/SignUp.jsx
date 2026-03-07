@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { RxHamburgerMenu } from "react-icons/rx";
 import axios from "axios";
 
-const API = process.env.REACT_APP_API_URL;
+const API = (process.env.REACT_APP_API_URL || "https://haritha-karma-sena-backend.onrender.com");
 
 
 function SignUp() {

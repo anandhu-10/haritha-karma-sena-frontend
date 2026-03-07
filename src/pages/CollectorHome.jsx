@@ -50,7 +50,7 @@ function CollectorHome() {
     const fetchActiveDisposer = async () => {
       try {
         const res = await axios.get(
-          `${process.env.REACT_APP_API_URL}/api/disposer-requests`,
+          `${(process.env.REACT_APP_API_URL || "https://haritha-karma-sena-backend.onrender.com")}/api/disposer-requests`,
         );
         const data = res.data || [];
         // Find a request picked up by this collector

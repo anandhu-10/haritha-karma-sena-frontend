@@ -12,7 +12,7 @@ const AdminCollectors = () => {
     const fetchCollectors = async () => {
         try {
             const token = localStorage.getItem("token");
-            const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/api/admin/collectors`, {
+            const { data } = await axios.get(`${(process.env.REACT_APP_API_URL || "https://haritha-karma-sena-backend.onrender.com")}/api/admin/collectors`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setCollectors(data);
@@ -24,7 +24,7 @@ const AdminCollectors = () => {
     const updateStatus = async (id, status) => {
         try {
             const token = localStorage.getItem("token");
-            await axios.put(`${process.env.REACT_APP_API_URL}/api/admin/users/${id}/status`, { status }, {
+            await axios.put(`${(process.env.REACT_APP_API_URL || "https://haritha-karma-sena-backend.onrender.com")}/api/admin/users/${id}/status`, { status }, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             fetchCollectors();
@@ -37,7 +37,7 @@ const AdminCollectors = () => {
         if (!window.confirm("Are you sure you want to delete this collector?")) return;
         try {
             const token = localStorage.getItem("token");
-            await axios.delete(`${process.env.REACT_APP_API_URL}/api/admin/users/${id}`, {
+            await axios.delete(`${(process.env.REACT_APP_API_URL || "https://haritha-karma-sena-backend.onrender.com")}/api/admin/users/${id}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             fetchCollectors();

@@ -3,7 +3,7 @@ import io from "socket.io-client";
 import { FaMessage, FaPaperPlane, FaXmark, FaUser } from "react-icons/fa6";
 import "../styles/ChatBox.css";
 
-const SOCKET_URL = process.env.REACT_APP_API_URL;
+const SOCKET_URL = (process.env.REACT_APP_API_URL || "https://haritha-karma-sena-backend.onrender.com");
 
 function ChatBox({ disposerId, collectorId, userRole }) {
   const socketRef = useRef(null);

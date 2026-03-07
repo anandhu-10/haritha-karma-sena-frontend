@@ -3,7 +3,7 @@ import axios from "axios";
 import { FaClockRotateLeft, FaArrowTrendUp, FaArrowTrendDown } from "react-icons/fa6";
 import "../styles/PointsHistory.css";
 
-const API = process.env.REACT_APP_API_URL;
+const API = (process.env.REACT_APP_API_URL || "https://haritha-karma-sena-backend.onrender.com");
 
 const PointsHistory = () => {
     const [history, setHistory] = useState([]);

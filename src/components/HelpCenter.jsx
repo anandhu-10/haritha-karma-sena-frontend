@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "../styles/helpCenter.css";
 
-const API = process.env.REACT_APP_API_URL;
+const API = (process.env.REACT_APP_API_URL || "https://haritha-karma-sena-backend.onrender.com");
 
 function HelpCenter() {
     const [complaints, setComplaints] = useState([]);

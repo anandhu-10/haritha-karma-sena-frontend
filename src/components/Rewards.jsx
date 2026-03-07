@@ -3,7 +3,7 @@ import axios from "axios";
 import { FaGift, FaStar, FaAward, FaCertificate } from "react-icons/fa6";
 import "../styles/Rewards.css";
 
-const API = process.env.REACT_APP_API_URL;
+const API = (process.env.REACT_APP_API_URL || "https://haritha-karma-sena-backend.onrender.com");
 
 const Rewards = ({ currentPoints, fetchUserProfile }) => {
     const [rewards, setRewards] = useState([]);

@@ -59,7 +59,7 @@ function Profile({ user, userType, reportLogout }) {
     if (!disposerId) return;
 
     try {
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/notifications/${disposerId}`);
+      const res = await fetch(`${(process.env.REACT_APP_API_URL || "https://haritha-karma-sena-backend.onrender.com")}/api/notifications/${disposerId}`);
       const data = await res.json();
       setNotifications(Array.isArray(data) ? data : []);
     } catch (err) {
@@ -86,7 +86,7 @@ function Profile({ user, userType, reportLogout }) {
     if (nextState && unreadCount > 0 && user) {
       try {
         const disposerId = user._id || user.id;
-        await fetch(`${process.env.REACT_APP_API_URL}/api/notifications/mark-read/${disposerId}`, {
+        await fetch(`${(process.env.REACT_APP_API_URL || "https://haritha-karma-sena-backend.onrender.com")}/api/notifications/mark-read/${disposerId}`, {
           method: "PATCH",
         });
         // local update to clear badge immediately
@@ -101,7 +101,7 @@ function Profile({ user, userType, reportLogout }) {
     if (!user || !window.confirm("Clear all notifications?")) return;
     try {
       const disposerId = user._id || user.id;
-      await fetch(`${process.env.REACT_APP_API_URL}/api/notifications/${disposerId}`, {
+      await fetch(`${(process.env.REACT_APP_API_URL || "https://haritha-karma-sena-backend.onrender.com")}/api/notifications/${disposerId}`, {
         method: "DELETE",
       });
       setNotifications([]);
@@ -112,7 +112,7 @@ function Profile({ user, userType, reportLogout }) {
 
   const handleDeleteOne = async (id) => {
     try {
-      await fetch(`${process.env.REACT_APP_API_URL}/api/notifications/single/${id}`, {
+      await fetch(`${(process.env.REACT_APP_API_URL || "https://haritha-karma-sena-backend.onrender.com")}/api/notifications/single/${id}`, {
         method: "DELETE",
       });
       setNotifications((prev) => prev.filter((n) => n._id !== id));

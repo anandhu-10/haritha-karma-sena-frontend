@@ -28,7 +28,7 @@ const sliderData = [
   { label: "Help & Support", path: "" }
 ];
 
-const API = process.env.REACT_APP_API_URL;
+const API = (process.env.REACT_APP_API_URL || "https://haritha-karma-sena-backend.onrender.com");
 
 function DisposerHome() {
   const navigate = useNavigate();

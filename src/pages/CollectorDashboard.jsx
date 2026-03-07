@@ -13,7 +13,7 @@ function CollectorDashboard() {
     async function fetchStats() {
       try {
         const res = await fetch(
-          `${process.env.REACT_APP_API_URL}/api/disposer-requests`
+          `${(process.env.REACT_APP_API_URL || "https://haritha-karma-sena-backend.onrender.com")}/api/disposer-requests`
         );
         const data = await res.json();
 

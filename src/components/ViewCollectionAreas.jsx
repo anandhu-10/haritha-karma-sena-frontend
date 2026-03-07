@@ -16,7 +16,7 @@ function ViewCollectionAreas() {
     async function fetchCollectionAreas() {
       try {
         const res = await fetch(
-          `${process.env.REACT_APP_API_URL}/api/collectionAreas`
+          `${(process.env.REACT_APP_API_URL || "https://haritha-karma-sena-backend.onrender.com")}/api/collectionAreas`
         );
 
         if (!res.ok) throw new Error("Failed to fetch");

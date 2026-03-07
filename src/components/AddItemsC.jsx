@@ -56,7 +56,7 @@ function AddItemsC() {
       };
 
       const res = await fetch(
-        `${process.env.REACT_APP_API_URL}/api/collectionAreas`, // ✅ FIXED
+        `${(process.env.REACT_APP_API_URL || "https://haritha-karma-sena-backend.onrender.com")}/api/collectionAreas`, // ✅ FIXED
         {
           method: "POST",
           headers: {

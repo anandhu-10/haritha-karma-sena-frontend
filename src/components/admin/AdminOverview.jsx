@@ -20,7 +20,7 @@ const AdminOverview = () => {
     const fetchStats = async () => {
         try {
             const token = localStorage.getItem("token");
-            const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/api/admin/stats`, {
+            const { data } = await axios.get(`${(process.env.REACT_APP_API_URL || "https://haritha-karma-sena-backend.onrender.com")}/api/admin/stats`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setStats(data);

@@ -12,7 +12,7 @@ const AdminAwareness = () => {
 
         try {
             const token = localStorage.getItem("token");
-            await axios.post(`${process.env.REACT_APP_API_URL}/api/admin/awareness`, { message, targetRole }, {
+            await axios.post(`${(process.env.REACT_APP_API_URL || "https://haritha-karma-sena-backend.onrender.com")}/api/admin/awareness`, { message, targetRole }, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setStatus("Notification sent successfully!");

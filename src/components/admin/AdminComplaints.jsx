@@ -12,7 +12,7 @@ const AdminComplaints = () => {
     const fetchComplaints = async () => {
         try {
             const token = localStorage.getItem("token");
-            const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/api/admin/complaints`, {
+            const { data } = await axios.get(`${(process.env.REACT_APP_API_URL || "https://haritha-karma-sena-backend.onrender.com")}/api/admin/complaints`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setComplaints(data);
@@ -26,7 +26,7 @@ const AdminComplaints = () => {
             const token = localStorage.getItem("token");
             const adminResponse = responseMsg[id] !== undefined ? responseMsg[id] : initialResponse;
 
-            await axios.put(`${process.env.REACT_APP_API_URL}/api/admin/complaints/${id}`, { status, adminResponse }, {
+            await axios.put(`${(process.env.REACT_APP_API_URL || "https://haritha-karma-sena-backend.onrender.com")}/api/admin/complaints/${id}`, { status, adminResponse }, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             fetchComplaints();

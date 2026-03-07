@@ -12,7 +12,7 @@ const AdminRequests = () => {
     const fetchRequests = async () => {
         try {
             const token = localStorage.getItem("token");
-            const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/api/admin/requests`, {
+            const { data } = await axios.get(`${(process.env.REACT_APP_API_URL || "https://haritha-karma-sena-backend.onrender.com")}/api/admin/requests`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setRequests(data);
