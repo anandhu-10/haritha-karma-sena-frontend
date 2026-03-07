@@ -60,8 +60,13 @@ const AdminOverview = () => {
                 boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)"
             }}>
                 <div style={{ fontSize: "3rem", marginBottom: "15px" }}>⚠️</div>
-                <h3 style={{ color: "#c53030", marginBottom: "10px" }}>Database Error</h3>
-                <p style={{ color: "#742a2a", lineHeight: "1.6" }}>{error || "Unknown error occurred while fetching statistics."}</p>
+                <h3 style={{ color: "#c53030", marginBottom: "10px" }}>Database Connection Issue</h3>
+                <p style={{ color: "#742a2a", lineHeight: "1.6" }}>{error}</p>
+                {error.includes("404") && <p style={{ color: "#742a2a", fontSize: "0.9rem" }}>The statistics route could not be found. Please check your backend routes.</p>}
+                {error.includes("401") || error.includes("403") ? (
+                    <p style={{ color: "#742a2a", fontSize: "0.9rem" }}>Your session may have expired or you don't have admin privileges.</p>
+                ) : null}
+
                 <button
                     onClick={fetchStats}
                     style={{
@@ -77,9 +82,11 @@ const AdminOverview = () => {
                 >
                     Retry Connection
                 </button>
-                <p style={{ marginTop: "15px", fontSize: "0.8rem", color: "#9b2c2c" }}>
-                    API Endpoint: {process.env.REACT_APP_API_URL || "https://haritha-karma-sena-backend.onrender.com"}
-                </p>
+                <div style={{ marginTop: "20px", textAlign: "left", fontSize: "0.8rem", color: "#666", background: "#fff", padding: "10px", borderRadius: "4px", border: "1px solid #ddd" }}>
+                    <strong>Debug Info:</strong><br />
+                    Endpoint: {process.env.REACT_APP_API_URL || "https://haritha-karma-sena-backend.onrender.com"}<br />
+                    Time: {new Date().toLocaleTimeString()}
+                </div>
             </div>
         </div>
     );
