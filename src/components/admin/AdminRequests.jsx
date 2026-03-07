@@ -23,7 +23,8 @@ const AdminRequests = () => {
             setRequests(Array.isArray(data) ? data : []);
         } catch (error) {
             console.error("Error fetching requests:", error);
-            setError(error.response?.data?.message || "Failed to fetch requests. Please check if the backend is running.");
+            // Show the raw message (e.g. "Network Error") if the server didn't respond
+            setError(error.response?.data?.message || error.message || "Connection failed");
         } finally {
             setLoading(false);
         }

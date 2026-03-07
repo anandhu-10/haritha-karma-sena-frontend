@@ -30,7 +30,7 @@ const AdminOverview = () => {
             setStats(data);
         } catch (error) {
             console.error("Error fetching admin stats:", error);
-            setError(error.response?.data?.message || "Failed to load dashboard statistics. Please ensure the backend is running and you are logged in as admin.");
+            setError(error.response?.data?.message || error.message || "Connection failed");
         } finally {
             setLoading(false);
         }
