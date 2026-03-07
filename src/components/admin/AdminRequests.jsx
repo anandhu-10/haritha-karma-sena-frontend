@@ -19,12 +19,18 @@ const AdminRequests = () => {
             const apiUrl = process.env.REACT_APP_API_URL || "https://haritha-karma-sena-backend.onrender.com";
             const { data } = await axios.get(`${apiUrl}/api/admin/requests`, {
                 headers: { Authorization: `Bearer ${token}` },
+                timeout: 30000 // Cold start timeout
             });
             setRequests(Array.isArray(data) ? data : []);
         } catch (error) {
             console.error("Error fetching requests:", error);
-            // Show the raw message (e.g. "Network Error") if the server didn't respond
-            setError(error.response?.data?.message || error.message || "Connection failed");
+            let msg = error.message;
+            if (error.response) {
+                msg = `${error.response.status}: ${error.response.data?.message || error.response.statusText}`;
+            } else if (error.request) {
+                msg = "No response from server. Check CORS or if backend is awake.";
+            }
+            setError(msg);
         } finally {
             setLoading(false);
         }

@@ -21,16 +21,29 @@ const AdminOverview = () => {
     const fetchStats = async () => {
         setLoading(true);
         setError(null);
+        const apiUrl = process.env.REACT_APP_API_URL || "https://haritha-karma-sena-backend.onrender.com";
+
         try {
+            // Test ping first to see if server is reachable at all
+            console.log("Pinging server...");
+            await axios.get(`${apiUrl}/api/ping`, { timeout: 10000 });
+            console.log("Ping successful.");
+
             const token = localStorage.getItem("token");
-            const apiUrl = process.env.REACT_APP_API_URL || "https://haritha-karma-sena-backend.onrender.com";
             const { data } = await axios.get(`${apiUrl}/api/admin/stats`, {
                 headers: { Authorization: `Bearer ${token}` },
+                timeout: 30000 // 30 second timeout for cold starts
             });
             setStats(data);
         } catch (error) {
-            console.error("Error fetching admin stats:", error);
-            setError(error.response?.data?.message || error.message || "Connection failed");
+            console.error("Error fetching stats:", error);
+            let msg = error.message;
+            if (error.response) {
+                msg = `${error.response.status}: ${error.response.data?.message || error.response.statusText}`;
+            } else if (error.request) {
+                msg = "No response from server. This could be a CORS issue or the server is spinning up.";
+            }
+            setError(msg);
         } finally {
             setLoading(false);
         }
