@@ -12,6 +12,8 @@ const ShowWRinC = ({ data, sendDataToParent, onPickUp }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [localData, setLocalData] = useState([]);
 
+  const [currentPage, setCurrentPage] = useState(0);
+
   /* keep local copy in sync */
   useEffect(() => {
     setLocalData(data || []);
@@ -59,8 +61,6 @@ const ShowWRinC = ({ data, sendDataToParent, onPickUp }) => {
   // Pagination logic
   const itemsPerPage = 5;
   const itemOffset = isOpen ? 0 : window.cPaginationOffset || 0; // Store in window object or local state
-
-  const [currentPage, setCurrentPage] = useState(0);
 
   const endOffset = currentPage * itemsPerPage + itemsPerPage;
   const currentItems = localData.slice(currentPage * itemsPerPage, endOffset);
