@@ -12,27 +12,77 @@ import {
 const AdminOverview = () => {
     const [stats, setStats] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         fetchStats();
     }, []);
 
     const fetchStats = async () => {
+        setLoading(true);
+        setError(null);
         try {
             const token = localStorage.getItem("token");
-            const { data } = await axios.get(`${(process.env.REACT_APP_API_URL || "https://haritha-karma-sena-backend.onrender.com")}/api/admin/stats`, {
+            const apiUrl = process.env.REACT_APP_API_URL || "https://haritha-karma-sena-backend.onrender.com";
+            const { data } = await axios.get(`${apiUrl}/api/admin/stats`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setStats(data);
         } catch (error) {
             console.error("Error fetching admin stats:", error);
+            setError(error.response?.data?.message || "Failed to load dashboard statistics. Please ensure the backend is running and you are logged in as admin.");
         } finally {
             setLoading(false);
         }
     };
 
-    if (loading) return <div>Loading Overview...</div>;
-    if (!stats) return <div>Failed to load stats.</div>;
+    if (loading) return (
+        <div className="admin-overview">
+            <h2>Dashboard Overview</h2>
+            <div style={{ textAlign: "center", padding: "100px", color: "#666" }}>
+                <div className="loader"></div>
+                <p>Curating your dashboard data...</p>
+            </div>
+        </div>
+    );
+
+    if (error || !stats) return (
+        <div className="admin-overview">
+            <h2>Dashboard Overview</h2>
+            <div style={{
+                margin: "40px auto",
+                maxWidth: "600px",
+                padding: "30px",
+                background: "#fff5f5",
+                border: "1px solid #feb2b2",
+                borderRadius: "12px",
+                textAlign: "center",
+                boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)"
+            }}>
+                <div style={{ fontSize: "3rem", marginBottom: "15px" }}>⚠️</div>
+                <h3 style={{ color: "#c53030", marginBottom: "10px" }}>Database Error</h3>
+                <p style={{ color: "#742a2a", lineHeight: "1.6" }}>{error || "Unknown error occurred while fetching statistics."}</p>
+                <button
+                    onClick={fetchStats}
+                    style={{
+                        marginTop: "20px",
+                        padding: "10px 24px",
+                        background: "#c53030",
+                        color: "white",
+                        border: "none",
+                        borderRadius: "6px",
+                        cursor: "pointer",
+                        fontWeight: "600"
+                    }}
+                >
+                    Retry Connection
+                </button>
+                <p style={{ marginTop: "15px", fontSize: "0.8rem", color: "#9b2c2c" }}>
+                    API Endpoint: {process.env.REACT_APP_API_URL || "https://haritha-karma-sena-backend.onrender.com"}
+                </p>
+            </div>
+        </div>
+    );
 
     const chartData = [
         { name: "Plastic", value: stats.wasteTypeDistribution.plastic },
