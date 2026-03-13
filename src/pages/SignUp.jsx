@@ -51,6 +51,9 @@ function SignUp() {
       email: formData.email.trim().toLowerCase(),
       password: formData.password,
       role: formData.role,
+      phone: formData.phoneNo,
+      ward: formData.ward,
+      panchayath: formData.panchayath,
     };
 
     try {
@@ -104,6 +107,15 @@ function SignUp() {
             <input type="email" name="email" placeholder="Email" required onChange={handleChange} />
             <input name="phoneNo" placeholder="Phone Number" required onChange={handleChange} />
             <input type="password" name="password" placeholder="Password" required onChange={handleChange} />
+
+            {/* 🏘️ AREA SELECTION */}
+            <input name="panchayath" placeholder="Panchayath/Municipality" required onChange={handleChange} />
+            <select name="ward" required onChange={handleChange} className="ward-select" style={{ padding: '12px', borderRadius: '8px', border: '1px solid #ccc', marginTop: '10px' }}>
+              <option value="">Select Ward</option>
+              {[...Array(20)].map((_, i) => (
+                <option key={i + 1} value={`Ward${i + 1}`}>Ward ${i + 1}</option>
+              ))}
+            </select>
 
             <div className="usertype">
               <p>Register as</p>

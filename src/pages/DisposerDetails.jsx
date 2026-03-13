@@ -13,24 +13,56 @@ function DisposerDetails() {
     ward: "",
   });
 
+  const user = JSON.parse(localStorage.getItem("user"));
+
   /* 🔁 AUTO-FILL IF DATA EXISTS */
   useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem("disposerProfile"));
-    if (saved) setFormData(saved);
+    if (user?.profile) {
+      setFormData({
+        phone: user.profile.phone || "",
+        pincode: user.profile.pincode || "",
+        location: user.profile.location || "",
+        panchayath: user.profile.panchayath || "",
+        ward: user.profile.ward || "",
+      });
+    }
   }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // ✅ SAVE PROFILE DATA
-    localStorage.setItem("disposerProfile", JSON.stringify(formData));
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch(
+        `${(process.env.REACT_APP_API_URL || "https://haritha-karma-sena-backend.onrender.com")}/api/auth/profile`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+          },
+          body: JSON.stringify(formData),
+        }
+      );
 
-    navigate("/disposer");
+      if (!res.ok) throw new Error("Failed to update profile");
+
+      const data = await res.json();
+
+      // ✅ SYNC LOCAL STORAGE
+      const updatedUser = { ...user, profile: data.user.profile };
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+
+      alert("Profile updated successfully!");
+      navigate(user.role === "collector" ? "/collector" : "/disposer");
+    } catch (err) {
+      console.error(err);
+      alert(err.message);
+    }
   };
 
   return (

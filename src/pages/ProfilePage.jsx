@@ -5,7 +5,7 @@ function ProfilePage() {
   const navigate = useNavigate();
 
   const user = JSON.parse(localStorage.getItem("user"));
-  const profile = JSON.parse(localStorage.getItem("disposerProfile"));
+  const profile = user?.profile;
 
   if (!user) {
     navigate("/login");

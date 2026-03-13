@@ -49,8 +49,14 @@ function CollectorHome() {
   React.useEffect(() => {
     const fetchActiveDisposer = async () => {
       try {
+        const token = localStorage.getItem("token");
         const res = await axios.get(
           `${(process.env.REACT_APP_API_URL || "https://haritha-karma-sena-backend.onrender.com")}/api/disposer-requests`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          }
         );
         const data = res.data || [];
         // Find a request picked up by this collector

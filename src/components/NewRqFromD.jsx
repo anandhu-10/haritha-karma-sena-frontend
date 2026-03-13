@@ -14,18 +14,26 @@ function NewRqFromD() {
   /* ---------- FETCH DISPOSER REQUESTS ---------- */
   async function fetchNewRqFromD() {
     try {
+      const token = localStorage.getItem("token");
       const res = await fetch(
-        `${(process.env.REACT_APP_API_URL || "https://haritha-karma-sena-backend.onrender.com")}/api/disposer-requests`
+        `${(process.env.REACT_APP_API_URL || "https://haritha-karma-sena-backend.onrender.com")}/api/disposer-requests`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       const data = await res.json();
 
+      const activeRequests = data.filter(r => r.status !== "Completed");
+
       const grouped = [
         {
-          _id: "all",
-          area: "All Areas",
-          nofNewRqFromD: data.length,
-          newRequests_ids: data,
+          _id: "my-area",
+          area: user?.profile?.ward || "My Ward",
+          nofNewRqFromD: activeRequests.length,
+          newRequests_ids: activeRequests,
         },
       ];
 

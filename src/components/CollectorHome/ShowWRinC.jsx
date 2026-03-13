@@ -3,6 +3,18 @@ import "../../styles/ShowWRinC.css";
 import Popup from "./Popup";
 import ReactPaginate from 'react-paginate';
 
+/** 📍 Haversine Distance Helper **/
+function getDistance(lat1, lon1, lat2, lon2) {
+  const R = 6371;
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLon = (lon2 - lon1) * Math.PI / 180;
+  const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c;
+}
+
 /**
  * onPickUp 👉 function passed from NewRqFromD
  */
@@ -98,14 +110,28 @@ const ShowWRinC = ({ data, sendDataToParent, onPickUp }) => {
                   <b>Quantity:</b> {req.wasteQuantity || 0} kg/bags
                   <br />
                   <b>Location:</b> {req.location ? (
-                    <a
-                      href={`https://www.google.com/maps?q=${req.location[1]},${req.location[0]}`}
-                      target="_blank"
-                      rel="noreferrer"
-                      style={{ color: "#4a634a", fontWeight: "bold", textDecoration: "underline" }}
-                    >
-                      View on Google Maps ({req.location[1].toFixed(4)}, {req.location[0].toFixed(4)})
-                    </a>
+                    <>
+                      <a
+                        href={`https://www.google.com/maps?q=${req.location[1]},${req.location[0]}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        style={{ color: "#4a634a", fontWeight: "bold", textDecoration: "underline" }}
+                      >
+                        View on Google Maps ({req.location[1].toFixed(4)}, {req.location[0].toFixed(4)})
+                      </a>
+                      {(() => {
+                        const collectorLoc = user?.profile?.lastLocation;
+                        if (collectorLoc && Array.isArray(collectorLoc) && collectorLoc.length === 2 && req.location) {
+                          const dist = getDistance(collectorLoc[1], collectorLoc[0], req.location[1], req.location[0]);
+                          return (
+                            <span style={{ marginLeft: "10px", color: "#2E7D32", fontWeight: "600" }}>
+                              (📍 {dist.toFixed(2)} km away)
+                            </span>
+                          );
+                        }
+                        return null;
+                      })()}
+                    </>
                   ) : "No location provided"}
                   <br />
                   {req.image && (

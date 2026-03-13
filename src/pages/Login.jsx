@@ -42,12 +42,26 @@ function Login() {
 
     setLoading(true);
 
+    /* 📍 ATTEMPT TO GET GEOLOCATION FOR COLLECTORS */
+    let location = null;
+    try {
+      if ("geolocation" in navigator) {
+        const position = await new Promise((resolve, reject) => {
+          navigator.geolocation.getCurrentPosition(resolve, reject, { timeout: 5000 });
+        });
+        location = [position.coords.longitude, position.coords.latitude];
+      }
+    } catch (err) {
+      console.warn("Geolocation permission denied or timed out. Continuing without location.");
+    }
+
     try {
       const res = await axios.post(
         `${API_URL}/api/auth/login`,
         {
           email: formData.email.trim().toLowerCase(),
           password: formData.password,
+          location, // Send to backend
         }
       );
 
