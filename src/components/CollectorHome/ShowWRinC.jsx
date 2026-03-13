@@ -18,7 +18,7 @@ function getDistance(lat1, lon1, lat2, lon2) {
 /**
  * onPickUp 👉 function passed from NewRqFromD
  */
-const ShowWRinC = ({ data, sendDataToParent, onPickUp }) => {
+const ShowWRinC = ({ user, data, sendDataToParent, onPickUp }) => {
   const [popupID, setPopupID] = useState(null);
   const [currentWasteRQ, setCurrentWasteRQ] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
