@@ -3,6 +3,8 @@ import { useNavigate, Link } from "react-router-dom";
 import { DISTRICTS, KERALA_DATA } from "../data/keralaData";
 import "../styles/login.css"; // ✅ SAME CSS AS LOGIN
 
+import SearchableSelect from "../components/SearchableSelect";
+
 function DisposerDetails() {
   const navigate = useNavigate();
 
@@ -57,6 +59,11 @@ function DisposerDetails() {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!formData.district || !formData.localBodyType || !formData.localBodyName || !formData.ward || !formData.villageOrArea) {
+      alert("Please complete all location fields.");
+      return;
+    }
 
     try {
       const token = localStorage.getItem("token");
@@ -127,75 +134,50 @@ function DisposerDetails() {
               required
             />
 
-            {/* 🏘️ REFINED KERALA GEOGRAPHY SELECTION */}
-            <select
+            {/* 🏘️ REFINED KERALA GEOGRAPHY SELECTION WITH SEARCH */}
+            <SearchableSelect
               name="district"
-              required
-              onChange={handleChange}
+              options={DISTRICTS}
+              placeholder="Select District"
               value={formData.district}
-              style={{ padding: '12px', borderRadius: '8px', border: '1px solid #ccc', marginTop: '10px' }}
-            >
-              <option value="">Select District</option>
-              {DISTRICTS.map(d => (
-                <option key={d} value={d}>{d}</option>
-              ))}
-            </select>
+              onChange={handleChange}
+            />
 
-            <select
+            <SearchableSelect
               name="localBodyType"
-              required
-              onChange={handleChange}
+              options={formData.district ? Object.keys(KERALA_DATA[formData.district]) : []}
+              placeholder="Select Local Body Type"
               value={formData.localBodyType}
+              onChange={handleChange}
               disabled={!formData.district}
-              style={{ padding: '12px', borderRadius: '8px', border: '1px solid #ccc', marginTop: '10px' }}
-            >
-              <option value="">Select Local Body Type</option>
-              {formData.district && Object.keys(KERALA_DATA[formData.district]).map(type => (
-                <option key={type} value={type}>{type}</option>
-              ))}
-            </select>
+            />
 
-            <select
+            <SearchableSelect
               name="localBodyName"
-              required
-              onChange={handleChange}
+              options={formData.localBodyType ? Object.keys(KERALA_DATA[formData.district][formData.localBodyType]) : []}
+              placeholder="Select Local Body Name"
               value={formData.localBodyName}
+              onChange={handleChange}
               disabled={!formData.localBodyType}
-              style={{ padding: '12px', borderRadius: '8px', border: '1px solid #ccc', marginTop: '10px' }}
-            >
-              <option value="">Select Local Body Name</option>
-              {formData.localBodyType && Object.keys(KERALA_DATA[formData.district][formData.localBodyType]).map(name => (
-                <option key={name} value={name}>{name}</option>
-              ))}
-            </select>
+            />
 
-            <select
+            <SearchableSelect
               name="ward"
-              required
-              onChange={handleChange}
+              options={formData.localBodyName ? [...Array(KERALA_DATA[formData.district][formData.localBodyType][formData.localBodyName].wards)].map((_, i) => `Ward ${i + 1}`) : []}
+              placeholder="Select Ward"
               value={formData.ward}
-              disabled={!formData.localBodyName}
-              style={{ padding: '12px', borderRadius: '8px', border: '1px solid #ccc', marginTop: '10px' }}
-            >
-              <option value="">Select Ward</option>
-              {formData.localBodyName && [...Array(KERALA_DATA[formData.district][formData.localBodyType][formData.localBodyName].wards)].map((_, i) => (
-                <option key={i + 1} value={`Ward ${i + 1}`}>Ward {i + 1}</option>
-              ))}
-            </select>
-
-            <select
-              name="villageOrArea"
-              required
               onChange={handleChange}
+              disabled={!formData.localBodyName}
+            />
+
+            <SearchableSelect
+              name="villageOrArea"
+              options={formData.localBodyName ? KERALA_DATA[formData.district][formData.localBodyType][formData.localBodyName].areas : []}
+              placeholder="Select Village / Area"
               value={formData.villageOrArea}
+              onChange={handleChange}
               disabled={!formData.ward}
-              style={{ padding: '12px', borderRadius: '8px', border: '1px solid #ccc', marginTop: '10px' }}
-            >
-              <option value="">Select Village / Area</option>
-              {formData.localBodyName && KERALA_DATA[formData.district][formData.localBodyType][formData.localBodyName].areas.map(area => (
-                <option key={area} value={area}>{area}</option>
-              ))}
-            </select>
+            />
 
             <input type="submit" value="Save & Continue" />
           </form>
