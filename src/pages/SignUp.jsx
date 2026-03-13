@@ -3,6 +3,7 @@ import "../styles/signup.css";
 import { Link, useNavigate } from "react-router-dom";
 import { RxHamburgerMenu } from "react-icons/rx";
 import axios from "axios";
+import { DISTRICTS, KERALA_DATA } from "../data/keralaData";
 
 const API = (process.env.REACT_APP_API_URL || "https://haritha-karma-sena-backend.onrender.com");
 
@@ -27,13 +28,20 @@ function SignUp() {
     phoneNo: "",
     password: "",
     role: "",
+    district: "",
+    panchayath: "",
+    ward: "",
   });
 
   const handleChange = (e) => {
-    setFormData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
+    const { name, value } = e.target;
+    setFormData((prev) => {
+      const newData = { ...prev, [name]: value };
+      if (name === "district") {
+        newData.panchayath = ""; // Reset panchayath if district changes
+      }
+      return newData;
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -52,8 +60,9 @@ function SignUp() {
       password: formData.password,
       role: formData.role,
       phone: formData.phoneNo,
-      ward: formData.ward,
+      district: formData.district,
       panchayath: formData.panchayath,
+      ward: formData.ward,
     };
 
     try {
@@ -108,12 +117,25 @@ function SignUp() {
             <input name="phoneNo" placeholder="Phone Number" required onChange={handleChange} />
             <input type="password" name="password" placeholder="Password" required onChange={handleChange} />
 
-            {/* 🏘️ AREA SELECTION */}
-            <input name="panchayath" placeholder="Panchayath/Municipality" required onChange={handleChange} />
-            <select name="ward" required onChange={handleChange} className="ward-select" style={{ padding: '12px', borderRadius: '8px', border: '1px solid #ccc', marginTop: '10px' }}>
+            {/* 🏘️ KERALA GEOGRAPHY SELECTION */}
+            <select name="district" required onChange={handleChange} style={{ padding: '12px', borderRadius: '8px', border: '1px solid #ccc', marginTop: '10px' }}>
+              <option value="">Select District</option>
+              {DISTRICTS.map(d => (
+                <option key={d} value={d}>{d}</option>
+              ))}
+            </select>
+
+            <select name="panchayath" required onChange={handleChange} disabled={!formData.district} style={{ padding: '12px', borderRadius: '8px', border: '1px solid #ccc', marginTop: '10px' }}>
+              <option value="">Select Local Body</option>
+              {formData.district && KERALA_DATA[formData.district].map(lb => (
+                <option key={lb} value={lb}>{lb}</option>
+              ))}
+            </select>
+
+            <select name="ward" required onChange={handleChange} style={{ padding: '12px', borderRadius: '8px', border: '1px solid #ccc', marginTop: '10px' }}>
               <option value="">Select Ward</option>
-              {[...Array(20)].map((_, i) => (
-                <option key={i + 1} value={`Ward${i + 1}`}>Ward ${i + 1}</option>
+              {[...Array(50)].map((_, i) => (
+                <option key={i + 1} value={`Ward ${i + 1}`}>Ward {i + 1}</option>
               ))}
             </select>
 

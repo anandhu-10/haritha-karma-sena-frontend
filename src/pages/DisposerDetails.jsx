@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { DISTRICTS, KERALA_DATA } from "../data/keralaData";
 import "../styles/login.css"; // ✅ SAME CSS AS LOGIN
 
 function DisposerDetails() {
@@ -9,6 +10,7 @@ function DisposerDetails() {
     phone: "",
     pincode: "",
     location: "",
+    district: "",
     panchayath: "",
     ward: "",
   });
@@ -22,6 +24,7 @@ function DisposerDetails() {
         phone: user.profile.phone || "",
         pincode: user.profile.pincode || "",
         location: user.profile.location || "",
+        district: user.profile.district || "",
         panchayath: user.profile.panchayath || "",
         ward: user.profile.ward || "",
       });
@@ -30,7 +33,13 @@ function DisposerDetails() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData((prev) => {
+      const newData = { ...prev, [name]: value };
+      if (name === "district") {
+        newData.panchayath = "";
+      }
+      return newData;
+    });
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -113,23 +122,46 @@ function DisposerDetails() {
               required
             />
 
-            <input
-              type="text"
-              name="panchayath"
-              placeholder="Panchayath"
-              value={formData.panchayath}
-              onChange={handleChange}
+            {/* 🏘️ KERALA GEOGRAPHY SELECTION */}
+            <select
+              name="district"
               required
-            />
+              onChange={handleChange}
+              value={formData.district}
+              style={{ padding: '12px', borderRadius: '8px', border: '1px solid #ccc', marginTop: '10px' }}
+            >
+              <option value="">Select District</option>
+              {DISTRICTS.map(d => (
+                <option key={d} value={d}>{d}</option>
+              ))}
+            </select>
 
-            <input
-              type="text"
-              name="ward"
-              placeholder="Ward"
-              value={formData.ward}
-              onChange={handleChange}
+            <select
+              name="panchayath"
               required
-            />
+              onChange={handleChange}
+              value={formData.panchayath}
+              disabled={!formData.district}
+              style={{ padding: '12px', borderRadius: '8px', border: '1px solid #ccc', marginTop: '10px' }}
+            >
+              <option value="">Select Local Body</option>
+              {formData.district && KERALA_DATA[formData.district].map(lb => (
+                <option key={lb} value={lb}>{lb}</option>
+              ))}
+            </select>
+
+            <select
+              name="ward"
+              required
+              onChange={handleChange}
+              value={formData.ward}
+              style={{ padding: '12px', borderRadius: '8px', border: '1px solid #ccc', marginTop: '10px' }}
+            >
+              <option value="">Select Ward</option>
+              {[...Array(50)].map((_, i) => (
+                <option key={i + 1} value={`Ward ${i + 1}`}>Ward {i + 1}</option>
+              ))}
+            </select>
 
             <input type="submit" value="Save & Continue" />
           </form>
