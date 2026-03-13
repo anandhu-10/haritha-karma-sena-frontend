@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useOutletContext } from "react-router-dom";
 import ShowWRinC from "./CollectorHome/ShowWRinC";
 import "../styles/NewRqFromD.css";
@@ -12,7 +12,7 @@ function NewRqFromD() {
   const ROWS_PER_PAGE = 10;
 
   /* ---------- FETCH DISPOSER REQUESTS ---------- */
-  async function fetchNewRqFromD() {
+  const fetchNewRqFromD = useCallback(async () => {
     try {
       const token = localStorage.getItem("token");
       const res = await fetch(
@@ -41,11 +41,11 @@ function NewRqFromD() {
     } catch (err) {
       console.error("FETCH ERROR:", err);
     }
-  }
+  }, [user]);
 
   useEffect(() => {
     fetchNewRqFromD();
-  }, []);
+  }, [fetchNewRqFromD]);
 
   /* ---------- PICK UP HANDLER (FIXED) ---------- */
   const handlePickUp = async (requestId) => {

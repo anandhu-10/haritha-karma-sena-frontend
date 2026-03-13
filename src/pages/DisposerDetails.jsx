@@ -26,7 +26,7 @@ function DisposerDetails() {
         ward: user.profile.ward || "",
       });
     }
-  }, []);
+  }, [user?.profile]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
