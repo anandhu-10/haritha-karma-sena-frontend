@@ -110,7 +110,19 @@ const AdminRequests = () => {
                                                         <small>{r.collectorId.phone || r.collectorId.profile?.phone || "N/A"}</small>
                                                     </div>
                                                 ) : (
-                                                    <span style={{ color: "gray" }}>Unassigned</span>
+                                                    <div style={{
+                                                        color: "#c53030",
+                                                        background: "#fff5f5",
+                                                        padding: "6px 12px",
+                                                        borderRadius: "6px",
+                                                        border: "1px solid #feb2b2",
+                                                        display: "inline-block",
+                                                        fontSize: "0.8rem",
+                                                        lineHeight: "1.2"
+                                                    }}>
+                                                        <strong>Manual Assignment Required</strong><br />
+                                                        <small>No collectors in {r.ward || "Area"}</small>
+                                                    </div>
                                                 )}
                                             </td>
                                             <td>

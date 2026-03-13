@@ -134,6 +134,10 @@ const AdminOverview = () => {
                     <h3>Active Requests</h3>
                     <p>{stats.activeRequests}</p>
                 </div>
+                <div className="stat-card" style={{ borderLeft: "4px solid #e53e3e" }}>
+                    <h3 style={{ color: "#c53030" }}>Awaiting Assignment</h3>
+                    <p>{stats.unassignedRequests || 0}</p>
+                </div>
                 <div className="stat-card">
                     <h3>Waste Collected Today</h3>
                     <p>{stats.wasteCollectedToday}</p>
