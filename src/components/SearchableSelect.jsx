@@ -38,20 +38,22 @@ const SearchableSelect = ({ options, placeholder, name, value, onChange, disable
                 className={`searchable-select-display ${disabled ? "disabled" : ""}`}
                 onClick={() => !disabled && setIsOpen(!isOpen)}
                 style={{
-                    padding: "12px",
-                    borderRadius: "8px",
-                    border: "1px solid #ccc",
-                    background: disabled ? "#f5f5f5" : "#fff",
+                    padding: "12px 15px",
+                    borderRadius: "10px",
+                    border: isOpen ? "1px solid #4caf50" : "1px solid #ddd",
+                    background: disabled ? "#f9f9f9" : "#fff",
                     cursor: disabled ? "not-allowed" : "pointer",
                     display: "flex",
                     justifyContent: "space-between",
-                    alignItems: "center"
+                    alignItems: "center",
+                    boxShadow: isOpen ? "0 0 0 3px rgba(76, 175, 80, 0.1)" : "none",
+                    transition: "all 0.3s"
                 }}
             >
-                <span style={{ color: value ? "#000" : "#757575" }}>
+                <span style={{ color: value ? "#333" : "#999", fontSize: "1rem" }}>
                     {value || placeholder}
                 </span>
-                <span style={{ fontSize: "12px" }}>▼</span>
+                <span style={{ fontSize: "10px", color: "#666", transform: isOpen ? "rotate(180deg)" : "none", transition: "transform 0.3s" }}>▼</span>
             </div>
 
             {isOpen && (
@@ -59,34 +61,37 @@ const SearchableSelect = ({ options, placeholder, name, value, onChange, disable
                     className="searchable-select-dropdown"
                     style={{
                         position: "absolute",
-                        top: "100%",
+                        top: "110%",
                         left: 0,
                         right: 0,
                         zIndex: 1000,
                         background: "#fff",
-                        border: "1px solid #ccc",
-                        borderRadius: "0 0 8px 8px",
-                        boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+                        border: "1px solid #eee",
+                        borderRadius: "12px",
+                        boxShadow: "0 10px 25px rgba(0,0,0,0.1)",
                         maxHeight: "250px",
-                        overflowY: "auto"
+                        overflowY: "auto",
+                        padding: "5px"
                     }}
                 >
                     <input
                         type="text"
-                        placeholder="Type to search..."
+                        placeholder="Search..."
                         autoFocus
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         style={{
                             width: "100%",
-                            padding: "10px",
+                            padding: "10px 12px",
                             border: "none",
-                            borderBottom: "1px solid #eee",
+                            borderBottom: "1px solid #f0f0f0",
                             outline: "none",
                             boxSizing: "border-box",
                             position: "sticky",
                             top: 0,
-                            background: "#fff"
+                            background: "#fff",
+                            fontSize: "0.9rem",
+                            marginBottom: "5px"
                         }}
                     />
                     <div className="options-list">
@@ -97,18 +102,26 @@ const SearchableSelect = ({ options, placeholder, name, value, onChange, disable
                                     className="searchable-option"
                                     onClick={() => handleSelect(option)}
                                     style={{
-                                        padding: "10px 12px",
+                                        padding: "10px 15px",
                                         cursor: "pointer",
-                                        transition: "background 0.2s"
+                                        borderRadius: "8px",
+                                        fontSize: "0.95rem",
+                                        transition: "background 0.2s, color 0.2s"
                                     }}
-                                    onMouseEnter={(e) => (e.target.style.background = "#f0f7f0")}
-                                    onMouseLeave={(e) => (e.target.style.background = "transparent")}
+                                    onMouseEnter={(e) => {
+                                        e.target.style.background = "#4caf50";
+                                        e.target.style.color = "#fff";
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        e.target.style.background = "transparent";
+                                        e.target.style.color = "#333";
+                                    }}
                                 >
                                     {option}
                                 </div>
                             ))
                         ) : (
-                            <div style={{ padding: "10px 12px", color: "#999" }}>No results found</div>
+                            <div style={{ padding: "15px", color: "#999", textAlign: "center", fontSize: "0.9rem" }}>No results found</div>
                         )}
                     </div>
                 </div>
