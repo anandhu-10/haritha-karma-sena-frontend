@@ -9,10 +9,11 @@ function DisposerDetails() {
   const [formData, setFormData] = useState({
     phone: "",
     pincode: "",
-    location: "",
     district: "",
-    panchayath: "",
+    localBodyType: "",
+    localBodyName: "",
     ward: "",
+    villageOrArea: "",
   });
 
   const user = JSON.parse(localStorage.getItem("user"));
@@ -23,10 +24,11 @@ function DisposerDetails() {
       setFormData({
         phone: user.profile.phone || "",
         pincode: user.profile.pincode || "",
-        location: user.profile.location || "",
         district: user.profile.district || "",
-        panchayath: user.profile.panchayath || "",
+        localBodyType: user.profile.localBodyType || "",
+        localBodyName: user.profile.localBodyName || "",
         ward: user.profile.ward || "",
+        villageOrArea: user.profile.villageOrArea || "",
       });
     }
   }, [user?.profile]);
@@ -36,7 +38,19 @@ function DisposerDetails() {
     setFormData((prev) => {
       const newData = { ...prev, [name]: value };
       if (name === "district") {
-        newData.panchayath = "";
+        newData.localBodyType = "";
+        newData.localBodyName = "";
+        newData.ward = "";
+        newData.villageOrArea = "";
+      } else if (name === "localBodyType") {
+        newData.localBodyName = "";
+        newData.ward = "";
+        newData.villageOrArea = "";
+      } else if (name === "localBodyName") {
+        newData.ward = "";
+        newData.villageOrArea = "";
+      } else if (name === "ward") {
+        newData.villageOrArea = "";
       }
       return newData;
     });
@@ -113,16 +127,7 @@ function DisposerDetails() {
               required
             />
 
-            <input
-              type="text"
-              name="location"
-              placeholder="Location"
-              value={formData.location}
-              onChange={handleChange}
-              required
-            />
-
-            {/* 🏘️ KERALA GEOGRAPHY SELECTION */}
+            {/* 🏘️ REFINED KERALA GEOGRAPHY SELECTION */}
             <select
               name="district"
               required
@@ -137,16 +142,30 @@ function DisposerDetails() {
             </select>
 
             <select
-              name="panchayath"
+              name="localBodyType"
               required
               onChange={handleChange}
-              value={formData.panchayath}
+              value={formData.localBodyType}
               disabled={!formData.district}
               style={{ padding: '12px', borderRadius: '8px', border: '1px solid #ccc', marginTop: '10px' }}
             >
-              <option value="">Select Local Body</option>
-              {formData.district && KERALA_DATA[formData.district].map(lb => (
-                <option key={lb} value={lb}>{lb}</option>
+              <option value="">Select Local Body Type</option>
+              {formData.district && Object.keys(KERALA_DATA[formData.district]).map(type => (
+                <option key={type} value={type}>{type}</option>
+              ))}
+            </select>
+
+            <select
+              name="localBodyName"
+              required
+              onChange={handleChange}
+              value={formData.localBodyName}
+              disabled={!formData.localBodyType}
+              style={{ padding: '12px', borderRadius: '8px', border: '1px solid #ccc', marginTop: '10px' }}
+            >
+              <option value="">Select Local Body Name</option>
+              {formData.localBodyType && Object.keys(KERALA_DATA[formData.district][formData.localBodyType]).map(name => (
+                <option key={name} value={name}>{name}</option>
               ))}
             </select>
 
@@ -155,11 +174,26 @@ function DisposerDetails() {
               required
               onChange={handleChange}
               value={formData.ward}
+              disabled={!formData.localBodyName}
               style={{ padding: '12px', borderRadius: '8px', border: '1px solid #ccc', marginTop: '10px' }}
             >
               <option value="">Select Ward</option>
-              {[...Array(50)].map((_, i) => (
+              {formData.localBodyName && [...Array(KERALA_DATA[formData.district][formData.localBodyType][formData.localBodyName].wards)].map((_, i) => (
                 <option key={i + 1} value={`Ward ${i + 1}`}>Ward {i + 1}</option>
+              ))}
+            </select>
+
+            <select
+              name="villageOrArea"
+              required
+              onChange={handleChange}
+              value={formData.villageOrArea}
+              disabled={!formData.ward}
+              style={{ padding: '12px', borderRadius: '8px', border: '1px solid #ccc', marginTop: '10px' }}
+            >
+              <option value="">Select Village / Area</option>
+              {formData.localBodyName && KERALA_DATA[formData.district][formData.localBodyType][formData.localBodyName].areas.map(area => (
+                <option key={area} value={area}>{area}</option>
               ))}
             </select>
 

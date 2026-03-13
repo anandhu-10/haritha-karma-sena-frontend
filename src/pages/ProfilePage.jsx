@@ -38,10 +38,10 @@ function ProfilePage() {
         <h3>Contact & Location</h3>
         <p><strong>Phone:</strong> {profile?.phone || "-"}</p>
         <p><strong>Pin Code:</strong> {profile?.pincode || "-"}</p>
-        <p><strong>Location:</strong> {profile?.location || "-"}</p>
         <p><strong>District:</strong> {profile?.district || "-"}</p>
-        <p><strong>Panchayath:</strong> {profile?.panchayath || "-"}</p>
+        <p><strong>Local Body:</strong> {profile?.localBodyName || "-"} ({profile?.localBodyType || "-"})</p>
         <p><strong>Ward:</strong> {profile?.ward || "-"}</p>
+        <p><strong>Village / Area:</strong> {profile?.villageOrArea || "-"}</p>
 
         <div style={{ marginTop: "20px", display: "flex", gap: "10px" }}>
           <button
