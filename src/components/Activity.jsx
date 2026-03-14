@@ -45,7 +45,7 @@ function Activity({ reportRender }) {
                     {Array.isArray(item.wasteTypes) ? item.wasteTypes.join(", ") : item.wasteTypes || "Waste"}
                   </li>
                   <li>Quantity: {item.wasteQuantity || 0} kg/bags</li>
-                  {item.status === "Picked Up" && expandedIndex !== index && (
+                  {(item.status?.toUpperCase() === "PICKED UP" || item.status?.toUpperCase() === "ASSIGNED") && expandedIndex !== index && (
                     <li style={{ color: "#059669", fontWeight: "bold", fontStyle: "italic", fontSize: "12px", marginTop: "4px" }}>
                       Tap to view Collector details
                     </li>

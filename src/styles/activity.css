@@ -60,10 +60,11 @@
         background-color: #E5E5E5;
         border-radius: 5px;
         width: 100%;
-        max-height: 350px; 
-        overflow-y: scroll;
-        scrollbar-width:none; 
-        -ms-overflow-style: none;
+        max-height: 450px; 
+        overflow-y: auto;
+        /* Scrollbar styles for better visibility */
+        scrollbar-width: thin;
+        scrollbar-color: #a0aec0 #E5E5E5;
     }
     
     .activityContainer .activityContent  .activityHeader {
