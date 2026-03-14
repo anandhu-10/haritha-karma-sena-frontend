@@ -7,50 +7,49 @@
         width: 100%;
         max-height: 350px; 
         overflow-y: scroll;
+        overflow-x: hidden;
         scrollbar-width:none; 
         -ms-overflow-style: none;
     }
     
+    .activityContainer .activityContent {
+        padding: 0 15px 20px 15px;
+    }
+
     .activityContainer .activityContent  .activityHeader {
         display: flex;
         background-color: #E5E5E5;
         justify-content: space-between;
         align-items: center;
+        padding: 15px 0;
+    }
     
-        h2{
-            position: relative;
-            left: 5vw;
-        }
-    
-        span{
-            transform: scale(3);
-            margin-right: 5vw;
-        }
+    .activityContainer .activityContent  .activityHeader svg {
+        transform: scale(2);
+        cursor: pointer;
     }
     
     .activityContainer  .activityContent .activity .waste-card{
         width: 100%;
         display: flex;
-        flex-wrap: wrap;       /* Added to handle expandable collector details */
+        flex-wrap: wrap;
         padding: 10px;
         justify-content: space-between;
         align-items: center;
-        margin-top: 5px;
+        margin: 5px 0;
         background-color: rgb(255, 255, 255);
         border: 1px solid #fffefe;
         box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
         border-radius: 5px;
-        margin-bottom: 5px;
         font-size: small;
         transition: box-shadow 0.2s ease-in-out, background-color 0.2s ease-in-out;
+    }
     
-        &:hover{
-            cursor: pointer;
-            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-            background-color: #ffffff;
-        }
-    
-}
+    .activityContainer .activityContent .activity .waste-card:hover {
+        cursor: pointer;
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+        background-color: #ffffff;
+    }
 }
 
 @media only screen and (min-width: 601px){
@@ -62,48 +61,48 @@
         width: 100%;
         max-height: 450px; 
         overflow-y: auto;
+        overflow-x: hidden;
         /* Scrollbar styles for better visibility */
         scrollbar-width: thin;
         scrollbar-color: #a0aec0 #E5E5E5;
     }
     
+    .activityContainer .activityContent {
+        padding: 0 20px 20px 20px;
+    }
+
     .activityContainer .activityContent  .activityHeader {
         display: flex;
         background-color: #E5E5E5;
         justify-content: space-between;
         align-items: center;
+        padding: 15px 0;
+    }
     
-        h2{
-            position: relative;
-            left: 5vw;
-        }
-    
-        span{
-            transform: scale(3);
-            margin-right: 5vw;
-        }
+    .activityContainer .activityContent  .activityHeader svg {
+        transform: scale(2);
+        cursor: pointer;
     }
     
     .activityContainer  .activityContent .activity .waste-card{
         width: 100%;
         display: flex;
-        flex-wrap: wrap;       /* Added to handle expandable collector details */
-        padding: 10px;
+        flex-wrap: wrap;
+        padding: 15px;
         justify-content: space-between;
         align-items: center;
-        margin-top: 5px;
+        margin: 5px 0;
         background-color: rgb(255, 255, 255);
         border: 1px solid #fffefe;
         box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
         border-radius: 5px;
-        margin-bottom: 5px;
         font-size: 1rem;
         transition: box-shadow 0.2s ease-in-out, background-color 0.2s ease-in-out;
-    
-        &:hover{
-            cursor: pointer;
-            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-            background-color: #ffffff;
-        }
+    }
+
+    .activityContainer .activityContent .activity .waste-card:hover {
+        cursor: pointer;
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+        background-color: #ffffff;
     }
 }
