@@ -45,9 +45,9 @@ function Activity({ reportRender }) {
                     {Array.isArray(item.wasteTypes) ? item.wasteTypes.join(", ") : item.wasteTypes || "Waste"}
                   </li>
                   <li>Quantity: {item.wasteQuantity || 0} kg/bags</li>
-                  {(item.status?.toUpperCase() === "PICKED UP" || item.status?.toUpperCase() === "ASSIGNED") && expandedIndex !== index && (
-                    <li style={{ color: "#059669", fontWeight: "bold", fontStyle: "italic", fontSize: "12px", marginTop: "4px" }}>
-                      Tap to view Collector details
+                  {expandedIndex !== index && (
+                    <li style={{ color: "#0ea5e9", fontWeight: "bold", fontStyle: "italic", fontSize: "12px", marginTop: "4px" }}>
+                      Tap to view {item.collectorId ? "Collector & Details" : "Details"}
                     </li>
                   )}
                 </ul>
@@ -95,25 +95,48 @@ function Activity({ reportRender }) {
                     </section>
                   </div>
                 )}
-              </div>              {/* COLLECTOR DETAILS EXPAND (Below Left/Right layout) */}
-              {expandedIndex === index && item.collectorId && (
+              </div>
+              
+              {/* FULL DETAILS EXPAND */}
+              {expandedIndex === index && (
                 <div style={{
                   width: "100%",
                   marginTop: "12px",
                   padding: "12px",
-                  backgroundColor: "#ecfdf5",
-                  border: "1px solid #10b981",
+                  backgroundColor: "#f8fafc",
+                  border: "1px solid #cbd5e1",
                   borderRadius: "8px",
                   display: "flex",
                   flexDirection: "column",
-                  gap: "4px",
-                  color: "#064e3b"
+                  gap: "8px",
+                  color: "#334155"
                 }} onClick={(e) => e.stopPropagation()}>
-                  <strong style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                    🚛 Collector Assigned
-                  </strong>
-                  <span>Name: {item.collectorId?.name || "Unknown"}</span>
-                  <span>Contact: <b>{item.collectorId?.profile?.phone || "Not provided"}</b></span>
+                  {/* Detailed Information given inside the item dropdown */}
+                  <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                     <strong>📋 View Full Activity Details</strong>
+                     <span style={{ fontSize: "13px" }}><b>Time Slot:</b> {item.timeSlot || "Anytime"}</span>
+                     {item.location && <span style={{ fontSize: "13px" }}><b>Location:</b> {item.location}</span>}
+                     {item.address && <span style={{ fontSize: "13px" }}><b>Address:</b> {item.address}</span>}
+                     {item.description && <span style={{ fontSize: "13px" }}><b>Description:</b> {item.description}</span>}
+                  </div>
+
+                  {item.collectorId && (
+                     <div style={{
+                        marginTop: "8px",
+                        paddingTop: "8px",
+                        borderTop: "1px dashed #cbd5e1",
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "4px",
+                        color: "#064e3b"
+                      }}>
+                        <strong style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                          🚛 Collector Assigned
+                        </strong>
+                        <span style={{ fontSize: "13px" }}>Name: {item.collectorId?.name || "Unknown"}</span>
+                        <span style={{ fontSize: "13px" }}>Contact: <b>{item.collectorId?.profile?.phone || "Not provided"}</b></span>
+                      </div>
+                  )}
                 </div>
               )}
 
