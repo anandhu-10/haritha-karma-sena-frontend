@@ -36,7 +36,6 @@ function Activity({ reportRender }) {
           <div key={index} className="activity">
             <div 
               className="waste-card" 
-              onClick={() => setExpandedIndex(expandedIndex === index ? null : index)}
             >
               <div className="left-content">
                 <ul>
@@ -55,7 +54,14 @@ function Activity({ reportRender }) {
 
               <div className="right-content">
                 {deleteIndex !== index ? (
-                  <div className="statusDetails">
+                  <div 
+                    className="statusDetails"
+                    style={{ cursor: "pointer" }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setExpandedIndex(expandedIndex === index ? null : index);
+                    }}
+                  >
                     <h4>Status : {item.status}</h4>
 
                     {item.status !== "Completed" && (
