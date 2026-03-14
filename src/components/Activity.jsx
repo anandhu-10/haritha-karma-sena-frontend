@@ -24,7 +24,7 @@ function Activity({ reportRender }) {
 
   return (
     <div className="activityContainer">
-      <div className="activityContent" style={{ paddingBottom: "20px" }}>
+      <div className="activityContent" style={{ paddingBottom: "100px" }}>
         {/* HEADER */}
         <div className="activityHeader">
           <h2>Your Activity</h2>

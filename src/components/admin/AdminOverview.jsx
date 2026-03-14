@@ -144,11 +144,12 @@ const AdminOverview = () => {
                 </div>
             </div>
 
-            <div className="charts-container" style={{ display: "flex", gap: "20px", marginTop: "40px" }}>
-                <div className="chart-box" style={{ flex: 1, height: "300px", padding: "20px", background: "white", borderRadius: "8px", boxShadow: "0 2px 10px rgba(0,0,0,0.1)" }}>
-                    <h3 style={{ textAlign: "center" }}>Waste Type Distribution</h3>
-                    <ResponsiveContainer width="100%" height="100%">
-                        <PieChart>
+            <div className="charts-container" style={{ display: "flex", gap: "20px", marginTop: "40px", marginBottom: "40px" }}>
+                <div className="chart-box" style={{ flex: 1, minHeight: "400px", padding: "20px", background: "white", borderRadius: "8px", boxShadow: "0 2px 10px rgba(0,0,0,0.1)", display: "flex", flexDirection: "column" }}>
+                    <h3 style={{ textAlign: "center", marginBottom: "20px" }}>Waste Type Distribution</h3>
+                    <div style={{ flex: 1, minHeight: 0 }}>
+                        <ResponsiveContainer width="100%" height="100%">
+                            <PieChart>
                             <Pie
                                 data={chartData}
                                 dataKey="value"
@@ -166,7 +167,8 @@ const AdminOverview = () => {
                             <Tooltip />
                             <Legend />
                         </PieChart>
-                    </ResponsiveContainer>
+                        </ResponsiveContainer>
+                    </div>
                 </div>
             </div>
         </div>
