@@ -1,108 +1,108 @@
-@media only screen and (max-width: 600px) {
-    .activityContainer {
-        display: flex;
-        flex-direction: column;
-        background-color: #E5E5E5;
-        border-radius: 5px;
-        width: 100%;
-        max-height: 350px; 
-        overflow-y: scroll;
-        overflow-x: hidden;
-        scrollbar-width:none; 
-        -ms-overflow-style: none;
-    }
-    
-    .activityContainer .activityContent {
-        padding: 0 15px 20px 15px;
-    }
+/* activity.css */
 
-    .activityContainer .activityContent  .activityHeader {
-        display: flex;
-        background-color: #E5E5E5;
-        justify-content: space-between;
-        align-items: center;
-        padding: 15px 0;
-    }
-    
-    .activityContainer .activityContent  .activityHeader svg {
-        transform: scale(2);
-        cursor: pointer;
-    }
-    
-    .activityContainer  .activityContent .activity .waste-card{
-        width: 100%;
-        display: flex;
-        flex-wrap: wrap;
-        padding: 10px;
-        justify-content: space-between;
-        align-items: center;
-        margin: 5px 0;
-        background-color: rgb(255, 255, 255);
-        border: 1px solid #fffefe;
-        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-        border-radius: 5px;
-        font-size: small;
-        transition: box-shadow 0.2s ease-in-out, background-color 0.2s ease-in-out;
-    }
-    
-    .activityContainer .activityContent .activity .waste-card:hover {
-        cursor: pointer;
-        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-        background-color: #ffffff;
-    }
+.activityContainer {
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(145deg, #f8fafc, #f1f5f9);
+    border-radius: 20px;
+    width: 100%;
+    max-height: 500px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 transparent;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
 }
 
-@media only screen and (min-width: 601px){
+.activityContainer::-webkit-scrollbar {
+    width: 8px;
+}
+
+.activityContainer::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.activityContainer::-webkit-scrollbar-thumb {
+    background-color: #cbd5e1;
+    border-radius: 10px;
+}
+
+.activityContainer::-webkit-scrollbar-thumb:hover {
+    background-color: #94a3b8;
+}
+
+.activityContainer .activityContent {
+    padding: 0 20px 20px 20px;
+}
+
+.activityContainer .activityContent .activityHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+    margin-bottom: 10px;
+    position: sticky;
+    top: 0;
+    background: inherit; /* use the parent gradient */
+    background-color: #f1f5f9; /* fallback */
+    z-index: 10;
+    border-bottom: 2px dashed #cbd5e1;
+}
+
+.activityContainer .activityContent .activityHeader h2 {
+    margin: 0;
+    font-size: 1.25rem;
+    color: #1e293b;
+    font-weight: 700;
+}
+
+.activityContainer .activityContent .activityHeader svg {
+    transform: scale(2);
+    cursor: pointer;
+    color: #64748b;
+    transition: color 0.2s;
+}
+
+.activityContainer .activityContent .activityHeader svg:hover {
+    color: #0f172a;
+}
+
+.activityContainer .activityContent .activity .waste-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    border-radius: 12px;
+    padding: 16px;
+    margin: 12px 0;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    overflow: visible;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.activityContainer .activityContent .activity .waste-card:hover {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    transform: translateY(-2px);
+    border-color: #cbd5e1;
+}
+
+@media only screen and (max-width: 600px) {
     .activityContainer {
-        display: flex;
-        flex-direction: column;
-        background-color: #E5E5E5;
-        border-radius: 5px;
-        width: 100%;
-        max-height: 450px; 
-        overflow-y: auto;
-        overflow-x: hidden;
-        /* Scrollbar styles for better visibility */
-        scrollbar-width: thin;
-        scrollbar-color: #a0aec0 #E5E5E5;
+        max-height: 400px;
+        border-radius: 16px;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
     }
-    
     .activityContainer .activityContent {
-        padding: 0 20px 20px 20px;
+        padding: 0 15px 15px 15px;
     }
-
-    .activityContainer .activityContent  .activityHeader {
-        display: flex;
-        background-color: #E5E5E5;
-        justify-content: space-between;
-        align-items: center;
-        padding: 15px 0;
-    }
-    
-    .activityContainer .activityContent  .activityHeader svg {
-        transform: scale(2);
-        cursor: pointer;
-    }
-    
-    .activityContainer  .activityContent .activity .waste-card{
-        width: 100%;
-        display: flex;
-        flex-wrap: wrap;
-        padding: 15px;
-        justify-content: space-between;
-        align-items: center;
-        margin: 5px 0;
-        background-color: rgb(255, 255, 255);
-        border: 1px solid #fffefe;
-        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-        border-radius: 5px;
-        font-size: 1rem;
-        transition: box-shadow 0.2s ease-in-out, background-color 0.2s ease-in-out;
-    }
-
-    .activityContainer .activityContent .activity .waste-card:hover {
-        cursor: pointer;
-        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-        background-color: #ffffff;
+    .activityContainer .activityContent .activity .waste-card {
+        padding: 12px;
+        margin: 10px 0;
     }
 }

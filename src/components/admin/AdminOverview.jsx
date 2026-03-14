@@ -155,7 +155,7 @@ const AdminOverview = () => {
                                 dataKey="value"
                                 nameKey="name"
                                 cx="50%"
-                                cy="50%"
+                                cy="45%"
                                 outerRadius={100}
                                 fill="#8884d8"
                                 label
@@ -165,7 +165,7 @@ const AdminOverview = () => {
                                 ))}
                             </Pie>
                             <Tooltip />
-                            <Legend />
+                            <Legend verticalAlign="bottom" height={36} />
                         </PieChart>
                         </ResponsiveContainer>
                     </div>
