@@ -93,81 +93,80 @@ const ShowWRinC = ({ user, data, sendDataToParent, onPickUp }) => {
 
       <h2>Waste Requests</h2>
 
-      <div className="table-container">
-        <table className="WRQ-table">
-          <tbody>
-            {currentItems.map((req, index) => (
-              <tr key={req._id}>
-                <td style={{ width: "50px" }}>{currentPage * itemsPerPage + index + 1}</td>
+      <div className="wrq-grid">
+        {currentItems.map((req, index) => (
+          <div key={req._id} className="wrq-card">
+            
+            {/* 📸 IMAGE SECTION */}
+            <div className="wrq-image-container">
+              {req.image ? (
+                <img src={req.image} alt="Waste" className="wrq-image" />
+              ) : (
+                <div className="wrq-no-image">No Image<br/>Provided</div>
+              )}
+            </div>
 
-                <td style={{ width: "600px" }}>
-                  <b>Name:</b> {req.disposerName}
-                  <br />
-                  <b>Date:</b> {new Date(req.date).toLocaleString()}
-                  <br />
-                  <b>Waste Types:</b> {req.wasteTypes.join(", ")}
-                  <br />
-                  <b>Quantity:</b> {req.wasteQuantity || 0} kg/bags
-                  <br />
-                  <b>Location:</b> {req.location ? (
-                    <>
-                      <a
-                        href={`https://www.google.com/maps?q=${req.location[1]},${req.location[0]}`}
-                        target="_blank"
-                        rel="noreferrer"
-                        style={{ color: "#4a634a", fontWeight: "bold", textDecoration: "underline" }}
-                      >
-                        View on Google Maps ({req.location[1].toFixed(4)}, {req.location[0].toFixed(4)})
-                      </a>
-                      {(() => {
-                        const collectorLoc = user?.profile?.lastLocation;
-                        if (collectorLoc && Array.isArray(collectorLoc) && collectorLoc.length === 2 && req.location) {
-                          const dist = getDistance(collectorLoc[1], collectorLoc[0], req.location[1], req.location[0]);
-                          return (
-                            <span style={{ marginLeft: "10px", color: "#2E7D32", fontWeight: "600" }}>
-                              (📍 {dist.toFixed(2)} km away)
-                            </span>
-                          );
-                        }
-                        return null;
-                      })()}
-                    </>
-                  ) : "No location provided"}
-                  <br />
-                  {req.image && (
-                    <>
-                      <b>Image:</b>
-                      <br />
-                      <img
-                        src={req.image}
-                        width={200}
-                        height={200}
-                        alt="Waste"
-                      />
-                    </>
-                  )}
-                </td>
+            {/* 📝 DETAILS SECTION */}
+            <div className="wrq-details">
+              <div className="wrq-header">
+                <h3>{req.disposerName}</h3>
+                <span className="wrq-date">{new Date(req.date).toLocaleString()}</span>
+              </div>
 
-                <td style={{ width: "200px" }}>
-                  <button
-                    onClick={() => handlePickupBClick(index, req._id)}
-                    disabled={req.status === "Picked Up"}
-                    className="pickupButton"
-                    style={{
-                      cursor:
-                        req.status === "Picked Up"
-                          ? "not-allowed"
-                          : "pointer",
-                      opacity: req.status === "Picked Up" ? 0.6 : 1,
-                    }}
-                  >
-                    {req.status === "Picked Up" ? "Picked" : "Pick Up"}
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+              <div className="wrq-info-grid">
+                <div className="wrq-info-item">
+                  <span className="info-label">Types</span>
+                  <span className="info-value">{req.wasteTypes.join(", ")}</span>
+                </div>
+                <div className="wrq-info-item">
+                  <span className="info-label">Quantity</span>
+                  <span className="info-value">{req.wasteQuantity || 0} kg/bags</span>
+                </div>
+              </div>
+
+              {/* 📍 LOCATION */}
+              <div className="wrq-location">
+                {req.location ? (
+                  <>
+                    <a
+                      href={`https://www.google.com/maps?q=${req.location[1]},${req.location[0]}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="wrq-map-link"
+                    >
+                      📍 View on Maps
+                    </a>
+                    {(() => {
+                      const collectorLoc = user?.profile?.lastLocation;
+                      if (collectorLoc && Array.isArray(collectorLoc) && collectorLoc.length === 2 && req.location) {
+                        const dist = getDistance(collectorLoc[1], collectorLoc[0], req.location[1], req.location[0]);
+                        return (
+                          <span className="wrq-distance">
+                            ({dist.toFixed(2)} km away)
+                          </span>
+                        );
+                      }
+                      return null;
+                    })()}
+                  </>
+                ) : (
+                  <span className="wrq-no-location">No location provided</span>
+                )}
+              </div>
+            </div>
+
+            {/* 🎯 ACTION SECTION */}
+            <div className="wrq-action">
+              <button
+                onClick={() => handlePickupBClick(index, req._id)}
+                disabled={req.status === "Picked Up"}
+                className={`pickupButton ${req.status === "Picked Up" ? "picked" : ""}`}
+              >
+                {req.status === "Picked Up" ? "Picked Up" : "Pick Up"}
+              </button>
+            </div>
+          </div>
+        ))}
       </div>
 
       {localData.length > itemsPerPage && (
