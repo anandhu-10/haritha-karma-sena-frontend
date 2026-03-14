@@ -67,6 +67,18 @@ function SignUp() {
         alert("Please fill all required personal fields.");
         return;
       }
+
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(formData.email)) {
+        alert("Please enter a valid email address.");
+        return;
+      }
+
+      const phoneRegex = /^[0-9]{10}$/;
+      if (!phoneRegex.test(formData.phoneNo)) {
+        alert("Please enter a valid 10-digit phone number.");
+        return;
+      }
     } else if (step === 2) {
       if (!formData.district || !formData.localBodyType || !formData.localBodyName || !formData.ward || !formData.villageOrArea) {
         alert("Please complete all location fields.");

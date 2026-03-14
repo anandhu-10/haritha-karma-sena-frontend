@@ -65,6 +65,18 @@ function DisposerDetails() {
       return;
     }
 
+    const phoneRegex = /^[0-9]{10}$/;
+    if (formData.phone && !phoneRegex.test(formData.phone)) {
+      alert("Please enter a valid 10-digit phone number.");
+      return;
+    }
+
+    const pincodeRegex = /^[0-9]{6}$/;
+    if (formData.pincode && !pincodeRegex.test(formData.pincode)) {
+      alert("Please enter a valid 6-digit pin code.");
+      return;
+    }
+
     try {
       const token = localStorage.getItem("token");
       const res = await fetch(

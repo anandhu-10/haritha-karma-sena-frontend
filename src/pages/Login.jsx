@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { RxHamburgerMenu } from "react-icons/rx";
 import axios from "axios";
-import "../styles/login.css";
+import "../styles/signup.css";
 
 /* ✅ API URL from CRA environment */
 const API_URL = (process.env.REACT_APP_API_URL || "https://haritha-karma-sena-backend.onrender.com");
@@ -86,7 +86,7 @@ function Login() {
   };
 
   return (
-    <div className="body">
+    <div className="signup-page">
       {/* HEADER */}
       <header className="headerHome">
         <nav>
@@ -124,43 +124,50 @@ function Login() {
       </header>
 
       {/* LOGIN FORM */}
-      <div className="tray">
-        <div className="container-login">
-          <h1>Log In</h1>
+      <div className="grid-container">
+        <div className="container-signup">
+          <div className="signup-header">
+            <h1>Log In</h1>
+          </div>
 
           <form onSubmit={handleSubmit} className="input-container">
-            <input
-              type="email"
-              name="email"
-              placeholder="Email Address"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
+            <div className="form-step animate-fade">
+              <input
+                type="email"
+                name="email"
+                placeholder="Email Address"
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
 
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-            />
+              <input
+                type="password"
+                name="password"
+                placeholder="Password"
+                value={formData.password}
+                onChange={handleChange}
+                required
+              />
 
 
-            <input
-              type="submit"
-              value={loading ? "Logging in..." : "Log In"}
-              disabled={loading}
-            />
+              <button
+                type="submit"
+                className="submit-btn"
+                disabled={loading}
+              >
+                {loading ? "Logging in..." : "Log In"}
+              </button>
 
-            <div style={{ display: "flex", justifyContent: "space-between", marginTop: "10px", fontSize: "14px", width: "100%", padding: "0 5px" }}>
-              <Link to="/forgot-password" style={{ color: "#4CAF50", textDecoration: "none", fontWeight: "600" }}>Forgot password?</Link>
-              <div style={{ fontStyle: "italic", color: "#666" }}>
-                Not registered? <Link to="/signup" style={{ color: "#4CAF50", textDecoration: "none", fontWeight: "600" }}>Create account</Link>
+              <div style={{ display: "flex", justifyContent: "space-between", marginTop: "20px", fontSize: "14px", width: "100%" }}>
+                <Link to="/forgot-password" style={{ color: "#6c8469", textDecoration: "none", fontWeight: "600" }}>Forgot password?</Link>
               </div>
             </div>
           </form>
+
+          <div className="login-link">
+             Not registered? <Link to="/signup">Create account</Link>
+          </div>
         </div>
       </div>
     </div>

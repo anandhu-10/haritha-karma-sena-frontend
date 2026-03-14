@@ -50,6 +50,28 @@ function MapComponent({ onLocationSelect, initialLocation }) {
     initialLocation ? [initialLocation[1], initialLocation[0]] : null
   );
 
+  /* 📍 AUTO LOCATE */
+  const handleAutoLocate = () => {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+          setMarkerPosition([lat, lng]);
+          setMapCenter([lat, lng]);
+          onLocationSelect?.([lng, lat]);
+        },
+        (error) => {
+          console.error("Geolocation error:", error);
+          alert("Could not get your location. Please check browser permissions.");
+        },
+        { enableHighAccuracy: true, timeout: 10000 }
+      );
+    } else {
+      alert("Geolocation is not supported by your browser.");
+    }
+  };
+
   /* 📏 SEARCH LOCATION */
   const handleSearch = async () => {
     if (!searchQuery.trim()) return;
@@ -83,9 +105,10 @@ function MapComponent({ onLocationSelect, initialLocation }) {
   return (
     <div className="map-outer-wrapper">
       {/* SEARCH BAR */}
-      <div className="map-search-container">
+      <div className="map-search-container" style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
         <input
           className="map-search-input"
+          style={{ flex: 1, minWidth: "200px" }}
           type="text"
           placeholder="Search location (town, village)..."
           value={searchQuery}
@@ -94,6 +117,14 @@ function MapComponent({ onLocationSelect, initialLocation }) {
         />
         <button className="map-search-btn" onClick={handleSearch}>
           Locate
+        </button>
+        <button 
+          className="map-search-btn" 
+          onClick={handleAutoLocate}
+          style={{ background: "#475569" }}
+          title="Use current GPS location"
+        >
+          📍 Auto Locate
         </button>
       </div>
 

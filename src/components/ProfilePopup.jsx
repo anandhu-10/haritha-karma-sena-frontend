@@ -12,11 +12,11 @@ function ProfilePopup({ onClose, userType }) {
   const [editMode, setEditMode] = useState(false);
 
   const [formData, setFormData] = useState({
-    phone: storedProfile.phone || "",
-    pincode: storedProfile.pincode || "",
-    location: storedProfile.location || "",
-    panchayath: storedProfile.panchayath || "",
-    ward: storedProfile.ward || "",
+    phone: storedProfile.phone || user?.profile?.phone || user?.phone || "",
+    pincode: storedProfile.pincode || user?.profile?.pincode || "",
+    location: storedProfile.location || user?.profile?.villageOrArea || user?.profile?.district || user?.villageOrArea || user?.district || "",
+    panchayath: storedProfile.panchayath || user?.profile?.localBodyName || user?.localBodyName || "",
+    ward: storedProfile.ward || user?.profile?.ward || user?.ward || "",
   });
 
   if (!user) return null;
@@ -27,6 +27,22 @@ function ProfilePopup({ onClose, userType }) {
   };
 
   const handleSave = () => {
+    if (formData.phone) {
+      const phoneRegex = /^[0-9]{10}$/;
+      if (!phoneRegex.test(formData.phone)) {
+        alert("Please enter a valid 10-digit phone number.");
+        return;
+      }
+    }
+
+    if (formData.pincode) {
+      const pincodeRegex = /^[0-9]{6}$/;
+      if (!pincodeRegex.test(formData.pincode)) {
+        alert("Please enter a valid 6-digit pin code.");
+        return;
+      }
+    }
+
     localStorage.setItem(roleKey, JSON.stringify(formData));
     setEditMode(false);
   };

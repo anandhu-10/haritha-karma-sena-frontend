@@ -214,7 +214,12 @@ function ListWaste({ paid }) {
         >
           <h3>Pin Location</h3>
 
-          <MapComponent onLocationSelect={setSelectedLocation} />
+          {activeTab === "location" && (
+            <MapComponent 
+              initialLocation={selectedLocation} 
+              onLocationSelect={setSelectedLocation} 
+            />
+          )}
 
           <GrFormNext
             className="backIconL"

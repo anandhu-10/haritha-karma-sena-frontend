@@ -5,7 +5,8 @@ function ProfilePage() {
   const navigate = useNavigate();
 
   const user = JSON.parse(localStorage.getItem("user"));
-  const profile = user?.profile;
+  const roleKey = user?.role === "collector" ? "collectorProfile" : "disposerProfile";
+  const storedProfile = JSON.parse(localStorage.getItem(roleKey)) || {};
 
   if (!user) {
     navigate("/login");
@@ -36,12 +37,11 @@ function ProfilePage() {
         <hr />
 
         <h3>Contact & Location</h3>
-        <p><strong>Phone:</strong> {profile?.phone || "-"}</p>
-        <p><strong>Pin Code:</strong> {profile?.pincode || "-"}</p>
-        <p><strong>District:</strong> {profile?.district || "-"}</p>
-        <p><strong>Local Body:</strong> {profile?.localBodyName || "-"} ({profile?.localBodyType || "-"})</p>
-        <p><strong>Ward:</strong> {profile?.ward || "-"}</p>
-        <p><strong>Village / Area:</strong> {profile?.villageOrArea || "-"}</p>
+        <p><strong>Phone:</strong> {storedProfile.phone || user?.profile?.phone || user.phone || "-"}</p>
+        <p><strong>Pin Code:</strong> {storedProfile.pincode || user?.profile?.pincode || "-"}</p>
+        <p><strong>Detailed Location:</strong> {storedProfile.location || user?.profile?.villageOrArea || user?.profile?.district || user.villageOrArea || user.district || "-"}</p>
+        <p><strong>Panchayath / Municipality:</strong> {storedProfile.panchayath || user?.profile?.localBodyName || user.localBodyName || "-"}</p>
+        <p><strong>Ward:</strong> {storedProfile.ward || user?.profile?.ward || user.ward || "-"}</p>
 
         <div style={{ marginTop: "20px", display: "flex", gap: "10px" }}>
           <button
