@@ -48,7 +48,7 @@ function NewRqFromD() {
   }, [fetchNewRqFromD]);
 
   /* ---------- PICK UP HANDLER (FIXED) ---------- */
-  const handlePickUp = async (requestId) => {
+  const handlePickUp = async (requestId, timeSlot) => {
     try {
       const userId = user?.id || user?._id;
 
@@ -61,6 +61,7 @@ function NewRqFromD() {
           },
           body: JSON.stringify({
             collectorId: userId, // 🔥 ASSIGN COLLECTOR
+            timeSlot,
           }),
         }
       );

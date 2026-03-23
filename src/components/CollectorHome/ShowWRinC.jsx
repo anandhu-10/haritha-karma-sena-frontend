@@ -40,18 +40,19 @@ const ShowWRinC = ({ user, data, sendDataToParent, onPickUp }) => {
   const handleDataFromChild = async (
     index,
     statusOnPopup,
-    statusOnPickup
+    statusOnPickup,
+    timeSlot
   ) => {
     setIsOpen(statusOnPopup);
 
     if (statusOnPickup && currentWasteRQ) {
-      await onPickUp(currentWasteRQ);
+      await onPickUp(currentWasteRQ, timeSlot);
 
       // ✅ update UI immediately
       setLocalData((prev) =>
         prev.map((req) =>
           req._id === currentWasteRQ
-            ? { ...req, status: "Picked Up" }
+            ? { ...req, status: "Picked Up", timeSlot }
             : req
         )
       );

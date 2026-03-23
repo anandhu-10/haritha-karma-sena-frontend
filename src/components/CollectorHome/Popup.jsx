@@ -1,13 +1,23 @@
 // Popup.js
-import React from "react";
+import React, { useState } from "react";
 import "../../styles/CollectorHome/Popup.css";
 
 const Popup = ({ num, isOpen, sendDataToParent, wrqid }) => {
+  const [timeSlot, setTimeSlot] = useState("");
+
   if (!isOpen) return null;
 
   const closePopup = (pickedUp) => {
-    // num, popupOpen, pickupStatus
-    sendDataToParent(num, false, pickedUp);
+    // num, popupOpen, pickupStatus, timeSlot
+    if (pickedUp && !timeSlot.trim()) {
+      alert("Please assign a time slot for this pickup (e.g. Today 4:00 PM - 5:00 PM)");
+      return;
+    }
+    // sendDataToParent(index, statusOnPopup, statusOnPickup, timeSlot)
+    sendDataToParent(num, false, pickedUp, timeSlot);
+    if (!pickedUp) {
+      setTimeSlot(""); // Clear if cancelled
+    }
   };
 
   const updateStatus = async () => {
@@ -29,11 +39,18 @@ const Popup = ({ num, isOpen, sendDataToParent, wrqid }) => {
           &times;
         </span>
 
-        <p>Are you sure you picked this up?</p>
+        <p>Assign a Time Slot for this pickup</p>
+        <input 
+          type="text" 
+          placeholder="e.g. Today 4:00 PM - 5:00 PM" 
+          value={timeSlot}
+          onChange={(e) => setTimeSlot(e.target.value)}
+          style={{ width: "100%", padding: "10px", margin: "15px 0", borderRadius: "8px", border: "1px solid #ccc" }}
+        />
 
         <div className="buttons">
-          <button onClick={onYes}>Yep</button>
-          <button onClick={onNo}>Nope</button>
+          <button onClick={onYes}>Confirm</button>
+          <button onClick={onNo}>Cancel</button>
         </div>
       </div>
     </div>
