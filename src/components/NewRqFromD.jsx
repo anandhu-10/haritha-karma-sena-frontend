@@ -47,10 +47,50 @@ function NewRqFromD() {
     fetchNewRqFromD();
   }, [fetchNewRqFromD]);
 
-  /* ---------- PICK UP HANDLER (FIXED) ---------- */
+  /* ---------- FETCH COLLECTOR AREAS FOR VALIDATION ---------- */
+  const [collectorAreas, setCollectorAreas] = useState([]);
+
+  useEffect(() => {
+    async function fetchMyAreas() {
+      if (!user) return;
+      const userId = user?.id || user?._id;
+      try {
+        const res = await fetch(
+          `${(process.env.REACT_APP_API_URL || "https://haritha-karma-sena-backend.onrender.com")}/api/collectionAreas`
+        );
+        const data = await res.json();
+        const myAreas = data.filter(a => a.userId === userId);
+        setCollectorAreas(myAreas);
+      } catch (err) {
+        console.error("COLLECTOR AREAS FETCH ERROR:", err);
+      }
+    }
+    fetchMyAreas();
+  }, [user]);
+
+  /* ---------- PICK UP HANDLER (WITH VALIDATION) ---------- */
   const handlePickUp = async (requestId, timeSlot) => {
     try {
       const userId = user?.id || user?._id;
+
+      /* 🔍 VALIDATE WASTE TYPES MATCH (STRICT TO TODAY) */
+      const targetReq = showRQ.find(r => r._id === requestId);
+      const reqTypes = targetReq?.wasteTypes || [];
+      const todayDateStr = new Date().toLocaleDateString();
+
+      const todayAreas = collectorAreas.filter(a => a.date?.includes(todayDateStr));
+      const allowedTypes = [...new Set(todayAreas.flatMap(a => a.wasteTypes || []))];
+
+      const isMatch = reqTypes.some(type => allowedTypes.includes(type));
+
+      if (!isMatch) {
+         const alertMsg = allowedTypes.length > 0 
+           ? `🚨 WASTE TYPE MISMATCH!\n\nThis request is for: ${reqTypes.join(", ")}\nBut TODAY you are only collecting: ${allowedTypes.join(", ")}.\n\nPlease update your Today's Collection Area if you wish to pick this up.`
+           : `🚨 NO COLLECTION AREA SET FOR TODAY!\n\nYou must first add a Collection Area for TODAY with the matching waste type (${reqTypes.join(", ")}) before picking up any requests.`;
+         
+         alert(alertMsg);
+         return;
+      }
 
       const res = await fetch(
         `${(process.env.REACT_APP_API_URL || "https://haritha-karma-sena-backend.onrender.com")}/api/collector/pickup/${requestId}`,
@@ -60,7 +100,7 @@ function NewRqFromD() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            collectorId: userId, // 🔥 ASSIGN COLLECTOR
+            collectorId: userId,
             timeSlot,
           }),
         }
