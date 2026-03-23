@@ -31,7 +31,7 @@ const Popup = ({ num, isOpen, sendDataToParent, wrqid }) => {
   return (
     <div className="popupContainer">
       <div className="popupContent">
-        <span className="closeBtn" onClick={onNo}>
+        <span className="closeBtn" onClick={() => closePopup(false)}>
           &times;
         </span>
 
