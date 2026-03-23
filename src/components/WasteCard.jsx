@@ -34,7 +34,7 @@ function WasteCard({ wasteData, paid, index = 0, setShowActivity }) {
 
     document.addEventListener("mousedown", handleClick);
     return () => document.removeEventListener("mousedown", handleClick);
-  }, []);
+  }, [setShowActivity]);
 
   /* ---------- STATUS HELPER ---------- */
   const getStatusClass = (status) => {
