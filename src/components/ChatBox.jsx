@@ -12,6 +12,7 @@ function ChatBox({ disposerId, collectorId, userRole, activeRequests = [] }) {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const [selectedReqId, setSelectedReqId] = useState("");
+  const [showUserList, setShowUserList] = useState(false);
   const messagesEndRef = useRef(null);
 
   const openRef = useRef(open);
@@ -137,22 +138,32 @@ function ChatBox({ disposerId, collectorId, userRole, activeRequests = [] }) {
         <div className="chat-window">
           <div className="chat-header">
             <div className="chat-header-info">
-              <div className="header-avatar">
+              <div className="header-avatar" onClick={() => userRole === "collector" && setShowUserList(!showUserList)}>
                 <FaUser size={14} />
               </div>
-              <div className="header-text">
+              <div className="header-text" onClick={() => userRole === "collector" && setShowUserList(!showUserList)}>
                 {userRole === "collector" && activeRequests.length > 1 ? (
-                  <select 
-                    className="chat-user-select"
-                    value={selectedReqId}
-                    onChange={(e) => setSelectedReqId(e.target.value)}
-                  >
-                    {activeRequests.map(req => (
-                      <option key={req._id} value={req._id}>
-                        Chat with: {req.disposerName}
-                      </option>
-                    ))}
-                  </select>
+                  <div className="chat-switcher-container">
+                    <span className="current-chat-name">
+                      {currentSelection?.disposerName || "Select Disposer"}
+                    </span>
+                    {showUserList && (
+                      <div className="user-dropdown-list">
+                        {activeRequests.map(req => (
+                          <div 
+                            key={req._id} 
+                            className={`user-option ${selectedReqId === req._id ? 'active' : ''}`}
+                            onClick={() => {
+                              setSelectedReqId(req._id);
+                              setShowUserList(false);
+                            }}
+                          >
+                            {req.disposerName}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 ) : (
                   <h3>
                     {userRole === "collector" 
@@ -160,7 +171,7 @@ function ChatBox({ disposerId, collectorId, userRole, activeRequests = [] }) {
                       : "Collector Support"}
                   </h3>
                 )}
-                <small style={{ color: "rgba(255,255,255,0.7)" }}>Online</small>
+                <small className="online-status">Online</small>
               </div>
             </div>
             <button className="close-chat" onClick={() => setOpen(false)}>
