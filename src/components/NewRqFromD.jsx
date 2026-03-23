@@ -78,20 +78,36 @@ function NewRqFromD() {
     try {
       const userId = user?.id || user?._id;
 
-      /* 🔍 VALIDATE WASTE TYPES MATCH (STRICT TO TODAY) */
+      /* 🔍 VALIDATE WASTE TYPES MATCH (ROBUST DATE CHECK) */
       const targetReq = showRQ.find(r => r._id === requestId);
       const reqTypes = targetReq?.wasteTypes || [];
-      const todayDateStr = new Date().toLocaleDateString();
+      const today = new Date();
 
-      const todayAreas = collectorAreas.filter(a => a.date?.includes(todayDateStr));
+      const todayAreas = collectorAreas.filter(a => {
+        if (!a.date) return false;
+        try {
+          // Robust date extraction to handle locale mess
+          const d = new Date(a.date);
+          if (isNaN(d.getTime())) {
+             // Fallback: check if the date string starts with today's numeric date (e.g. "23/3/2024")
+             const todayLocale = today.toLocaleDateString();
+             return a.date.split(",")[0].trim() === todayLocale.split(",")[0].trim();
+          }
+          return d.getDate() === today.getDate() && 
+                 d.getMonth() === today.getMonth() && 
+                 d.getFullYear() === today.getFullYear();
+        } catch (e) {
+          return false;
+        }
+      });
+
       const allowedTypes = [...new Set(todayAreas.flatMap(a => a.wasteTypes || []))];
-
       const isMatch = reqTypes.some(type => allowedTypes.includes(type));
 
       if (!isMatch) {
          const alertMsg = allowedTypes.length > 0 
-           ? `🚨 WASTE TYPE MISMATCH!\n\nThis request is for: ${reqTypes.join(", ")}\nBut TODAY you are only collecting: ${allowedTypes.join(", ")}.\n\nPlease update your Today's Collection Area if you wish to pick this up.`
-           : `🚨 NO COLLECTION AREA SET FOR TODAY!\n\nYou must first add a Collection Area for TODAY with the matching waste type (${reqTypes.join(", ")}) before picking up any requests.`;
+           ? `🚨 WASTE TYPE MISMATCH!\n\nThis request is for: ${reqTypes.join(", ")}\nBut TODAY you are specialized in: ${allowedTypes.join(", ")}.\n\nPlease update your Today's Collection Area if you wish to help with this type.`
+           : `🚨 NO COLLECTION AREA SET FOR TODAY!\n\nYou must first add an active Collection Area for TODAY (\n${new Date().toLocaleDateString()}\n) before picking up requests.`;
          
          alert(alertMsg);
          return;
