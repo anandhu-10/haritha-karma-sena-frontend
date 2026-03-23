@@ -26,7 +26,12 @@ function NewRqFromD() {
 
       const data = await res.json();
 
-      const activeRequests = data.filter(r => r.status !== "Completed");
+      const activeRequests = data.filter(r => 
+        !r.collectorId && 
+        r.status !== "Completed" && 
+        r.status !== "Picked Up" && 
+        r.status !== "Assigned"
+      );
 
       const grouped = [
         {

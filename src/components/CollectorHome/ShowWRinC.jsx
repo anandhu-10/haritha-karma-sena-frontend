@@ -160,10 +160,10 @@ const ShowWRinC = ({ user, data, sendDataToParent, onPickUp }) => {
             <div className="wrq-action">
               <button
                 onClick={() => handlePickupBClick(index, req._id)}
-                disabled={req.status === "Picked Up"}
-                className={`pickupButton ${req.status === "Picked Up" ? "picked" : ""}`}
+                disabled={req.status === "Picked Up" || req.status === "Assigned" || !!req.collectorId}
+                className={`pickupButton ${ (req.status === "Picked Up" || req.status === "Assigned" || !!req.collectorId) ? "picked" : ""}`}
               >
-                {req.status === "Picked Up" ? "Picked Up" : "Pick Up"}
+                { (req.status === "Picked Up" || req.status === "Assigned" || !!req.collectorId) ? "Assigned" : "Pick Up"}
               </button>
             </div>
           </div>
