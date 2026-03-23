@@ -134,7 +134,7 @@ function Home() {
       {/* FOOTER */}
       <footer>
         <div className="container-home">
-          <p>&copy; 2024 Hygieno. All rights reserved.</p>
+          <p>&copy; 2026 Hygieno. All rights reserved.</p>
         </div>
       </footer>
     </div>
