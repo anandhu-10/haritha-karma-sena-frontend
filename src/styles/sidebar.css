@@ -164,7 +164,56 @@
 
 @media screen and (max-width: 600px) {
   .sidebar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    margin: 0;
+    padding: 0;
+    border-radius: 20px 20px 0 0;
+    flex-direction: row;
+    justify-content: space-around;
+    z-index: 1000;
+    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .sidebar-header, .avatar-circle, .header-text, .menu-divider {
     display: none;
-    /* Alternatively, implement a fixed bottom nav or hamburger menu here */
+  }
+
+  .sidebar-menu {
+    width: 100%;
+  }
+
+  .sidebar-menu ul {
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    height: 100%;
+    padding: 0 10px;
+  }
+
+  .sidebar-menu li {
+    margin: 0;
+    padding: 0;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+  }
+
+  .sidebar-menu li a {
+    flex-direction: column;
+    padding: 8px;
+    gap: 4px;
+    border-radius: 12px;
+  }
+
+  .sidebar-menu li a span {
+    display: none;
+  }
+
+  .menu-icon {
+    font-size: 20px;
   }
 }
