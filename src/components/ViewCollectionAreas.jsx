@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
+import { FaTrash } from "react-icons/fa6";
 import "../styles/Table.css";
 
 function ViewCollectionAreas() {
@@ -9,15 +10,14 @@ function ViewCollectionAreas() {
   const [currentPage, setCurrentPage] = useState(0);
 
   const ROWS_PER_PAGE = 10;
+  const API_URL = process.env.REACT_APP_API_URL || "https://haritha-karma-sena-backend.onrender.com";
 
   useEffect(() => {
     if (!user) return;
 
     async function fetchCollectionAreas() {
       try {
-        const res = await fetch(
-          `${(process.env.REACT_APP_API_URL || "https://haritha-karma-sena-backend.onrender.com")}/api/collectionAreas`
-        );
+        const res = await fetch(`${API_URL}/api/collectionAreas`);
 
         if (!res.ok) throw new Error("Failed to fetch");
 
@@ -30,7 +30,32 @@ function ViewCollectionAreas() {
     }
 
     fetchCollectionAreas();
-  }, [user]);
+  }, [user, API_URL]);
+
+  const handleDelete = async (id) => {
+    if (!window.confirm("Are you sure you want to remove this collection area?")) return;
+
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch(`${API_URL}/api/collectionAreas/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (res.ok) {
+        setCollectionAreaDetails((prev) => prev.filter((item) => item._id !== id));
+        alert("Area removed successfully");
+      } else {
+        const errorData = await res.json();
+        throw new Error(errorData.message || "Failed to delete");
+      }
+    } catch (err) {
+      console.error(err);
+      alert(err.message || "Failed to remove collection area");
+    }
+  };
 
   const startIndex = currentPage * ROWS_PER_PAGE;
   const endIndex = startIndex + ROWS_PER_PAGE;
@@ -51,19 +76,41 @@ function ViewCollectionAreas() {
               <th>Area (Lat, Lng)</th>
               <th>Types</th>
               <th>Date</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
             {currentPageData.map((item, index) => (
               <tr key={item._id}>
                 <td>{startIndex + index + 1}</td>
-                <td>{item._id.slice(-6)}</td>
+                <td title={item._id}>{item._id.slice(-6)}</td>
                 <td>
-                  {item.location?.coordinates?.[1]},{" "}
-                  {item.location?.coordinates?.[0]}
+                  {item.location?.coordinates?.[1]?.toFixed(4)},{" "}
+                  {item.location?.coordinates?.[0]?.toFixed(4)}
                 </td>
                 <td>{item.wasteTypes?.join(", ")}</td>
                 <td>{item.date}</td>
+                <td>
+                  <button
+                    className="btn-delete-small"
+                    onClick={() => handleDelete(item._id)}
+                    style={{
+                      background: "#ffefef",
+                      color: "#e53e3e",
+                      border: "1px solid #feb2b2",
+                      padding: "6px 10px",
+                      borderRadius: "6px",
+                      cursor: "pointer",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "5px",
+                      fontSize: "12px",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    <FaTrash size={12} /> Remove
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>
