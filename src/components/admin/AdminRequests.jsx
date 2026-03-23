@@ -4,11 +4,14 @@ import ReactPaginate from 'react-paginate';
 
 const AdminRequests = () => {
     const [requests, setRequests] = useState([]);
+    const [collectors, setCollectors] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [assigning, setAssigning] = useState(null); // ID of request being assigned
     const [error, setError] = useState(null);
 
     useEffect(() => {
         fetchRequests();
+        fetchCollectors();
     }, []);
 
     const fetchRequests = async () => {
@@ -19,20 +22,47 @@ const AdminRequests = () => {
             const apiUrl = process.env.REACT_APP_API_URL || "https://haritha-karma-sena-backend.onrender.com";
             const { data } = await axios.get(`${apiUrl}/api/admin/requests`, {
                 headers: { Authorization: `Bearer ${token}` },
-                timeout: 30000 // Cold start timeout
+                timeout: 30000 
             });
             setRequests(Array.isArray(data) ? data : []);
         } catch (error) {
             console.error("Error fetching requests:", error);
-            let msg = error.message;
-            if (error.response) {
-                msg = `${error.response.status}: ${error.response.data?.message || error.response.statusText}`;
-            } else if (error.request) {
-                msg = "No response from server. Check CORS or if backend is awake.";
-            }
-            setError(msg);
+            setError(error.message);
         } finally {
             setLoading(false);
+        }
+    };
+
+    const fetchCollectors = async () => {
+        try {
+            const token = localStorage.getItem("token");
+            const apiUrl = process.env.REACT_APP_API_URL || "https://haritha-karma-sena-backend.onrender.com";
+            const { data } = await axios.get(`${apiUrl}/api/admin/collectors`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            // Only active collectors
+            setCollectors(data.filter(c => c.status === "Active"));
+        } catch (error) {
+            console.error("Error fetching collectors:", error);
+        }
+    };
+
+    const handleManualAssign = async (requestId, collectorId) => {
+        if (!collectorId) return;
+        setAssigning(requestId);
+        try {
+            const token = localStorage.getItem("token");
+            const apiUrl = process.env.REACT_APP_API_URL || "https://haritha-karma-sena-backend.onrender.com";
+            await axios.post(`${apiUrl}/api/admin/assign`, { requestId, collectorId }, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            alert("Collector assigned successfully!");
+            fetchRequests();
+        } catch (error) {
+            console.error("Assignment error:", error);
+            alert(error.response?.data?.message || "Failed to assign collector");
+        } finally {
+            setAssigning(null);
         }
     };
 
@@ -64,13 +94,7 @@ const AdminRequests = () => {
                 </div>
             ) : error ? (
                 <div style={{ textAlign: "center", padding: "40px", color: "#d32f2f", background: "#ffebee", borderRadius: "8px", margin: "20px" }}>
-                    <div style={{ fontSize: "2rem", marginBottom: "10px" }}>⚠️</div>
                     <p><strong>Connection Error:</strong> {error}</p>
-                    <div style={{ marginTop: "15px", textAlign: "left", display: "inline-block", fontSize: "0.8rem", color: "#666", background: "#fff", padding: "10px", borderRadius: "4px", border: "1px solid #ddd" }}>
-                        <strong>Debug Info:</strong><br />
-                        Target: {process.env.REACT_APP_API_URL || "https://haritha-karma-sena-backend.onrender.com"}/api/admin/requests<br />
-                        Time: {new Date().toLocaleTimeString()}
-                    </div>
                 </div>
             ) : (
                 <>
@@ -110,18 +134,39 @@ const AdminRequests = () => {
                                                         <small>{r.collectorId.phone || r.collectorId.profile?.phone || "N/A"}</small>
                                                     </div>
                                                 ) : (
-                                                    <div style={{
-                                                        color: "#c53030",
-                                                        background: "#fff5f5",
-                                                        padding: "6px 12px",
-                                                        borderRadius: "6px",
-                                                        border: "1px solid #feb2b2",
-                                                        display: "inline-block",
-                                                        fontSize: "0.8rem",
-                                                        lineHeight: "1.2"
-                                                    }}>
-                                                        <strong>Manual Assignment Required</strong><br />
-                                                        <small>No collectors in {r.ward || "Area"}</small>
+                                                    <div className="assign-container" style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
+                                                        <div style={{
+                                                            color: "#c53030",
+                                                            background: "#fff5f5",
+                                                            padding: "4px 8px",
+                                                            borderRadius: "4px",
+                                                            border: "1px solid #feb2b2",
+                                                            fontSize: "0.75rem",
+                                                        }}>
+                                                            <strong>Manual Assignment Required</strong><br />
+                                                            <small>No collectors in {r.ward || "Area"}</small>
+                                                        </div>
+                                                        <select 
+                                                            disabled={assigning === r._id}
+                                                            onChange={(e) => handleManualAssign(r._id, e.target.value)}
+                                                            style={{
+                                                                padding: "6px",
+                                                                borderRadius: "4px",
+                                                                fontSize: "0.8rem",
+                                                                border: "1px solid #cbd5e1",
+                                                                cursor: "pointer",
+                                                                outline: "none"
+                                                            }}
+                                                            defaultValue=""
+                                                        >
+                                                            <option value="" disabled>Select Collector...</option>
+                                                            {collectors.map(c => (
+                                                                <option key={c._id} value={c._id}>
+                                                                    {c.name} ({c.profile?.ward || "Any"})
+                                                                </option>
+                                                            ))}
+                                                        </select>
+                                                        {assigning === r._id && <small style={{ color: "blue" }}>Assigning...</small>}
                                                     </div>
                                                 )}
                                             </td>
