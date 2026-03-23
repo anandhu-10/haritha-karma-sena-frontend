@@ -133,7 +133,7 @@ function SignUp() {
               style={{ display: "flex", alignItems: "center", gap: "0px", cursor: "pointer" }}
             >
               <img src={logo} alt="Hygieno Logo" style={{ height: "40px", width: "auto" }} />
-              <h1 style={{ margin: 0, marginLeft: "-15px" }}>HYGIENO</h1>
+              <h1 style={{ margin: 0, marginLeft: "-30px" }}>HYGIENO</h1>
             </div>
 
             {width <= 568 ? (
