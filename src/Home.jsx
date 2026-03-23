@@ -7,7 +7,7 @@ import image from "./assets/1000_F_101682732_OejrMC8RzUdpxMVmSQLhgsnTW2HQloO0.jp
 
 import { RxHamburgerMenu } from "react-icons/rx";
 
-import logo from "./assets/logo.png";
+import logo from "./assets/logo_header.png";
 
 function Home() {
   const navigate = useNavigate();
@@ -32,7 +32,7 @@ function Home() {
           >
             <div 
               onClick={() => navigate("/")} 
-              style={{ display: "flex", alignItems: "center", gap: "10px", cursor: "pointer" }}
+              style={{ display: "flex", alignItems: "center", gap: "20px", cursor: "pointer" }}
             >
               <img src={logo} alt="Hygieno Logo" style={{ height: "40px", width: "auto" }} />
               <h1 style={{ margin: 0 }}>HYGIENO</h1>

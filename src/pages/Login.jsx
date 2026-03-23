@@ -4,7 +4,7 @@ import { RxHamburgerMenu } from "react-icons/rx";
 import axios from "axios";
 import "../styles/signup.css";
 
-import logo from "../assets/logo.png";
+import logo from "../assets/logo_header.png";
 
 /* ✅ API URL from CRA environment */
 const API_URL = (process.env.REACT_APP_API_URL || "https://haritha-karma-sena-backend.onrender.com");
@@ -97,7 +97,7 @@ function Login() {
           >
             <div 
               onClick={() => navigate("/")} 
-              style={{ display: "flex", alignItems: "center", gap: "10px", cursor: "pointer" }}
+              style={{ display: "flex", alignItems: "center", gap: "20px", cursor: "pointer" }}
             >
               <img src={logo} alt="Hygieno Logo" style={{ height: "40px", width: "auto" }} />
               <h1 style={{ margin: 0 }}>HYGIENO</h1>

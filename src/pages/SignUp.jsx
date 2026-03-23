@@ -7,7 +7,7 @@ import { DISTRICTS, KERALA_DATA } from "../data/keralaData";
 
 import SearchableSelect from "../components/SearchableSelect";
 
-import logo from "../assets/logo.png";
+import logo from "../assets/logo_header.png";
 
 const API = (process.env.REACT_APP_API_URL || "https://haritha-karma-sena-backend.onrender.com");
 
@@ -130,7 +130,7 @@ function SignUp() {
           <div className={width > 568 ? "containerHomeNav" : "containerHomeNavMob"}>
             <div 
               onClick={() => navigate("/")} 
-              style={{ display: "flex", alignItems: "center", gap: "10px", cursor: "pointer" }}
+              style={{ display: "flex", alignItems: "center", gap: "20px", cursor: "pointer" }}
             >
               <img src={logo} alt="Hygieno Logo" style={{ height: "40px", width: "auto" }} />
               <h1 style={{ margin: 0 }}>HYGIENO</h1>
