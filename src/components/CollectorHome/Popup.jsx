@@ -5,31 +5,27 @@ import "../../styles/CollectorHome/Popup.css";
 const Popup = ({ num, isOpen, sendDataToParent, wrqid }) => {
   const [timeSlot, setTimeSlot] = useState("");
 
+  const [submitting, setSubmitting] = useState(false);
+
   if (!isOpen) return null;
 
   const closePopup = (pickedUp) => {
-    // num, popupOpen, pickupStatus, timeSlot
     if (pickedUp && !timeSlot.trim()) {
       alert("Please assign a time slot for this pickup (e.g. Today 4:00 PM - 5:00 PM)");
       return;
     }
-    // sendDataToParent(index, statusOnPopup, statusOnPickup, timeSlot)
+    if (pickedUp) setSubmitting(true);
     sendDataToParent(num, false, pickedUp, timeSlot);
     if (!pickedUp) {
-      setTimeSlot(""); // Clear if cancelled
+      setTimeSlot("");
+      setSubmitting(false);
     }
   };
 
-  const updateStatus = async () => {
-    closePopup(true);
-  };
-
-  const onYes = () => {
-    updateStatus();
-  };
-
-  const onNo = () => {
-    closePopup(false);
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" && !submitting) {
+      closePopup(true);
+    }
   };
 
   return (
@@ -45,12 +41,17 @@ const Popup = ({ num, isOpen, sendDataToParent, wrqid }) => {
           placeholder="e.g. Today 4:00 PM - 5:00 PM" 
           value={timeSlot}
           onChange={(e) => setTimeSlot(e.target.value)}
+          onKeyDown={handleKeyDown}
+          disabled={submitting}
+          autoFocus
           style={{ width: "100%", padding: "10px", margin: "15px 0", borderRadius: "8px", border: "1px solid #ccc" }}
         />
 
         <div className="buttons">
-          <button onClick={onYes}>Confirm</button>
-          <button onClick={onNo}>Cancel</button>
+          <button onClick={() => closePopup(true)} disabled={submitting}>
+            {submitting ? "Processing..." : "Confirm"}
+          </button>
+          <button onClick={() => closePopup(false)} disabled={submitting}>Cancel</button>
         </div>
       </div>
     </div>

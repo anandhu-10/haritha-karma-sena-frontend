@@ -7,6 +7,7 @@ function NewRqFromD() {
   const { user } = useOutletContext();
   const [newRqFromD, setNewRqFromD] = useState([]);
   const [showRQ, setShowRQ] = useState(null);
+  const [isPickingUp, setIsPickingUp] = useState(false);
   const [currentPage] = useState(0);
 
   const ROWS_PER_PAGE = 10;
@@ -74,6 +75,8 @@ function NewRqFromD() {
 
   /* ---------- PICK UP HANDLER (WITH VALIDATION) ---------- */
   const handlePickUp = async (requestId, timeSlot) => {
+    if (isPickingUp) return;
+    setIsPickingUp(true);
     try {
       const userId = user?.id || user?._id;
 
@@ -85,10 +88,8 @@ function NewRqFromD() {
       const todayAreas = collectorAreas.filter(a => {
         if (!a.date) return false;
         try {
-          // Robust date extraction to handle locale mess
           const d = new Date(a.date);
           if (isNaN(d.getTime())) {
-             // Fallback: check if the date string starts with today's numeric date (e.g. "23/3/2024")
              const todayLocale = today.toLocaleDateString();
              return a.date.split(",")[0].trim() === todayLocale.split(",")[0].trim();
           }
@@ -109,6 +110,7 @@ function NewRqFromD() {
            : `🚨 NO COLLECTION AREA SET FOR TODAY!\n\nYou must first add an active Collection Area for TODAY (\n${new Date().toLocaleDateString()}\n) before picking up requests.`;
          
          alert(alertMsg);
+         setIsPickingUp(false);
          return;
       }
 
@@ -138,6 +140,8 @@ function NewRqFromD() {
     } catch (err) {
       console.error(err);
       alert(err.message || "Failed to pick up request");
+    } finally {
+      setIsPickingUp(false);
     }
   };
 
