@@ -34,8 +34,7 @@ function CollectorHome() {
   const navigate = useNavigate();
 
   /* ---------- CONTEXT & STATE ---------- */
-  const [activeDisposerId, setActiveDisposerId] = React.useState(null);
-
+  const [activeRequests, setActiveRequests] = React.useState([]);
   // SAFE localStorage read
   const storedUser = localStorage.getItem("user");
   const user = storedUser ? JSON.parse(storedUser) : null;
@@ -63,19 +62,16 @@ function CollectorHome() {
           }
         );
         const data = res.data || [];
-        // Find a request picked up by this collector
-        const activeReq = data.find((r) => {
+        // Find ALL requests picked up by this collector (that are not yet completed)
+        const myPicked = data.filter((r) => {
           const rCollectorId =
             typeof r.collectorId === "object"
               ? r.collectorId?._id || r.collectorId?.$oid
               : r.collectorId;
           return rCollectorId === userId && r.status === "Picked Up";
         });
-        if (activeReq) {
-          setActiveDisposerId(activeReq.disposerId);
-        } else {
-          setActiveDisposerId(null);
-        }
+        
+        setActiveRequests(myPicked);
       } catch (err) {
         console.error("Failed to fetch active disposer requests", err);
       }
@@ -122,7 +118,7 @@ function CollectorHome() {
 
         {/* 💬 CHAT (REAL LOGIC) */}
         <ChatBox
-          disposerId={activeDisposerId}
+          activeRequests={activeRequests}
           collectorId={userId}
           userRole="collector"
         />

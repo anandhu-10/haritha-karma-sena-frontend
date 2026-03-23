@@ -255,3 +255,26 @@
         opacity: 1;
     }
 }
+
+.chat-user-select {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    outline: none;
+    cursor: pointer;
+    max-width: 180px;
+    transition: all 0.2s;
+}
+
+.chat-user-select:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.chat-user-select option {
+    background: #4a634a;
+    color: white;
+}

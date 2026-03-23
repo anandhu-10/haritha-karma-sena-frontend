@@ -5,12 +5,13 @@ import "../styles/ChatBox.css";
 
 const SOCKET_URL = (process.env.REACT_APP_API_URL || "https://haritha-karma-sena-backend.onrender.com");
 
-function ChatBox({ disposerId, collectorId, userRole }) {
+function ChatBox({ disposerId, collectorId, userRole, activeRequests = [] }) {
   const socketRef = useRef(null);
   const [open, setOpen] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
+  const [selectedReqId, setSelectedReqId] = useState("");
   const messagesEndRef = useRef(null);
 
   const openRef = useRef(open);
@@ -27,11 +28,25 @@ function ChatBox({ disposerId, collectorId, userRole }) {
     scrollToBottom();
   }, [messages, open]);
 
-  // 🔥 Ensure IDs are always strings
+  /* ---------- DERIVE TARGET DISPOSER ---------- */
+  useEffect(() => {
+    if (userRole === "collector" && activeRequests.length > 0 && !selectedReqId) {
+      setSelectedReqId(activeRequests[0]._id);
+    }
+  }, [activeRequests, userRole, selectedReqId]);
+
+  const currentSelection = userRole === "collector" 
+    ? activeRequests.find(r => r._id === selectedReqId) 
+    : null;
+
+  const targetDisposerId = userRole === "collector" 
+    ? (currentSelection?.disposerId?._id || currentSelection?.disposerId)
+    : disposerId;
+
   const safeDisposerId =
-    typeof disposerId === "object"
-      ? disposerId?._id || disposerId?.$oid
-      : disposerId;
+    typeof targetDisposerId === "object"
+      ? targetDisposerId?._id || targetDisposerId?.$oid
+      : targetDisposerId;
 
   const safeCollectorId =
     typeof collectorId === "object"
@@ -126,7 +141,25 @@ function ChatBox({ disposerId, collectorId, userRole }) {
                 <FaUser size={14} />
               </div>
               <div className="header-text">
-                <h3>{userRole === "collector" ? "Disposer Connection" : "Collector Support"}</h3>
+                {userRole === "collector" && activeRequests.length > 1 ? (
+                  <select 
+                    className="chat-user-select"
+                    value={selectedReqId}
+                    onChange={(e) => setSelectedReqId(e.target.value)}
+                  >
+                    {activeRequests.map(req => (
+                      <option key={req._id} value={req._id}>
+                        Chat with: {req.disposerName}
+                      </option>
+                    ))}
+                  </select>
+                ) : (
+                  <h3>
+                    {userRole === "collector" 
+                      ? (currentSelection?.disposerName || "Disposer Connection")
+                      : "Collector Support"}
+                  </h3>
+                )}
                 <small style={{ color: "rgba(255,255,255,0.7)" }}>Online</small>
               </div>
             </div>
