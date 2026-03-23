@@ -3,7 +3,6 @@ import { MdLogout } from "react-icons/md";
 import { FaLocationDot, FaUser, FaBell, FaTrash } from "react-icons/fa6";
 import ProfilePopup from "./ProfilePopup";
 import "../styles/Profile.css";
-import logo from "../assets/logo_header.png";
 
 function Profile({ user, userType, reportLogout }) {
   const [expand, setExpand] = useState(false);

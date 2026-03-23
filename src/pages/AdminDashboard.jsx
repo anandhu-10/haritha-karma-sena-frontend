@@ -9,7 +9,6 @@ import AdminAwareness from "../components/admin/AdminAwareness";
 import AdminRewards from "../components/admin/AdminRewards";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChartPie, faUsers, faTruck, faRecycle, faBullhorn, faExclamationCircle, faSignOutAlt, faStar } from '@fortawesome/free-solid-svg-icons';
-import logo from "../assets/logo.png";
 import "./AdminDashboard.css";
 
 const AdminDashboard = () => {

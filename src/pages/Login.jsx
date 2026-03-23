@@ -4,7 +4,6 @@ import { RxHamburgerMenu } from "react-icons/rx";
 import axios from "axios";
 import "../styles/signup.css";
 
-import logo from "../assets/logo_header.png";
 
 /* ✅ API URL from CRA environment */
 const API_URL = (process.env.REACT_APP_API_URL || "https://haritha-karma-sena-backend.onrender.com");

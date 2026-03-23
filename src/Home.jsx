@@ -7,7 +7,6 @@ import image from "./assets/1000_F_101682732_OejrMC8RzUdpxMVmSQLhgsnTW2HQloO0.jp
 
 import { RxHamburgerMenu } from "react-icons/rx";
 
-import logo from "./assets/logo_header.png";
 
 function Home() {
   const navigate = useNavigate();
