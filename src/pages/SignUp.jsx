@@ -7,10 +7,9 @@ import { DISTRICTS, KERALA_DATA } from "../data/keralaData";
 
 import SearchableSelect from "../components/SearchableSelect";
 
-const API = (process.env.REACT_APP_API_URL || "https://haritha-karma-sena-backend.onrender.com");
-
-
 import logo from "../assets/logo.png";
+
+const API = (process.env.REACT_APP_API_URL || "https://haritha-karma-sena-backend.onrender.com");
 
 function SignUp() {
   const navigate = useNavigate();
