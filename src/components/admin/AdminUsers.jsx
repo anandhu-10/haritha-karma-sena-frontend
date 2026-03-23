@@ -79,7 +79,7 @@ const AdminUsers = () => {
                             <td>{u.name}</td>
                             <td>{u.email}</td>
                             <td>{u.profile?.phone || "N/A"}</td>
-                            <td>{u.profile?.panchayath || "N/A"}, Ward {u.profile?.ward || "N/A"}</td>
+                            <td>{u.profile?.localBodyName || "N/A"}, {u.profile?.ward || "N/A"}</td>
                             <td>
                                 <span className={`status-badge ${u.status.toLowerCase()}`}>{u.status}</span>
                             </td>

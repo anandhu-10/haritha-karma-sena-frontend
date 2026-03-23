@@ -79,7 +79,7 @@ const AdminCollectors = () => {
                             <td>{c.name}</td>
                             <td>{c.email}</td>
                             <td>{c.profile?.phone || "N/A"}</td>
-                            <td>{c.profile?.panchayath || "Unassigned"}, Ward {c.profile?.ward || "N/A"}</td>
+                            <td>{c.profile?.localBodyName || "Unassigned"}, {c.profile?.ward || "N/A"}</td>
                             <td>
                                 <span className={`status-badge ${c.status.toLowerCase()}`}>{c.status}</span>
                             </td>

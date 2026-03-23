@@ -53,14 +53,15 @@ const Monitoring = ({ myRequests, disposerProfile }) => {
     /* ---------- AI ECO-ADVISOR LOGIC ---------- */
     const generateAIInsights = () => {
         const insights = [];
-        const { panchayath, ward } = disposerProfile;
+        const { localBodyName, panchayath, ward } = disposerProfile || {};
+        const areaName = localBodyName || panchayath;
 
         // 1. Location-based Awareness
-        if (panchayath || ward) {
+        if (areaName || ward) {
             insights.push({
                 icon: <FaLocationDot />,
-                title: `Local Impact (${panchayath || "Your Area"})`,
-                text: `Residents in Ward ${ward || "X"} are currently focusing on composting. Your contribution of ${totalWaste}kg helps reduce the load on the ${panchayath || "local"} processing plant.`
+                title: `Local Impact (${areaName || "Your Area"})`,
+                text: `Residents in ${ward || "Ward X"} are currently focusing on composting. Your contribution of ${totalWaste}kg helps reduce the load on the ${areaName || "local"} processing plant.`
             });
         }
 
