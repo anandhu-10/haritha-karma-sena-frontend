@@ -12,6 +12,7 @@ import Leaderboard from "../components/Leaderboard";
 import Rewards from "../components/Rewards";
 import PointsHistory from "../components/PointsHistory";
 import HelpCenter from "../components/HelpCenter";
+import Activity from "../components/Activity";
 
 import { FaTrashCanArrowUp, FaChartLine, FaTrophy, FaGift, FaClockRotateLeft, FaCircleQuestion } from "react-icons/fa6";
 
@@ -37,6 +38,7 @@ function DisposerHome() {
   const [wasteDetails, setWasteDetails] = useState([]);
   const [isOn, setIsOn] = useState(false);
   const [changeSlider, setChangeSlider] = useState(0);
+  const [showActivity, setShowActivity] = useState(false);
 
   /* ---------- PAYMENT ---------- */
   const [paid, setPaid] = useState(false);
@@ -178,13 +180,17 @@ function DisposerHome() {
           </div>
         )}
 
-        {/* ACTIVE WASTE CARDS */}
         {wasteDetails && wasteDetails.length > 0 ? (
           wasteDetails.map((item, index) => (
-            <WasteCard key={item._id || index} wasteData={item} paid={paid} index={index} />
+            <WasteCard key={item._id || index} wasteData={item} paid={paid} index={index} setShowActivity={setShowActivity} />
           ))
         ) : (
-          <WasteCard paid={paid} />
+          <WasteCard paid={paid} setShowActivity={setShowActivity} />
+        )}
+        
+        {/* 🔔 GLOBAL ACTIVITY OVERLAY 🔔 */}
+        {showActivity && (
+          <Activity reportRender={() => setShowActivity(false)} />
         )}
 
         {/* 🔔 REMINDERS */}

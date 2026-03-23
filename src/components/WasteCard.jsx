@@ -2,15 +2,13 @@ import React, { useState, useEffect, useContext, useRef } from "react";
 import "../styles/wastecard.css";
 import { GiCancel } from "react-icons/gi";
 import wasteChildren from "../assets/retink-waste-01.jpg";
-import Activity from "./Activity";
 import { WasteContext } from "../pages/DisposerHome";
 
 export const CancelWasteContext = React.createContext();
 
-function WasteCard({ wasteData, paid, index = 0 }) {
+function WasteCard({ wasteData, paid, index = 0, setShowActivity }) {
   const { wasteDetails, setWasteDetails } = useContext(WasteContext);
 
-  const [showActivity, setShowActivity] = useState(false);
   const [deleteWasteTab, setDeleteWasteTab] = useState(false);
   const [showCollectorPopup, setShowCollectorPopup] = useState(false);
 
@@ -58,8 +56,7 @@ function WasteCard({ wasteData, paid, index = 0 }) {
   return (
     <div className={`waste-card ${getStatusClass(currentWaste?.status)}`} ref={cardRef}>
       <div
-        className={`contentWaste ${showActivity ? "hide" : ""
-          } ${!currentWaste ? "makeBackground" : ""}`}
+        className={`contentWaste ${!currentWaste ? "makeBackground" : ""}`}
       >
         {currentWaste ? (
           <div className="contentWasteInner" style={{ display: 'flex', width: '100%', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -137,6 +134,14 @@ function WasteCard({ wasteData, paid, index = 0 }) {
                       />
                     </div>
                   )}
+                  
+                  {/* Click indicator for activity */}
+                  <div 
+                    style={{ position: "absolute", bottom: "-20px", left: "50%", transform: "translateX(-50%)", fontSize: "10px", color: "#64748b", cursor: "pointer", whiteSpace: "nowrap" }}
+                    onClick={(e) => { e.stopPropagation(); setShowActivity(true); }}
+                  >
+                    Tap to view all activity
+                  </div>
                 </div>
               ) : (
                 <div className="delete">
@@ -172,11 +177,6 @@ function WasteCard({ wasteData, paid, index = 0 }) {
         )}
       </div>
 
-      {showActivity && (
-        <CancelWasteContext.Provider value={{ deleteWasteTab }}>
-          <Activity reportRender={() => setShowActivity(false)} />
-        </CancelWasteContext.Provider>
-      )}
     </div>
   );
 }
