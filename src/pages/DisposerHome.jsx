@@ -178,7 +178,14 @@ function DisposerHome() {
           </div>
         )}
 
-        <WasteCard paid={paid} />
+        {/* ACTIVE WASTE CARDS */}
+        {wasteDetails && wasteDetails.length > 0 ? (
+          wasteDetails.map((item, index) => (
+            <WasteCard key={item._id || index} wasteData={item} paid={paid} index={index} />
+          ))
+        ) : (
+          <WasteCard paid={paid} />
+        )}
 
         {/* 🔔 REMINDERS */}
         {myRequests.length > 0 && myRequests[0].status === "Pending" && (

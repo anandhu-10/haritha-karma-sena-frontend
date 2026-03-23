@@ -7,7 +7,7 @@ import { WasteContext } from "../pages/DisposerHome";
 
 export const CancelWasteContext = React.createContext();
 
-function WasteCard() {
+function WasteCard({ wasteData, paid, index = 0 }) {
   const { wasteDetails, setWasteDetails } = useContext(WasteContext);
 
   const [showActivity, setShowActivity] = useState(false);
@@ -15,7 +15,7 @@ function WasteCard() {
   const [showCollectorPopup, setShowCollectorPopup] = useState(false);
 
   const cardRef = useRef(null);
-  const currentWaste = wasteDetails?.[0] || null;
+  const currentWaste = wasteData || wasteDetails?.[index] || wasteDetails?.[0] || null;
 
   /* ---------- CLICK TO TOGGLE ACTIVITY ---------- */
   useEffect(() => {
@@ -155,7 +155,7 @@ function WasteCard() {
                       id="delete-bT"
                       onClick={(e) => {
                         e.stopPropagation();
-                        handleWasteDelete(0);
+                        handleWasteDelete(index);
                       }}
                     >
                       Yes, Cancel
