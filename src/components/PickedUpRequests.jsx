@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useOutletContext } from "react-router-dom";
 import axios from "axios";
-import { FaCheckCircle, FaTrash, FaMapMarkerAlt, FaClock } from "react-icons/fa";
+import { FaCheckCircle, FaMapMarkerAlt, FaClock } from "react-icons/fa";
 import "../styles/PickedUpRequests.css";
 
 const API = (process.env.REACT_APP_API_URL || "https://haritha-karma-sena-backend.onrender.com");
