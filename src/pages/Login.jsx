@@ -7,6 +7,8 @@ import "../styles/signup.css";
 /* ✅ API URL from CRA environment */
 const API_URL = (process.env.REACT_APP_API_URL || "https://haritha-karma-sena-backend.onrender.com");
 
+import logo from "../assets/logo.png";
+
 function Login() {
   const navigate = useNavigate();
 
@@ -93,7 +95,13 @@ function Login() {
           <div
             className={width > 568 ? "containerHomeNav" : "containerHomeNavMob"}
           >
-            <h1 onClick={() => navigate("/")}>HYGIENO</h1>
+            <div 
+              onClick={() => navigate("/")} 
+              style={{ display: "flex", alignItems: "center", gap: "10px", cursor: "pointer" }}
+            >
+              <img src={logo} alt="Hygieno Logo" style={{ height: "40px", width: "auto" }} />
+              <h1 style={{ margin: 0 }}>HYGIENO</h1>
+            </div>
 
             {width <= 568 ? (
               <div className="optionC">

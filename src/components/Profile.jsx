@@ -3,6 +3,7 @@ import { MdLogout } from "react-icons/md";
 import { FaLocationDot, FaUser, FaBell, FaTrash } from "react-icons/fa6";
 import ProfilePopup from "./ProfilePopup";
 import "../styles/Profile.css";
+import logo from "../assets/logo.png";
 
 function Profile({ user, userType, reportLogout }) {
   const [expand, setExpand] = useState(false);
@@ -140,8 +141,9 @@ function Profile({ user, userType, reportLogout }) {
     <>
       <div className="profileContainer">
         {/* LEFT */}
-        <div className="sub1">
-          <h1>Welcome, {user.name || user.email}</h1>
+        <div className="sub1" style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+          <img src={logo} alt="Hygieno Logo" style={{ height: "35px", width: "auto" }} />
+          <h1 style={{ margin: 0 }}>Welcome, {user.name || user.email}</h1>
         </div>
 
         {/* RIGHT */}

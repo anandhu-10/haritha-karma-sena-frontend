@@ -9,6 +9,7 @@ import AdminAwareness from "../components/admin/AdminAwareness";
 import AdminRewards from "../components/admin/AdminRewards";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChartPie, faUsers, faTruck, faRecycle, faBullhorn, faExclamationCircle, faSignOutAlt, faStar } from '@fortawesome/free-solid-svg-icons';
+import logo from "../assets/logo.png";
 import "./AdminDashboard.css";
 
 const AdminDashboard = () => {
@@ -54,9 +55,9 @@ const AdminDashboard = () => {
         <div className="admin-dashboard-container">
             {/* Sidebar */}
             <aside className="admin-sidebar">
-                <div className="sidebar-header">
-                    <h2>HKS Admin</h2>
-                    <span className="badge-pro">Pro</span>
+                <div className="sidebar-header" style={{ display: "flex", alignItems: "center", gap: "10px", padding: "15px" }}>
+                    <img src={logo} alt="Logo" style={{ height: "30px", width: "auto" }} />
+                    <h2 style={{ fontSize: "1.2rem", margin: 0 }}>HKS Admin</h2>
                 </div>
 
                 <nav className="sidebar-nav">

@@ -7,6 +7,8 @@ import image from "./assets/1000_F_101682732_OejrMC8RzUdpxMVmSQLhgsnTW2HQloO0.jp
 
 import { RxHamburgerMenu } from "react-icons/rx";
 
+import logo from "./assets/logo.png";
+
 function Home() {
   const navigate = useNavigate();
   const [width, setWidth] = useState(window.innerWidth);
@@ -28,7 +30,13 @@ function Home() {
               width > 568 ? "containerHomeNav" : "containerHomeNavMob"
             }
           >
-            <h1 onClick={() => navigate("/")}>HYGIENO</h1>
+            <div 
+              onClick={() => navigate("/")} 
+              style={{ display: "flex", alignItems: "center", gap: "10px", cursor: "pointer" }}
+            >
+              <img src={logo} alt="Hygieno Logo" style={{ height: "40px", width: "auto" }} />
+              <h1 style={{ margin: 0 }}>HYGIENO</h1>
+            </div>
 
             {width <= 568 ? (
               <div className="optionC">
