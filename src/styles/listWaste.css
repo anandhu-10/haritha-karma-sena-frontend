@@ -48,9 +48,11 @@ input[type="file"]::-webkit-file-upload-button {
 .wasteImageContainer.active {
   display: grid;
   position: relative;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
-  grid-template-rows: 30% 1fr 40px 40px;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: auto 300px auto; 
+  gap: 15px;
   height: auto;
+  padding-bottom: 50px; 
 }
 
 .wasteType {
@@ -105,72 +107,72 @@ h3 {
 
 .nextIcon {
   position: absolute;
-  transform: scale(3);
-  left: 95%;
-  bottom: 18%;
+  right: 15px;
+  bottom: 0px;
+  font-size: 30px;
   transition: transform 0.2s ease-in-out;
+  cursor: pointer;
+}
 
-  &:hover {
-    transform: scale(4);
-    cursor: pointer;
-
-  }
+.nextIcon:hover {
+  transform: scale(1.2);
 }
 
 
 
 .nextIconImage {
-  grid-row: 4/5;
-  grid-column: 6/7;
-  justify-self: center;
-  align-self: flex-end;
-  transform: scale(3);
+  position: absolute;
+  right: 10px;
+  bottom: 0px;
+  font-size: 30px;
   transition: transform 0.2s ease-in-out;
+  cursor: pointer;
+}
 
-  &:hover {
-    transform: scale(4);
-    cursor: pointer;
-  }
+.nextIconImage:hover {
+  transform: scale(1.2);
 }
 
 .backIcon {
-  grid-row: 4/5;
-  grid-column: 1/2;
-  justify-self: flex-start;
-  align-self: flex-end;
-  transform: scale(3) rotate(180deg);
+  position: absolute;
+  left: 10px;
+  bottom: 0px;
+  font-size: 30px;
+  transform: rotate(180deg);
   transition: transform 0.2s ease-in-out;
-
+  cursor: pointer;
 }
 
 .backIcon:hover {
-  transform: scale(4) rotate(180deg);
-  cursor: pointer;
-
+  transform: scale(1.2) rotate(180deg);
 }
 
 .wasteImgFile {
   position: relative;
   grid-row: 3/4;
-  grid-column: 1/2;
-  justify-self: flex-start;
-  align-self: flex-end;
+  grid-column: 1/4; 
+  justify-self: center;
 }
 
 .wasteImageContainer .selectedWastePreview {
   position: relative;
   grid-row: 2/3;
   grid-column: 1/4;
-  align-self: center;
-  width: 50%;
+  justify-self: center;
+  width: auto;
+  max-width: 100%;
+  max-height: 300px;
+  border-radius: 8px;
 }
 
 .wastePreview {
   position: relative;
   grid-row: 2/3;
   grid-column: 1/4;
-  align-self: center;
-  width: 50%;
+  justify-self: center;
+  width: auto;
+  max-width: 100%;
+  max-height: 300px;
 }
 
 .findCollectors {
@@ -181,8 +183,9 @@ h3 {
   display: flex;
   flex-direction: column;
   background-color: rgb(255, 255, 255);
-  overflow-y: scroll;
-
+  overflow-y: auto;
+  position: relative;
+  padding-bottom: 50px;
 }
 
 .findCollectors h3,
@@ -213,24 +216,32 @@ h3 {
 }
 
 .backIconC {
-  position: relative;
-  top: 25px;
-  transform: scale(3) rotate(180deg);
+  position: absolute;
+  left: 15px;
+  bottom: 0px;
+  font-size: 30px;
+  transform: rotate(180deg);
+  transition: transform 0.2s;
+  cursor: pointer;
+}
 
-  &:hover {
-    cursor: pointer;
-
-  }
+.backIconC:hover {
+  transform: scale(1.2) rotate(180deg);
 }
 
 .submitC {
-
   align-self: flex-end;
   background-color: #d3ddd4;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
 
-  &:hover {
-    cursor: pointer;
-  }
+.submitC:hover {
+  background-color: #6A816A;
+  color: white;
 }
 
 .wasteImageContainer h3 {
