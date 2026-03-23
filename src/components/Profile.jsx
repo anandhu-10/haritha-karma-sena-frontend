@@ -141,11 +141,8 @@ function Profile({ user, userType, reportLogout }) {
     <>
       <div className="profileContainer">
         {/* LEFT */}
-        <div className="sub1" style={{ display: "flex", alignItems: "center", gap: "0px" }}>
-          <div style={{ width: "40px", height: "40px", overflow: "hidden", display: "flex", justifyContent: "center", alignItems: "center" }}>
-            <img src={logo} alt="Hygieno Logo" style={{ height: "70px", width: "70px", transform: "scale(1.4)" }} />
-          </div>
-          <h1 style={{ margin: 0, marginLeft: "-8px" }}>Welcome, {user.name || user.email}</h1>
+        <div className="sub1">
+          <h1>Welcome, {user.name || user.email}</h1>
         </div>
 
         {/* RIGHT */}

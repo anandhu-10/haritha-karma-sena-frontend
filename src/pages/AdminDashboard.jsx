@@ -55,9 +55,8 @@ const AdminDashboard = () => {
         <div className="admin-dashboard-container">
             {/* Sidebar */}
             <aside className="admin-sidebar">
-                <div className="sidebar-header" style={{ display: "flex", alignItems: "center", gap: "10px", padding: "15px" }}>
-                    <img src={logo} alt="Logo" style={{ height: "30px", width: "auto" }} />
-                    <h2 style={{ fontSize: "1.2rem", margin: 0 }}>HKS Admin</h2>
+                <div className="sidebar-header">
+                    <h2>HKS Admin</h2>
                 </div>
 
                 <nav className="sidebar-nav">

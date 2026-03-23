@@ -30,15 +30,7 @@ function Home() {
               width > 568 ? "containerHomeNav" : "containerHomeNavMob"
             }
           >
-            <div 
-              onClick={() => navigate("/")} 
-              style={{ display: "flex", alignItems: "center", gap: "0px", cursor: "pointer" }}
-            >
-              <div style={{ width: "45px", height: "45px", overflow: "hidden", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                <img src={logo} alt="Hygieno Logo" style={{ height: "80px", width: "80px", transform: "scale(1.4)" }} />
-              </div>
-              <h1 style={{ margin: 0, marginLeft: "-15px" }}>HYGIENO</h1>
-            </div>
+            <h1 onClick={() => navigate("/")} style={{ cursor: "pointer", margin: 0 }}>HYGIENO</h1>
 
             {width <= 568 ? (
               <div className="optionC">
