@@ -130,7 +130,7 @@ function SignUp() {
           <div className={width > 568 ? "containerHomeNav" : "containerHomeNavMob"}>
             <div 
               onClick={() => navigate("/")} 
-              style={{ display: "flex", alignItems: "center", gap: "20px", cursor: "pointer" }}
+              style={{ display: "flex", alignItems: "center", gap: "5px", cursor: "pointer" }}
             >
               <img src={logo} alt="Hygieno Logo" style={{ height: "40px", width: "auto" }} />
               <h1 style={{ margin: 0 }}>HYGIENO</h1>
