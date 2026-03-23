@@ -1,7 +1,7 @@
 {
-  "name": "Haritha Karma Sena",
-  "short_name": "Haritha",
-  "description": "Haritha Karma Sena - Sustainable Waste Management Platform",
+  "name": "Hygieno",
+  "short_name": "Hygieno",
+  "description": "Hygieno - Sustainable Waste Management Platform",
   "start_url": "/collector",
   "scope": "/",
   "display": "standalone",

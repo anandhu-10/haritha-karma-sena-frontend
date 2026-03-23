@@ -28,7 +28,7 @@ function Home() {
               width > 568 ? "containerHomeNav" : "containerHomeNavMob"
             }
           >
-            <h1 onClick={() => navigate("/")}>HARITHA KARMA SENA</h1>
+            <h1 onClick={() => navigate("/")}>HYGIENO</h1>
 
             {width <= 568 ? (
               <div className="optionC">
@@ -133,7 +133,7 @@ function Home() {
       {/* FOOTER */}
       <footer>
         <div className="container-home">
-          <p>&copy; 2024 Haritha Karma Sena. All rights reserved.</p>
+          <p>&copy; 2024 Hygieno. All rights reserved.</p>
         </div>
       </footer>
     </div>

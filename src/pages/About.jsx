@@ -57,7 +57,7 @@ export default function About() {
         ⬅ Back to Home
       </button>
 
-      <h1 className="about-title">Meet the Team Behind Haritha Karma Sena</h1>
+      <h1 className="about-title">Meet the Team Behind Hygieno</h1>
 
       <div className="card-wrapper">
         {teamMembers.map((member, index) => (
@@ -77,9 +77,9 @@ export default function About() {
 
       {/* ABOUT THE APP SECTION */}
       <div className="about-app-section">
-        <h2>What is Haritha Karma Sena?</h2>
+        <h2>What is Hygieno?</h2>
         <p>
-          Haritha Karma Sena is an innovative, community-driven platform designed to revolutionize waste management.
+          Hygieno is an innovative, community-driven platform designed to revolutionize waste management.
           Our application bridges the gap between citizens (Disposers) and dedicated waste management professionals (Collectors).
         </p>
         <div className="about-features">

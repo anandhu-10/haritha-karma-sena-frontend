@@ -4,12 +4,12 @@ import "../styles/CollectorHelp.css";
 function CollectorHelp() {
   return (
     <div className="about-page">
-      <h1>About Haritha Karma Sena – Collector Portal</h1>
+      <h1>About Hygieno – Collector Portal</h1>
 
       <section>
         <h2>What is this platform?</h2>
         <p>
-          Haritha Karma Sena Collector Portal is a digital system that helps
+          Hygieno Collector Portal is a digital system that helps
           waste collectors efficiently manage and respond to waste disposal
           requests submitted by citizens.
         </p>
@@ -49,7 +49,7 @@ function CollectorHelp() {
         <h2>Help & Support</h2>
         <p>If you need assistance, please contact:</p>
         <ul>
-          <li>Email: support@harithakarmasena.in</li>
+          <li>Email: support@hygieno.in</li>
           <li>Phone: +91-XXXXXXXXXX</li>
           <li>Support Hours: 9:00 AM – 5:00 PM</li>
         </ul>

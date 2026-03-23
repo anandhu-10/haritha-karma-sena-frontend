@@ -127,7 +127,7 @@ function SignUp() {
       <header className="headerHome">
         <nav>
           <div className={width > 568 ? "containerHomeNav" : "containerHomeNavMob"}>
-            <h1 onClick={() => navigate("/")}>HARITHA KARMA SENA</h1>
+            <h1 onClick={() => navigate("/")}>HYGIENO</h1>
 
             {width <= 568 ? (
               <div className="optionC">

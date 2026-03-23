@@ -113,7 +113,7 @@ function DisposerDetails() {
       <header className="headerHome">
         <nav>
           <div className="containerHomeNav">
-            <h1 onClick={() => navigate("/")}>HARITHA KARMA SENA</h1>
+            <h1 onClick={() => navigate("/")}>HYGIENO</h1>
             <ul>
               <li><Link to="/">Home</Link></li>
               <li><Link to="/about">About</Link></li>
