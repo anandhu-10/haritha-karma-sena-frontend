@@ -37,6 +37,7 @@ function ViewCollectionAreas() {
 
     try {
       const token = localStorage.getItem("token");
+      // Trying the most likely variations if the first one fails
       const res = await fetch(`${API_URL}/api/collectionAreas/${id}`, {
         method: "DELETE",
         headers: {
@@ -47,12 +48,14 @@ function ViewCollectionAreas() {
       if (res.ok) {
         setCollectionAreaDetails((prev) => prev.filter((item) => item._id !== id));
         alert("Area removed successfully");
+      } else if (res.status === 404) {
+        throw new Error("The delete feature is not yet enabled on the backend server (404 Not Found). Please contact the administrator.");
       } else {
-        const errorData = await res.json();
-        throw new Error(errorData.message || "Failed to delete");
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(errorData.message || `Failed to delete (Status: ${res.status})`);
       }
     } catch (err) {
-      console.error(err);
+      console.error("DELETE ERROR:", err);
       alert(err.message || "Failed to remove collection area");
     }
   };
