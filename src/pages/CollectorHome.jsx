@@ -5,7 +5,7 @@ import Profile from "../components/Profile";
 import Sidebar from "../components/Sidebar";
 import ServiceSlider from "../components/ServiceSlider";
 
-import { FaPlus, FaSearch } from "react-icons/fa";
+import { FaPlus, FaSearch, FaCheckCircle } from "react-icons/fa";
 import "../styles/dashboard.css";
 import axios from "axios";
 import ChatBox from "../components/ChatBox";
@@ -23,6 +23,10 @@ const sliderData = [
   {
     label: "View Requests from Disposers",
     path: "requests",
+  },
+  {
+    label: "My Picked Up Requests",
+    path: "picked",
   },
 ];
 
@@ -108,7 +112,7 @@ function CollectorHome() {
         {/* SLIDER NAVIGATION */}
         <ServiceSlider
           sliderData={sliderData}
-          icons={[FaPlus, FaSearch, FaSearch]}
+          icons={[FaPlus, FaSearch, FaSearch, FaCheckCircle]}
         />
 
         {/* CHILD ROUTES */}

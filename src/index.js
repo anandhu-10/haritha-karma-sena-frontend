@@ -26,6 +26,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import AddItemsC from "./components/AddItemsC";
 import ViewCollectionAreas from "./components/ViewCollectionAreas";
 import NewRqFromD from "./components/NewRqFromD";
+import PickedUpRequests from "./components/PickedUpRequests";
 
 import "./index.css";
 
@@ -59,6 +60,7 @@ const router = createBrowserRouter([
       { index: true, element: <AddItemsC /> }, // Dashboard
       { path: "areas", element: <ViewCollectionAreas /> },
       { path: "requests", element: <NewRqFromD /> },
+      { path: "picked", element: <PickedUpRequests /> },
       { path: "help", element: <HelpCenter /> }, // ✅ USING NEW HELPCENTER
     ],
   },
