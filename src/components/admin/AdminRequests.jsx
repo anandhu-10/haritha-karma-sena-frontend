@@ -123,8 +123,8 @@ const AdminRequests = () => {
                                             <td>{r.wasteTypes?.join(", ")}</td>
                                             <td>{r.wasteQuantity}</td>
                                             <td>
-                                                <span className={`status-badge ${r.status?.toLowerCase() || "pending"}`}>
-                                                    {r.status || "Pending"}
+                                                <span className={`status-badge ${r.status?.replace(/\s+/g, '-').toLowerCase() || "pending"}`}>
+                                                    {r.status === "Waste Collected" ? "Collected" : (r.status || "Pending")}
                                                 </span>
                                             </td>
                                             <td>

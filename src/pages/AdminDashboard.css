@@ -366,7 +366,8 @@
   color: #c81e1e;
 }
 
-.status-badge.collected {
+.status-badge.collected,
+.status-badge.waste-collected {
   background: #e1effe;
   color: #1a56db;
 }
