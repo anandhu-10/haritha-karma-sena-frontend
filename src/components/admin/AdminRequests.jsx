@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import ReactPaginate from 'react-paginate';
-import { FaHistory, FaShieldAlt, FaMapMarkerAlt } from "react-icons/fa";
+import { FaHistory, FaShieldAlt } from "react-icons/fa";
 
 const AdminRequests = () => {
     const [requests, setRequests] = useState([]);
