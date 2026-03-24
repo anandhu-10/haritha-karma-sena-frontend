@@ -78,8 +78,8 @@ function PickedUpRequests() {
                 const distance = getDistance(currentLat, currentLng, targetLocation[1], targetLocation[0]);
                 console.log("📍 GPS Distance check:", distance.toFixed(2), "meters");
 
-                if (distance > 50) {
-                    alert(`⚠️ VERIFICATION FAILED: You are ${Math.round(distance)}m away. You must be within 50 meters of the house to mark this.`);
+                if (distance > 100) {
+                    alert(`⚠️ VERIFICATION FAILED: You are ${Math.round(distance)}m away. You must be within 100 meters of the house to mark this.`);
                     return;
                 }
             }
