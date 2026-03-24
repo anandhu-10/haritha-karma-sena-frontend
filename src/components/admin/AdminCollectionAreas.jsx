@@ -64,8 +64,8 @@ const AdminCollectionAreas = () => {
                         ) : (
                             areas.map((area) => (
                                 <tr key={area._id}>
-                                    <td><strong>{area.collectorName || "HKS Collector"}</strong></td>
-                                    <td>Ward {area.ward}</td>
+                                    <td><strong>{area.userId?.name || "N/A"}</strong></td>
+                                    <td>Ward {area.userId?.profile?.ward || "N/A"}</td>
                                     <td><FontAwesomeIcon icon={faCalendarAlt} /> {area.date}</td>
                                     <td>
                                         <div className="waste-tags">
@@ -75,9 +75,9 @@ const AdminCollectionAreas = () => {
                                         </div>
                                     </td>
                                     <td>
-                                        {area.location ? (
+                                        {area.location?.coordinates ? (
                                              <a 
-                                               href={`https://www.google.com/maps?q=${area.location[1]},${area.location[0]}`}
+                                               href={`https://www.google.com/maps?q=${area.location.coordinates[1]},${area.location.coordinates[0]}`}
                                                target="_blank" rel="noreferrer" className="admin-map-btn"
                                              >
                                                 <FontAwesomeIcon icon={faMapMarkerAlt} /> View Map
