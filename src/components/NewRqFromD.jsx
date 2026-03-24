@@ -62,7 +62,10 @@ function NewRqFromD() {
           `${(process.env.REACT_APP_API_URL || "https://haritha-karma-sena-backend.onrender.com")}/api/collectionAreas`
         );
         const data = await res.json();
-        const myAreas = data.filter(a => a.userId === userId);
+        const myAreas = data.filter(a => {
+          const areaUserId = a.userId?._id || a.userId;
+          return areaUserId === userId;
+        });
         setCollectorAreas(myAreas);
       } catch (err) {
         console.error("COLLECTOR AREAS FETCH ERROR:", err);
