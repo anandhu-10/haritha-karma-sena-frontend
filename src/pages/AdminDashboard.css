@@ -372,6 +372,11 @@
   color: #1a56db;
 }
 
+.status-badge.completed {
+  background: #def7ec;
+  color: #03543f;
+}
+
 /* Buttons */
 .btn-primary,
 .btn-secondary,
