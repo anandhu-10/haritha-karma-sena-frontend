@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import ReactPaginate from 'react-paginate';
+import { FaHistory, FaShieldAlt, FaMapMarkerAlt } from "react-icons/fa";
 
 const AdminRequests = () => {
     const [requests, setRequests] = useState([]);
@@ -123,9 +124,24 @@ const AdminRequests = () => {
                                             <td>{r.wasteTypes?.join(", ")}</td>
                                             <td>{r.wasteQuantity}</td>
                                             <td>
-                                                <span className={`status-badge ${r.status?.replace(/\s+/g, '-').toLowerCase() || "pending"}`}>
-                                                    {r.status === "Waste Collected" ? "Collected" : (r.status || "Pending")}
-                                                </span>
+                                                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                                                    <span className={`status-badge ${r.status?.replace(/\s+/g, '-').toLowerCase() || "pending"}`}>
+                                                        {r.status === "Waste Collected" ? "Collected" : (r.status || "Pending")}
+                                                    </span>
+                                                    {r.completionLocation && (
+                                                        <div style={{ fontSize: '0.7rem', color: '#4a5568', background: '#f0fff4', padding: '4px', borderRadius: '4px', border: '1px solid #c6f6d5' }}>
+                                                            <FaShieldAlt style={{ color: '#2f855a' }} /> GPS Verified <br/>
+                                                            <a href={`https://www.google.com/maps?q=${r.completionLocation[1]},${r.completionLocation[0]}`} target="_blank" rel="noreferrer" style={{ fontSize: '0.65rem', color: '#2b6cb0' }}>
+                                                                View Actual Link
+                                                            </a>
+                                                        </div>
+                                                    )}
+                                                    {r.completedAt && (
+                                                        <small style={{ fontSize: '0.65rem', color: '#718096' }}>
+                                                            <FaHistory /> {new Date(r.completedAt).toLocaleTimeString()}
+                                                        </small>
+                                                    )}
+                                                </div>
                                             </td>
                                             <td>
                                                 {r.collectorId ? (
