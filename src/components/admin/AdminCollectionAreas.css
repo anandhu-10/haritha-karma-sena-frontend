@@ -1,0 +1,122 @@
+.admin-collection-container {
+    padding: 20px;
+    background-color: #f9fbfb;
+    border-radius: 15px;
+    height: 100%;
+}
+
+.admin-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.admin-section-header h2 {
+    margin: 0;
+    color: #2c3e50;
+    font-size: 1.6rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.refresh-btn {
+    padding: 10px 15px;
+    background: #3498db;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.refresh-btn:hover {
+    background: #2980b9;
+    transform: rotate(180deg);
+}
+
+.admin-table-wrapper {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+
+.admin-custom-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.admin-custom-table th {
+    background-color: #f8fafc;
+    color: #64748b;
+    padding: 15px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.9rem;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.admin-custom-table td {
+    padding: 15px;
+    border-bottom: 1px solid #f1f5f9;
+    color: #334155;
+    font-size: 0.95rem;
+}
+
+.waste-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.waste-tag {
+    padding: 3px 8px;
+    background: #ecf3ec;
+    color: #4a634a;
+    border-radius: 5px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.admin-map-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: #f1f5f9;
+    color: #3b82f6;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    transition: all 0.2s;
+}
+
+.admin-map-btn:hover {
+    background: #dbeafe;
+    color: #2563eb;
+}
+
+.delete-btn-sm {
+    padding: 8px 12px;
+    background: #fee2e2;
+    color: #ef4444;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.delete-btn-sm:hover {
+    background: #fecaca;
+    color: #dc2626;
+}
+
+.admin-loader {
+    text-align: center;
+    padding: 50px;
+    font-size: 1.2rem;
+    color: #4a634a;
+}

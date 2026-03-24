@@ -168,3 +168,52 @@
   font-size: 1.2rem;
   color: #27ae60;
 }
+
+.status-badge-inline {
+    padding: 6px 12px;
+    background: #e2e8f0;
+    color: #475569;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.status-badge-inline.collected {
+    background: #dbeafe;
+    color: #2563eb;
+}
+
+.card-actions {
+    margin-top: auto;
+    display: flex;
+    gap: 10px;
+}
+
+.collect-btn {
+    width: 100%;
+    padding: 12px;
+    background: #f59e0b;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.collect-btn:hover {
+    background: #d97706;
+    transform: translateY(-2px);
+}
+
+.complete-btn.final {
+    background: #10b981;
+}
+
+.complete-btn.final:hover {
+    background: #059669;
+}

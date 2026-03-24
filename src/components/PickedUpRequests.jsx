@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useOutletContext } from "react-router-dom";
 import axios from "axios";
-import { FaCheckCircle, FaMapMarkerAlt, FaClock } from "react-icons/fa";
+import { FaCheckCircle, FaMapMarkerAlt, FaClock, FaHome } from "react-icons/fa";
 import "../styles/PickedUpRequests.css";
 
 const API = (process.env.REACT_APP_API_URL || "https://haritha-karma-sena-backend.onrender.com");
@@ -23,7 +23,7 @@ function PickedUpRequests() {
       
       const myPicked = res.data.filter(r => {
           const rCollectorId = typeof r.collectorId === 'object' ? r.collectorId?._id : r.collectorId;
-          return rCollectorId === userId && r.status === "Picked Up";
+          return rCollectorId === userId && (r.status === "Picked Up" || r.status === "Waste Collected");
       });
 
       setRequests(myPicked);
@@ -38,18 +38,18 @@ function PickedUpRequests() {
     if (userId) fetchPickedUp();
   }, [userId, fetchPickedUp]);
 
-  /* ---------- COMPLETE REQUEST ---------- */
-  const handleComplete = async (reqId) => {
-    if (!window.confirm("Mark this collection as successfully completed?")) return;
+  /* ---------- UPDATE STATUS ---------- */
+  const handleStatusUpdate = async (reqId, nextStatus, confirmMsg) => {
+    if (!window.confirm(confirmMsg)) return;
 
     try {
       await axios.patch(`${API}/api/disposer-requests/${reqId}/status`, {
-        status: "Completed"
+        status: nextStatus
       }, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
-      alert("Request marked as Completed! ✅ Disposer notified.");
+      alert(`Status updated to: ${nextStatus}! ✅`);
       fetchPickedUp();
     } catch (err) {
       console.error("Update status error:", err);
@@ -78,13 +78,14 @@ function PickedUpRequests() {
             <div key={req._id} className="picked-card">
               <div className="picked-card-top">
                 {req.image && <img src={req.image} alt="Waste" className="picked-img" />}
-                <div className="picked-badge">Picked Up</div>
               </div>
 
               <div className="picked-card-body">
                 <div className="picked-main-info">
                   <h3>{req.disposerName}</h3>
-                  <span className="picked-date">{new Date(req.createdAt).toLocaleDateString()}</span>
+                  <span className={`status-badge-inline ${req.status === 'Waste Collected' ? 'collected' : ''}`}>
+                    {req.status}
+                  </span>
                 </div>
 
                 <div className="picked-details-list">
@@ -107,12 +108,23 @@ function PickedUpRequests() {
                   )}
                 </div>
 
-                <button 
-                  className="complete-btn"
-                  onClick={() => handleComplete(req._id)}
-                >
-                  <FaCheckCircle /> Mark as Completed
-                </button>
+                <div className="card-actions">
+                  {req.status === "Picked Up" ? (
+                    <button 
+                      className="collect-btn"
+                      onClick={() => handleStatusUpdate(req._id, "Waste Collected", "Confirm you have taken the waste from the house? 🏠")}
+                    >
+                      <FaHome style={{ marginRight: '8px' }} /> I have taken the Waste
+                    </button>
+                  ) : (
+                    <button 
+                      className="complete-btn final"
+                      onClick={() => handleStatusUpdate(req._id, "Completed", "Finalize this collection as successfully completed?")}
+                    >
+                      <FaCheckCircle style={{ marginRight: '8px' }} /> Mark as Completed
+                    </button>
+                  )}
+                </div>
               </div>
             </div>
           ))

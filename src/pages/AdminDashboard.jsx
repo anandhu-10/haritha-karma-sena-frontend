@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import AdminOverview from "../components/admin/AdminOverview";
 import AdminUsers from "../components/admin/AdminUsers";
 import AdminCollectors from "../components/admin/AdminCollectors";
+import AdminCollectionAreas from "../components/admin/AdminCollectionAreas";
 import AdminRequests from "../components/admin/AdminRequests";
 import AdminComplaints from "../components/admin/AdminComplaints";
 import AdminAwareness from "../components/admin/AdminAwareness";
@@ -42,6 +43,7 @@ const AdminDashboard = () => {
             case "overview": return <AdminOverview />;
             case "users": return <AdminUsers />;
             case "collectors": return <AdminCollectors />;
+            case "collectionAreas": return <AdminCollectionAreas />;
             case "requests": return <AdminRequests />;
             case "complaints": return <AdminComplaints />;
             case "awareness": return <AdminAwareness />;
@@ -68,6 +70,9 @@ const AdminDashboard = () => {
                         </li>
                         <li className={activeTab === "collectors" ? "active" : ""} onClick={() => setActiveTab("collectors")}>
                             <FontAwesomeIcon icon={faTruck} /> Collector Management
+                        </li>
+                        <li className={activeTab === "collectionAreas" ? "active" : ""} onClick={() => setActiveTab("collectionAreas")}>
+                            <FontAwesomeIcon icon={faChartPie} /> Collection Areas
                         </li>
                         <li className={activeTab === "requests" ? "active" : ""} onClick={() => setActiveTab("requests")}>
                             <FontAwesomeIcon icon={faRecycle} /> Waste Requests
